@@ -1,0 +1,3 @@
+[submodule "lib/entity-system-js"]
+	path = lib/entity-system-js
+	url = git@github.com:AdrianGaudebert/entity-system-js.git
