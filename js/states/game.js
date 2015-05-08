@@ -8,9 +8,11 @@ define(['entity-manager',
             'components/attack',
             'components/animation',
             'components/position',
-            'processors/rendering'
+            'components/player',
+            'processors/rendering',
+            'processors/input'
             ],
-        function (EntityManager, Collision, Displayable, WonGames, Input, Life, Movable, Attack, Animation, Position, RenderingProcessor) {
+        function (EntityManager, Collision, Displayable, WonGames, Input, Life, Movable, Attack, Animation, Position, Player, RenderingProcessor, InputProcessor) {
 
     var Game = function (game) {
     };
@@ -28,6 +30,8 @@ define(['entity-manager',
             var manager = new EntityManager();
 
             // Add all components to the system.
+
+            // Add all components to the system.
             var components = [
                 Collision,
                 Displayable,
@@ -37,18 +41,20 @@ define(['entity-manager',
                 Movable,
                 Attack,
                 Animation,
-                Position
+                Position,
+                Player
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 manager.addComponent(components[i].name, components[i]);
             }
 
-            var player = manager.createEntity(['Position', 'Displayable', 'Movable']);
+            var player = manager.createEntity(['Player', 'Position', 'Displayable', 'Movable']);
+            var player2 = manager.createEntity(['Player', 'Position', 'Displayable']);
+            manager.getComponentDataForEntity('Player', player2).number = 1;
 
             manager.addProcessor(new RenderingProcessor(manager, this.game));
-
-        },
-
+            manager.addProcessor(new InputProcessor(manager, this.game));
+        }
     };
 
     return Game;

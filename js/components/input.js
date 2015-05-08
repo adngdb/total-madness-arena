@@ -4,7 +4,7 @@ define(function () {
         name: 'Input',
         state: {
             action: '',
-            key: [],
+            keys: [],
             player: 0,
             active: false
         }
