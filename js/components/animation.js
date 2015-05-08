@@ -1,11 +1,11 @@
 define(['./Animation'], function (Animation) {
 
-	var Animation = {
-	    name: 'Animation',
-	    state: {
-	    }
-	};
+    var Animation = {
+        name: 'Animation',
+        state: {
+        }
+    };
 
-	return Animation;
+    return Animation;
 
 });

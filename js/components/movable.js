@@ -1,11 +1,11 @@
 define(['./Movable'], function (Movable) {
 
-	var Movable = {
-	    name: 'Movable',
-	    state: {
-	    }
-	};
+    var Movable = {
+        name: 'Movable',
+        state: {
+        }
+    };
 
-	return Movable;
+    return Movable;
 
 });
