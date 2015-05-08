@@ -14,7 +14,10 @@ define(function () {
     RenderingProcessor.prototype.createSprite = function (displayableId, displayableData) {
         var positionData = this.manager.getComponentDataForEntity('Position', displayableId);
 
-        this.sprites[displayableId] = this.game.add.sprite(positionData.x, positionData.y, displayableData.sprite);
+        var sprite = this.game.add.sprite(positionData.x, positionData.y, displayableData.sprite);
+        this.game.physics.p2.enable(sprite);
+        this.sprites[displayableId] = sprite;
+
     };
 
     RenderingProcessor.prototype.update = function () {
@@ -42,8 +45,8 @@ define(function () {
             // Then update the position of each sprite.
             if (this.manager.entityHasComponent(entity, 'Movable')) {
                 var positionData = this.manager.getComponentDataForEntity('Position', entity);
-                sprite.x = positionData.x;
-                sprite.y = positionData.y;
+                sprite.body.x = positionData.x;
+                sprite.body.y = positionData.y;
             }
         }
     };

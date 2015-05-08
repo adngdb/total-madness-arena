@@ -90,6 +90,7 @@ function (
             this.manager.getComponentDataForEntity('Life', player2).value = 100;
             this.manager.getComponentDataForEntity('Displayable', player2).sprite = 'chara_thin';
             this.manager.getComponentDataForEntity('Position', player2).y = 100;
+            this.manager.getComponentDataForEntity('Position', player2).x = 300;
 
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';

@@ -4,6 +4,7 @@ define(['processors/input'], function (InputProcessor) {
         this.manager = manager;
         this.game = game;
         this.game.physics.startSystem(Phaser.Physics.P2JS);
+        this.game.physics.p2.gravity.y = 250;
 
         this.init();
     };
