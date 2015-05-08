@@ -105,6 +105,7 @@ function (
             this.manager.getComponentDataForEntity('AnimationIdle', player2).keys = [0, 1, 2, 3];
             this.manager.getComponentDataForEntity('AnimationIdle', player2).speed = 8;
             this.manager.getComponentDataForEntity('AnimationWalk', player2).speed = 8;
+            this.manager.getComponentDataForEntity('Movable', player).gravity = 1.5;
 
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';

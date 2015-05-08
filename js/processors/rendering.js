@@ -16,6 +16,10 @@ define(function () {
 
         var sprite = this.game.add.sprite(positionData.x, positionData.y, displayableData.sprite);
         this.game.physics.p2.enable(sprite);
+
+        if (this.manager.entityHasComponent(entity, 'Movable')) {
+            sprite.body.data.gravityScale = this.manager.getComponentDataForEntity('Movable', entity).gravity;
+        }
         this.sprites[entity] = sprite;
 
         if (this.manager.entityHasComponent(entity, 'Animated')) {
