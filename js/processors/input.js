@@ -9,15 +9,24 @@ define(function () {
         this.init();
     };
 
+    InputProcessor.actions = {
+        UP : 'up',
+        LEFT : 'left',
+        DOWN : 'down',
+        RIGHT : 'right',
+        ACTION1: 'action1',
+        ACTION2: 'action2'
+    }
+
     InputProcessor.prototype.init = function () {
 
         var firstPlayerControls = [
-            {action: 'up', keys: [Phaser.Keyboard.UP]},
-            {action: 'left', keys: [Phaser.Keyboard.LEFT]},
-            {action: 'down', keys: [Phaser.Keyboard.DOWN]},
-            {action: 'right', keys: [Phaser.Keyboard.RIGHT]},
-            {action: 'numpadzero', keys: [Phaser.Keyboard.NUMPAD_0]},
-            {action: 'numpaddecimal', keys: [Phaser.Keyboard.NUMPAD_DECIMAL]}
+            {action: InputProcessor.actions.UP, keys: [Phaser.Keyboard.UP]},
+            {action: InputProcessor.actions.LEFT, keys: [Phaser.Keyboard.LEFT]},
+            {action: InputProcessor.actions.DOWN, keys: [Phaser.Keyboard.DOWN]},
+            {action: InputProcessor.actions.RIGHT, keys: [Phaser.Keyboard.RIGHT]},
+            {action: InputProcessor.actions.ACTION1, keys: [Phaser.Keyboard.NUMPAD_0]},
+            {action: InputProcessor.actions.ACTION2, keys: [Phaser.Keyboard.NUMPAD_DECIMAL]}
         ];
 
         for (var firstPlayerControlId in firstPlayerControls) {
@@ -29,12 +38,12 @@ define(function () {
         }
 
         var secondPlayerControls = [
-            {action: 'z', keys: [Phaser.Keyboard.Z]},
-            {action: 'q', keys: [Phaser.Keyboard.Q]},
-            {action: 's', keys: [Phaser.Keyboard.S]},
-            {action: 'd', keys: [Phaser.Keyboard.D]},
-            {action: 't', keys: [Phaser.Keyboard.T]},
-            {action: 'g', keys: [Phaser.Keyboard.G]}
+            {action: InputProcessor.actions.UP, keys: [Phaser.Keyboard.Z]},
+            {action: InputProcessor.actions.LEFT, keys: [Phaser.Keyboard.Q]},
+            {action: InputProcessor.actions.DOWN, keys: [Phaser.Keyboard.S]},
+            {action: InputProcessor.actions.RIGHT, keys: [Phaser.Keyboard.D]},
+            {action: InputProcessor.actions.ACTION1, keys: [Phaser.Keyboard.T]},
+            {action: InputProcessor.actions.ACTION2, keys: [Phaser.Keyboard.G]}
         ];
 
         for (var secondPlayerControlId in secondPlayerControls) {

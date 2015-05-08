@@ -15,6 +15,7 @@ define([
 
     'processors/rendering',
     'processors/input',
+    'processors/physics',
     'processors/death'
 ],
 function (
@@ -34,11 +35,10 @@ function (
 
     RenderingProcessor,
     InputProcessor,
+    PhysicsProcessor,
     DeathProcessor
 ) {
     var Game = function () {
-        // Create an Entity System manager object.
-        this.manager = new EntityManager();
     };
 
     Game.prototype = {
@@ -80,6 +80,7 @@ function (
             this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
             this.manager.addProcessor(new InputProcessor(this.manager, this.game));
             this.manager.addProcessor(new DeathProcessor(this.manager, this.game));
+            this.manager.addProcessor(new PhysicsProcessor(this.manager, this.game));
 
             var player = this.manager.createEntity(['Player', 'Position', 'Displayable', 'Movable', 'Life']);
             var player2 = this.manager.createEntity(['Player', 'Position', 'Displayable', 'Life']);
