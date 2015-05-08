@@ -24,7 +24,6 @@ define(function () {
 
             for (var c in animationComponents) {
                 var comp = animationComponents[c];
-                console.log(comp);
                 if (this.manager.entityHasComponent(entity, comp)) {
                     var animData = this.manager.getComponentDataForEntity(comp, entity);
                     this.sprites[entity].animations.add(animData.anim, animData.keys, animData.speed, animData.loop);
