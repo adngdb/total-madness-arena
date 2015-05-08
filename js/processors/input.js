@@ -10,7 +10,7 @@ define(function () {
     };
 
     InputProcessor.actions = {
-        UP : 'up',
+        JUMP : 'jump',
         LEFT : 'left',
         DOWN : 'down',
         RIGHT : 'right',
@@ -21,7 +21,7 @@ define(function () {
     InputProcessor.prototype.init = function () {
 
         var firstPlayerControls = [
-            {action: InputProcessor.actions.UP, keys: [Phaser.Keyboard.UP]},
+            {action: InputProcessor.actions.JUMP, keys: [Phaser.Keyboard.UP]},
             {action: InputProcessor.actions.LEFT, keys: [Phaser.Keyboard.LEFT]},
             {action: InputProcessor.actions.DOWN, keys: [Phaser.Keyboard.DOWN]},
             {action: InputProcessor.actions.RIGHT, keys: [Phaser.Keyboard.RIGHT]},
@@ -38,7 +38,7 @@ define(function () {
         }
 
         var secondPlayerControls = [
-            {action: InputProcessor.actions.UP, keys: [Phaser.Keyboard.Z]},
+            {action: InputProcessor.actions.JUMP, keys: [Phaser.Keyboard.Z]},
             {action: InputProcessor.actions.LEFT, keys: [Phaser.Keyboard.Q]},
             {action: InputProcessor.actions.DOWN, keys: [Phaser.Keyboard.S]},
             {action: InputProcessor.actions.RIGHT, keys: [Phaser.Keyboard.D]},

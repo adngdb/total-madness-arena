@@ -24,7 +24,7 @@ define(['processors/input'], function (InputProcessor) {
                     }
                 }
                 switch (inputs[inputId].action) {
-                    case InputProcessor.actions.UP:
+                    case InputProcessor.actions.JUMP:
                         var positionData = this.manager.getComponentDataForEntity('Position', concernedPlayer);
                         positionData.y -= 5;
                         break;
