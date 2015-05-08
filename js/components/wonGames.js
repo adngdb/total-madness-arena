@@ -1,4 +1,4 @@
-define(['./WonGames'], function (WonGames) {
+define(function () {
 
     var WonGames = {
         name: 'WonGames',

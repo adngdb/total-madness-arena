@@ -1,4 +1,4 @@
-define(['./Displayable'], function (Displayable) {
+define(function () {
 
     var Displayable = {
         name: 'Displayable',

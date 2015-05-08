@@ -1,4 +1,4 @@
-define(['./Collision'], function (Collision) {
+define(function () {
 
     var Collision = {
         name: 'Collision',

@@ -1,4 +1,4 @@
-define(['./Attack'], function (Attack) {
+define(function () {
 
     var Attack = {
         name: 'Attack',

@@ -1,4 +1,4 @@
-define(['./Animation'], function (Animation) {
+define(function () {
 
     var Animation = {
         name: 'Animation',

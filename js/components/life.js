@@ -1,4 +1,4 @@
-define(['./Life'], function (Life) {
+define(function () {
 
     var Life = {
         name: 'Life',

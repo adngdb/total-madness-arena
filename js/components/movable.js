@@ -1,4 +1,4 @@
-define(['./Movable'], function (Movable) {
+define(function () {
 
     var Movable = {
         name: 'Movable',
