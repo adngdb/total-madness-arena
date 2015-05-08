@@ -7,10 +7,10 @@ define(function () {
         // sprites entityId -> sprite{}
         this.sprites = {};
 
-        this.initSprites();
+        this.init();
     };
 
-    RenderingProcessor.prototype.initSprites = function () {
+    RenderingProcessor.prototype.init = function () {
         // Load the map.
         var map = this.game.add.tiledmap('level_map');
 
@@ -35,6 +35,14 @@ define(function () {
 
                 sprite.x = positionData.x;
                 sprite.y = positionData.y;
+            }
+        }
+
+        // Display all sprites.
+        var displayables = this.manager.getComponentsData('Displayable');
+        for (var entityId in displayables) {
+            if (!this.sprites[entityId]) {
+                this.createSprite(entityId, displayables[entityId]);
             }
         }
     };
