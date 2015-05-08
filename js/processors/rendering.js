@@ -31,20 +31,19 @@ define(function () {
 
         // Display all sprites.
         var displayables = this.manager.getComponentsData('Displayable');
-        for (var entityId in displayables) {
-            var sprite = displayables[entityId];
-
-            // First update the position of each sprite.
-            if (this.manager.entityHasComponent(entityId, 'Movable')) {
-                var positionData = this.manager.getComponentDataForEntity('Position', entityId);
-
-                sprite.x = positionData.x;
-                sprite.y = positionData.y;
+        for (var entity in displayables) {
+            // First create the actual Phaser.Sprite object if it doesn't exist yet.
+            if (!this.sprites[entity]) {
+                this.createSprite(entity, displayables[entity]);
             }
 
-            // Then create the actual Phaser.Sprite object if it doesn't exist yet.
-            if (!this.sprites[entityId]) {
-                this.createSprite(entityId, sprite);
+            var sprite = this.sprites[entity];
+
+            // Then update the position of each sprite.
+            if (this.manager.entityHasComponent(entity, 'Movable')) {
+                var positionData = this.manager.getComponentDataForEntity('Position', entity);
+                sprite.x = positionData.x;
+                sprite.y = positionData.y;
             }
         }
     };
