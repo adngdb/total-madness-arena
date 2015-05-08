@@ -49,6 +49,7 @@ function (
 
         preload: function () {
             this.game.load.spritesheet('chara_fat', 'assets/gfx/chara_fat.png', 64, 96);
+            this.game.load.spritesheet('chara_thin', 'assets/gfx/chara_thin.png', 64, 96);
 
             var cacheKey = Phaser.Plugin.Tiled.utils.cacheKey;
             this.game.load.tiledmap(cacheKey('level_map', 'tiledmap'), 'assets/levels/default.json', null, Phaser.Tilemap.TILED_JSON);
@@ -87,6 +88,8 @@ function (
             this.manager.getComponentDataForEntity('Player', player2).number = 1;
             this.manager.getComponentDataForEntity('Life', player).value = 100;
             this.manager.getComponentDataForEntity('Life', player2).value = 100;
+            this.manager.getComponentDataForEntity('Displayable', player2).sprite = 'chara_thin';
+            this.manager.getComponentDataForEntity('Position', player2).y = 100;
 
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';
