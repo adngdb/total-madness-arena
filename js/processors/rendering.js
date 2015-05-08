@@ -4,13 +4,11 @@ define(function () {
         this.manager = manager;
         this.game = game;
 
-        // sprites entityId -> sprite{}
+        // An associative array for entities' sprites.
+        //      entityId -> Sprite{}
+        // Phaser handles all the displaying so we only need to create Sprites
+        // once, and then keep a track of those Sprite objects.
         this.sprites = {};
-
-        this.init();
-    };
-
-    RenderingProcessor.prototype.init = function () {
     };
 
     RenderingProcessor.prototype.createSprite = function (displayableId, displayableData) {
@@ -20,17 +18,6 @@ define(function () {
     };
 
     RenderingProcessor.prototype.update = function () {
-        for (var entityId in this.sprites) {
-            var sprite = this.sprites[entityId];
-
-            if (this.manager.entityHasComponent(entityId, 'Movable')) {
-                var positionData = this.manager.getComponentDataForEntity('Position', entityId);
-
-                sprite.x = positionData.x;
-                sprite.y = positionData.y;
-            }
-        }
-
         // Display the map.
         var maps = this.manager.getComponentsData('Map');
         for (var mapId in maps) {
@@ -45,8 +32,19 @@ define(function () {
         // Display all sprites.
         var displayables = this.manager.getComponentsData('Displayable');
         for (var entityId in displayables) {
+            var sprite = displayables[entityId];
+
+            // First update the position of each sprite.
+            if (this.manager.entityHasComponent(entityId, 'Movable')) {
+                var positionData = this.manager.getComponentDataForEntity('Position', entityId);
+
+                sprite.x = positionData.x;
+                sprite.y = positionData.y;
+            }
+
+            // Then create the actual Phaser.Sprite object if it doesn't exist yet.
             if (!this.sprites[entityId]) {
-                this.createSprite(entityId, displayables[entityId]);
+                this.createSprite(entityId, sprite);
             }
         }
     };
