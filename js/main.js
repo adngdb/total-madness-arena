@@ -24,7 +24,6 @@
         });
 
         function preload() {
-            this.game.load.spritesheet('chara_fat', 'assets/gfx/chara_fat.png', 64, 96);
         }
 
         function create() {

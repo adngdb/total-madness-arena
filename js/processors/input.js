@@ -24,6 +24,7 @@ define(function () {
             var input = this.manager.createEntity(['Input']);
             this.manager.getComponentDataForEntity('Input', input).action = firstPlayerControls[firstPlayerControlId].action;
             this.manager.getComponentDataForEntity('Input', input).keys = firstPlayerControls[firstPlayerControlId].keys;
+            this.manager.getComponentDataForEntity('Input', input).player = 1;
             this.firstPlayerInputs.push(input);
         }
 
@@ -40,7 +41,7 @@ define(function () {
             var input = this.manager.createEntity(['Input']);
             this.manager.getComponentDataForEntity('Input', input).action = secondPlayerControls[secondPlayerControlId].action;
             this.manager.getComponentDataForEntity('Input', input).keys = secondPlayerControls[secondPlayerControlId].keys;
-            this.manager.getComponentDataForEntity('Input', input).player = 1;
+            this.manager.getComponentDataForEntity('Input', input).player = 2;
             this.secondPlayerInputs.push(input);
         }
     };

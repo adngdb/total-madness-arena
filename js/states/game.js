@@ -14,7 +14,8 @@ define([
     'components/map',
 
     'processors/rendering',
-    'processors/input'
+    'processors/input',
+    'processors/death'
 ],
 function (
     EntityManager,
@@ -32,7 +33,8 @@ function (
     Map,
 
     RenderingProcessor,
-    InputProcessor
+    InputProcessor,
+    DeathProcessor
 ) {
     var Game = function () {
         // Create an Entity System manager object.
@@ -54,6 +56,8 @@ function (
         },
 
         create: function () {
+            // set / reset a new entityManager
+            this.manager = new EntityManager();
             // Add all components to the system.
             var components = [
                 Collision,
@@ -75,14 +79,19 @@ function (
             // Add processors.
             this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
             this.manager.addProcessor(new InputProcessor(this.manager, this.game));
+            this.manager.addProcessor(new DeathProcessor(this.manager, this.game));
 
-            var player = this.manager.createEntity(['Player', 'Position', 'Displayable', 'Movable']);
-            var player2 = this.manager.createEntity(['Player', 'Position', 'Displayable']);
+            var player = this.manager.createEntity(['Player', 'Position', 'Displayable', 'Movable', 'Life']);
+            var player2 = this.manager.createEntity(['Player', 'Position', 'Displayable', 'Life']);
             this.manager.getComponentDataForEntity('Player', player2).number = 1;
+            this.manager.getComponentDataForEntity('Life', player).value = 100;
+            this.manager.getComponentDataForEntity('Life', player2).value = 100;
 
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';
-        }
+
+        },
+
     };
 
     return Game;
