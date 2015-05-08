@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="28" height="20" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" width="30" height="24" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="lvl_all" tilewidth="32" tileheight="32">
   <image source="../../gfx/lvl_all.png" width="256" height="160"/>
  </tileset>
- <layer name="background" width="28" height="20">
+ <layer name="background" width="30" height="24">
   <data encoding="base64" compression="zlib">
-   eJxjZ2BgYB/Fo3gUj+JRPIpH8SgeQhgAKU0PUQ==
+   eJxjYBhZQAyIJeiMxYFYCIjZ6YyFRu0dtXfU3lF7R+0dtXfU3lF7h7G9A9WuAwCYdhe7
   </data>
  </layer>
- <layer name="platforms" width="28" height="20">
+ <layer name="platforms" width="30" height="24">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFQxmIAbEEEIvTyT5ROtkzWIHgQDtgFNAEwPIRIUyvfDYKEABX3IzGxSgAAN3VAhY=
+   eJxjYBgFo2AUUAOIAbEEEIvT2V5ROts32IHgQDtgFAwIgOU/Qpje+XMUEAa44m40rkbBYAYAaGcCFg==
   </data>
  </layer>
 </map>
