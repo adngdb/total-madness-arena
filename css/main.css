@@ -3,3 +3,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
+#stage canvas {
+    margin: auto;
+}

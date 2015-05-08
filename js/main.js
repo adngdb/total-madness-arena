@@ -16,7 +16,7 @@
     ],
     function (Boot, Preloader, Game) {
 
-        var game = new Phaser.Game(960, 768, Phaser.AUTO, '', {
+        var game = new Phaser.Game(960, 768, Phaser.AUTO, 'stage', {
             preload: preload,
             init: init,
             create: create,
