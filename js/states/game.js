@@ -8,10 +8,13 @@ define([
     'components/life',
     'components/movable',
     'components/attack',
-    'components/animation',
     'components/position',
     'components/player',
     'components/map',
+
+    'components/animated',
+    'components/animation-idle',
+    'components/animation-walk',
 
     'processors/rendering',
     'processors/input',
@@ -28,10 +31,13 @@ function (
     Life,
     Movable,
     Attack,
-    Animation,
     Position,
     Player,
     Map,
+
+    Animated,
+    AnimationWalk,
+    AnimationIdle,
 
     RenderingProcessor,
     InputProcessor,
@@ -68,10 +74,12 @@ function (
                 Life,
                 Movable,
                 Attack,
-                Animation,
                 Position,
                 Player,
-                Map
+                Map,
+                Animated,
+                AnimationWalk,
+                AnimationIdle
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
@@ -83,18 +91,23 @@ function (
             this.manager.addProcessor(new DeathProcessor(this.manager, this.game));
             this.manager.addProcessor(new PhysicsProcessor(this.manager, this.game));
 
-            var player = this.manager.createEntity(['Player', 'Position', 'Displayable', 'Movable', 'Life']);
-            var player2 = this.manager.createEntity(['Player', 'Position', 'Displayable', 'Life']);
+            var player = this.manager.createEntity([
+                'Player', 'Position', 'Displayable', 'Movable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
+            ]);
+
+            var player2 = this.manager.createEntity([
+                'Player', 'Position', 'Displayable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
+            ]);
             this.manager.getComponentDataForEntity('Player', player2).number = 1;
-            this.manager.getComponentDataForEntity('Life', player).value = 100;
-            this.manager.getComponentDataForEntity('Life', player2).value = 100;
             this.manager.getComponentDataForEntity('Displayable', player2).sprite = 'chara_thin';
             this.manager.getComponentDataForEntity('Position', player2).y = 100;
             this.manager.getComponentDataForEntity('Position', player2).x = 300;
+            this.manager.getComponentDataForEntity('AnimationIdle', player2).keys = [0, 1, 2, 3];
+            this.manager.getComponentDataForEntity('AnimationIdle', player2).speed = 8;
+            this.manager.getComponentDataForEntity('AnimationWalk', player2).speed = 8;
 
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';
-
         },
 
     };
