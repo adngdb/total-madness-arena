@@ -11,8 +11,6 @@ define(function () {
     };
 
     RenderingProcessor.prototype.init = function () {
-        // Load the map.
-        var map = this.game.add.tiledmap('level_map');
     };
 
     RenderingProcessor.prototype.createSprite = function (displayableId, displayableData) {
@@ -30,6 +28,17 @@ define(function () {
 
                 sprite.x = positionData.x;
                 sprite.y = positionData.y;
+            }
+        }
+
+        // Display the map.
+        var maps = this.manager.getComponentsData('Map');
+        for (var mapId in maps) {
+            if (maps[mapId]._map === null) {
+                // UGLY HACK
+                // Store the created map object in the component, so that it
+                // can be re-used by the PhysicsProcessor for collisions.
+                maps[mapId]._map = this.game.add.tiledmap(maps[mapId].resourceId);
             }
         }
 

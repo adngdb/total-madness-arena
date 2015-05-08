@@ -1,5 +1,6 @@
 define([
     'entity-manager',
+
     'components/collision',
     'components/displayable',
     'components/wonGames',
@@ -10,11 +11,14 @@ define([
     'components/animation',
     'components/position',
     'components/player',
+    'components/map',
+
     'processors/rendering',
     'processors/input'
 ],
 function (
     EntityManager,
+
     Collision,
     Displayable,
     WonGames,
@@ -25,6 +29,8 @@ function (
     Animation,
     Position,
     Player,
+    Map,
+
     RenderingProcessor,
     InputProcessor
 ) {
@@ -59,7 +65,8 @@ function (
                 Attack,
                 Animation,
                 Position,
-                Player
+                Player,
+                Map
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
@@ -72,6 +79,9 @@ function (
             var player = this.manager.createEntity(['Player', 'Position', 'Displayable', 'Movable']);
             var player2 = this.manager.createEntity(['Player', 'Position', 'Displayable']);
             this.manager.getComponentDataForEntity('Player', player2).number = 1;
+
+            var map = this.manager.createEntity(['Map']);
+            this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';
         }
     };
 
