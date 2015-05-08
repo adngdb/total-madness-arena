@@ -6,7 +6,7 @@ define(['./Collision'], function (Collision) {
             xPos: 0,
             yPos: 0,
             width: 0,
-            length: 0,
+            length: 0
         }
     };
 

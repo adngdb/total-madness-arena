@@ -6,7 +6,7 @@ define(['./Input'], function (Input) {
             action: '',
             key: [],
             player: 0,
-            active: false,
+            active: false
         }
     };
 

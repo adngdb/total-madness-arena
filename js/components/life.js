@@ -3,7 +3,7 @@ define(['./Life'], function (Life) {
     var Life = {
         name: 'Life',
         state: {
-            value: 0,
+            value: 0
         }
     };
 
