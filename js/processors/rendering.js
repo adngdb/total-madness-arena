@@ -13,11 +13,6 @@ define(function () {
     RenderingProcessor.prototype.init = function () {
         // Load the map.
         var map = this.game.add.tiledmap('level_map');
-
-        var displayables = this.manager.getComponentsData('Displayable');
-        for (var entityId in displayables) {
-            this.createSprite(entityId, displayables[entityId]);
-        }
     };
 
     RenderingProcessor.prototype.createSprite = function (displayableId, displayableData) {
