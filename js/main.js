@@ -5,7 +5,7 @@
         baseUrl: 'js/',
 
         paths: {
-            'entity-manager': '../lib/entity-system-js/entity-manager',
+            'entity-manager': '../lib/entity-system-js/entity-manager'
         }
     });
 
