@@ -17,24 +17,26 @@
                 'components/life',
                 'components/movable',
                 'components/attack',
-                'components/animation'],
-            function (EntityManager, Collision, Displayable, WonGames, Input, Life, Movable, Attack, Animation) {
+                'components/animation',
+                'components/position',
+                'processors/rendering'],
+            function (EntityManager, Collision, Displayable, WonGames, Input, Life, Movable, Attack, Animation, Position, RenderingProcessor) {
 
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {
-                preload: preload,
-                create: create
-            });
+        var game = new Phaser.Game(960, 768, Phaser.AUTO, '', {
+            preload: preload,
+            init: init,
+            create: create,
+            update: update
+        });
+
+        // Create an Entity System manager object.
+        var manager = new EntityManager();
 
         function preload() {
-        };
+            this.game.load.spritesheet('gros', 'assets/gros.png', 64, 96);
+        }
 
         function create() {
-        };
-
-        function start() {
-            // Create an Entity System manager object.
-            var manager = new EntityManager();
-
             // Add all components to the system.
             var components = [
                 Collision,
@@ -44,30 +46,24 @@
                 Life,
                 Movable,
                 Attack,
-                Animation
+                Animation,
+                Position
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 manager.addComponent(components[i].name, components[i]);
             }
 
-            // Add all processors in the system. Note that because of the logic
-            // in our processors' constructors, order here matters.
-            // CardProcessor creates all the card entities, and RenderingProcessor
-            // then creates all the sprites to go with them.
+            var player = manager.createEntity(['Position', 'Displayable', 'Movable']);
 
-/// TODO : MANAGER
-            manager.addProcessor(new CardProcessor(manager));
-            manager.addProcessor(new RenderingProcessor(manager));
-
-            // Start the main loop of the game.
-            // requestAnimFrame(animate);
-            // function animate() {
-            //     requestAnimFrame(animate);
-
-            //     manager.update();
-            // }
+            manager.addProcessor(new RenderingProcessor(manager, this.game));
         }
 
+        function init() {
+        }
+
+        function update () {
+            manager.update(1);
+        }
     });
 }());
 
