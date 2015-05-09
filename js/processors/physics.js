@@ -35,27 +35,31 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                 var moveData = null;
                 for (var playerId in players) {
                     if (players[playerId].number === inputs[inputId].player) {
-                        moveData = this.manager.getComponentDataForEntity('Movable', playerId);
+                        if (this.manager.entityHasComponent(playerId, 'Movable')) {
+                            moveData = this.manager.getComponentDataForEntity('Movable', playerId);
+                        }
                         break;
                     }
                 }
 
-                switch (inputs[inputId].action) {
-                    case Const.inputs.JUMP:
-                        moveData.dy = -50;
-                        break;
-                    case Const.inputs.LEFT:
-                        moveData.dx -= (dt / 1000.) * moveData.speed;
-                        break;
-                    case Const.inputs.RIGHT:
-                        moveData.dx += (dt / 1000.) * moveData.speed;
-                        break;
-                    case Const.inputs.ACTION1:
-                        console.log('action1');
-                        break;
-                    case Const.inputs.ACTION2:
-                        console.log('action2');
-                        break;
+                if (moveData !== null) {
+                    switch (inputs[inputId].action) {
+                        case Const.inputs.JUMP:
+                            moveData.dy = -50;
+                            break;
+                        case Const.inputs.LEFT:
+                            moveData.dx -= (dt / 1000.) * moveData.speed;
+                            break;
+                        case Const.inputs.RIGHT:
+                            moveData.dx += (dt / 1000.) * moveData.speed;
+                            break;
+                        case Const.inputs.ACTION1:
+                            console.log('action1');
+                            break;
+                        case Const.inputs.ACTION2:
+                            console.log('action2');
+                            break;
+                    }
                 }
             }
         }
