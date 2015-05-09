@@ -92,9 +92,11 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
 
         var movableBoxData = this.manager.getComponentDataForEntity('BoundingBox', movableId);
         var movablePosData = this.manager.getComponentDataForEntity('Position', movableId);
+        var movableData = this.manager.getComponentDataForEntity('Movable', movableId);
 
+        var dx = movableData.goingRight ? 16 : -16;
         var satElement = new SAT.Box(
-            (new SAT.V(movableBoxData.x, movableBoxData.y)).add(new SAT.V(movablePosData.x, movablePosData.y)),
+            (new SAT.V(movableBoxData.x, movableBoxData.y)).add(new SAT.V(movablePosData.x + dx, movablePosData.y)),
             movableBoxData.width,
             movableBoxData.height
         ).toPolygon();

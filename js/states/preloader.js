@@ -18,6 +18,7 @@ define(function() {
             /** Game state stuff **/
             this.game.load.spritesheet('chara_fat', 'assets/gfx/chara_fat.png', 64, 96);
             this.game.load.spritesheet('chara_thin', 'assets/gfx/chara_thin.png', 64, 96);
+            this.game.load.spritesheet('fx', 'assets/gfx/fx.png', 64, 96);
 
             var cacheKey = Phaser.Plugin.Tiled.utils.cacheKey;
             this.game.load.tiledmap(
