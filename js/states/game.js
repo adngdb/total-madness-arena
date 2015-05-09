@@ -1,7 +1,9 @@
 define([
+    // managers
     'entity-manager',
     'manager',
 
+    // components
     'components/game/bounding-box',
     'components/game/collision',
     'components/game/displayable',
@@ -22,6 +24,11 @@ define([
     'components/game/animation-jump',
     'components/game/animation-walk',
 
+    // assemblages
+    'assemblages/game/character_01',
+    'assemblages/game/character_02',
+
+    // processors
     'processors/game/rendering',
     'processors/game/input',
     'processors/game/physics',
@@ -30,9 +37,11 @@ define([
     'processors/game/action',
 ],
 function (
+    // managers
     EntityManager,
     GlobalManager,
 
+    // components
     BoundingBox,
     Collision,
     Displayable,
@@ -52,6 +61,11 @@ function (
     AnimationJump,
     AnimationWalk,
 
+    // assemblages
+    Character_01,
+    Character_02,
+
+    // processors
     RenderingProcessor,
     InputProcessor,
     PhysicsProcessor,
@@ -95,6 +109,16 @@ function (
                 this.manager.addComponent(components[i].name, components[i]);
             }
 
+            // Add assemblages.
+            // Add all components to the system.
+            var assemblages = [
+                Character_01,
+                Character_02,
+            ];
+            for (var i = assemblages.length - 1; i >= 0; i--) {
+                this.manager.addAssemblage(assemblages[i].name, assemblages[i]);
+            }
+
             // Add processors.
             this.manager.addProcessor(new InputProcessor(this.manager, this.game));
             this.manager.addProcessor(new PhysicsProcessor(this.manager, this.game));
@@ -103,42 +127,21 @@ function (
             this.manager.addProcessor(new DeathProcessor(this.manager, this.game));
             this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
 
-            var player = this.manager.createEntity([
-                'Player', 'Position', 'BoundingBox', 'Displayable', 'Movable', 'Life',
-                'Animated', 'AnimationIdle', 'AnimationJump', 'AnimationWalk', 'Attack'
-            ]);
-            this.manager.getComponentDataForEntity('Movable', player).gravity = 1.5;
-            this.manager.getComponentDataForEntity('BoundingBox', player).height = 96;
-            this.manager.getComponentDataForEntity('BoundingBox', player).width = 64;
-            this.manager.getComponentDataForEntity('BoundingBox', player).x = -32;
-            this.manager.getComponentDataForEntity('BoundingBox', player).y = -48;
+            var player1 = this.manager.createEntityFromAssemblage('Character_01');
+            this.manager.updateComponentDataForEntity('Player', player1, {number: 0});
 
-            var player2 = this.manager.createEntity([
-                'Player', 'Position', 'BoundingBox', 'Displayable', 'Movable', 'Life',
-                'Animated', 'AnimationIdle', 'AnimationJump', 'AnimationWalk', 'Attack'
-            ]);
-            this.manager.getComponentDataForEntity('Player', player2).number = 1;
-            this.manager.getComponentDataForEntity('Displayable', player2).sprite = 'chara_thin';
-            this.manager.getComponentDataForEntity('Position', player2).y = 500;
-            this.manager.getComponentDataForEntity('Position', player2).x = 700;
-            this.manager.getComponentDataForEntity('AnimationIdle', player2).keys = [0, 1, 2, 3];
-            this.manager.getComponentDataForEntity('AnimationIdle', player2).speed = 8;
-            this.manager.getComponentDataForEntity('AnimationWalk', player2).speed = 8;
-            this.manager.getComponentDataForEntity('BoundingBox', player2).height = 96;
-            this.manager.getComponentDataForEntity('BoundingBox', player2).width = 64;
-            this.manager.getComponentDataForEntity('BoundingBox', player2).x = -32;
-            this.manager.getComponentDataForEntity('BoundingBox', player2).y = -48;
+            var player2 = this.manager.createEntityFromAssemblage('Character_02');
+            this.manager.updateComponentDataForEntity('Player', player2, {number: 1});
 
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';
 
-            GlobalManager.addPlayer(this.manager.getComponentDataForEntity('Player', player).number);
+            GlobalManager.addPlayer(this.manager.getComponentDataForEntity('Player', player1).number);
             GlobalManager.addPlayer(this.manager.getComponentDataForEntity('Player', player2).number);
 
             GlobalManager.addGeneticManipulation('Gravity');
             GlobalManager.addGeneticManipulation('Speed');
         },
-
     };
 
     return Game;
