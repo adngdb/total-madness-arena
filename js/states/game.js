@@ -19,6 +19,7 @@ define([
 
     'components/animated',
     'components/animation-idle',
+    'components/animation-jump',
     'components/animation-walk',
 
     'processors/rendering',
@@ -46,8 +47,9 @@ function (
     Gravity,
 
     Animated,
-    AnimationWalk,
     AnimationIdle,
+    AnimationJump,
+    AnimationWalk,
 
     RenderingProcessor,
     InputProcessor,
@@ -81,8 +83,9 @@ function (
                 Player,
                 Map,
                 Animated,
-                AnimationWalk,
                 AnimationIdle,
+                AnimationJump,
+                AnimationWalk,
                 Gravity,
                 Speed,
             ];
@@ -98,7 +101,8 @@ function (
             this.manager.addProcessor(new GeneticProcessor(this.manager, this.game));
 
             var player = this.manager.createEntity([
-                'Player', 'Position', 'BoundingBox', 'Displayable', 'Movable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
+                'Player', 'Position', 'BoundingBox', 'Displayable', 'Movable', 'Life',
+                'Animated', 'AnimationIdle', 'AnimationJump', 'AnimationWalk'
             ]);
             this.manager.getComponentDataForEntity('Movable', player).gravity = 1.5;
             this.manager.getComponentDataForEntity('BoundingBox', player).height = 96;
@@ -107,7 +111,8 @@ function (
             this.manager.getComponentDataForEntity('BoundingBox', player).y = -48;
 
             var player2 = this.manager.createEntity([
-                'Player', 'Position', 'BoundingBox', 'Displayable', 'Movable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
+                'Player', 'Position', 'BoundingBox', 'Displayable', 'Movable', 'Life',
+                'Animated', 'AnimationIdle', 'AnimationJump', 'AnimationWalk'
             ]);
             this.manager.getComponentDataForEntity('Player', player2).number = 1;
             this.manager.getComponentDataForEntity('Displayable', player2).sprite = 'chara_thin';

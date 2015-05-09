@@ -1,5 +1,11 @@
 define(['constants'], function (Const) {
 
+    var ANIMATION_COMPONENTS = [
+        'AnimationIdle',
+        'AnimationJump',
+        'AnimationWalk'
+    ];
+
     var RenderingProcessor = function (manager, game) {
         this.manager = manager;
         this.game = game;
@@ -23,10 +29,8 @@ define(['constants'], function (Const) {
 
         if (this.manager.entityHasComponent(entity, 'Animated')) {
             // Add all animations to that Sprite.
-            var animationComponents = ['AnimationIdle', 'AnimationWalk'];
-
-            for (var c in animationComponents) {
-                var comp = animationComponents[c];
+            for (var c in ANIMATION_COMPONENTS) {
+                var comp = ANIMATION_COMPONENTS[c];
                 if (this.manager.entityHasComponent(entity, comp)) {
                     var animData = this.manager.getComponentDataForEntity(comp, entity);
                     this.sprites[entity].animations.add(animData.anim, animData.keys, animData.speed, animData.loop);
@@ -81,7 +85,10 @@ define(['constants'], function (Const) {
                 if (this.manager.entityHasComponent(entity, 'Animated')) {
                     var animatedData = this.manager.getComponentDataForEntity('Animated', entity);
 
-                    if (moveData.dx !== 0) {
+                    if (!moveData.jumpAllowed) {
+                        animatedData.current = 'jump';
+                    }
+                    else if (moveData.dx !== 0) {
                         animatedData.current = 'walk';
                     }
                     else {
