@@ -24,7 +24,7 @@ define(['entity-manager', 'manager', 'processors/upgrade/input'], function (Enti
             this.timer.loop(5000, this.endUpgrade, this);
             this.timer.start();
 
-            var style = { font: "19.5pt retroComputerDemo", fill: "#000000", align: "center" };
+            var style = { font: "24pt retroComputerDemo", fill: "#000000", align: "center" };
             this.remainingTimeText = this.game.add.text(676, 50, "5", style);
         },
 
