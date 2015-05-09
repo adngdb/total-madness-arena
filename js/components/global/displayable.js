@@ -3,7 +3,7 @@ define(function () {
     var Displayable = {
         name: 'Displayable',
         state: {
-            sprite: 'chara_fat',
+            sprite: '',
             deleted: false,
         }
     };

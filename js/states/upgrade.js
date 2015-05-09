@@ -1,93 +1,82 @@
 define([
     'entity-manager',
+    'global-manager',
 
     // components
     'components/global/displayable',
     'components/global/position',
+    'components/global/text',
 
-    'components/upgrade/input',
-    'components/upgrade/genetic',
-
-    'processors/upgrade/input',
-    'processors/upgrade/genetic',
+    // processors
+    'processors/upgrade/rendering',
 ], function (
     EntityManager,
+    GlobalManager,
 
     // components
     Displayable,
     Position,
+    Text,
 
-    Input,
-    Genetic,
-
-    InputProcessor,
-    GeneticProcessor
+    // processors
+    RenderingProcessor
 ) {
     var Upgrade = function () {
         this.timer = null;
         this.remainingTimeText = null;
-        this.playerGenetics = [];
-        this.player2Genetics = [];
-        this.manager = null;
     };
 
     Upgrade.prototype = {
         init: function (matchManager) {
             this.matchManager = matchManager;
-
-            var self = this;
-
             this.manager = new EntityManager();
+
             var components = [
-                Input,
-                Genetic,
+                Displayable,
+                Position,
+                Text,
             ];
+            for (var i = components.length - 1; i >= 0; i--) {
+                this.manager.addComponent(components[i].name, components[i]);
+            }
 
-            components.forEach(function (element, index, array) {
-                self.manager.addComponent(element.name, element);
-            });
-
-            this.manager.addProcessor(new InputProcessor(this.manager, this.game));
-            this.manager.addProcessor(new GeneticProcessor(this.manager, this.game));
-
-            this.playerGenetics.forEach(function (element, index, array) {
-                var genetic = self.manager.createEntity([
-                    'Genetic', 'Input'
-                ]);
-                self.manager.getComponentDataForEntity('Genetic', genetic).name = element;
-                self.manager.getComponentDataForEntity('Genetic', genetic).player = 0;
-            });
-
-            this.player2Genetics.forEach(function (element, index, array) {
-                var genetic = self.manager.createEntity([
-                    'Genetic', 'Input'
-                ]);
-                self.manager.getComponentDataForEntity('Genetic', genetic).name = element;
-                self.manager.getComponentDataForEntity('Genetic', genetic).player = 01;
-            });
+            this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
         },
 
         create: function () {
-            this.game.add.sprite(0, 0, 'upgrade_menu_back_ground');
-            this.game.add.sprite(0, 0, 'upgrade_menu_middleground');
-            this.game.add.sprite(0, 0, 'upgrade_menu_foreground');
-
-            var geneticTextStyle = { font: "16pt retroComputerDemo", fill: "#000000", align: "center" };
-            var buttonTextStyle = { font: "16pt retroComputerDemo", fill: "#F7F48D", align: "center" };
-            var nbGeneric = 0;
-            for(var generic in this.playerGenetics){
-                this.game.add.sprite(81, 225 + (86 * nbGeneric), 'upgrade_menu_box');
-                this.game.add.text(91, 232 + (86 * nbGeneric), generic, geneticTextStyle);
-                this.game.add.text(330, 267 + (86 * nbGeneric), "A", buttonTextStyle);
-                nbGeneric++;
+            var backgroundSprites = [
+                'upgrade_menu_back_ground',
+                'upgrade_menu_middleground',
+                'upgrade_menu_foreground',
+            ];
+            for (var i = 0; i < backgroundSprites.length; i++) {
+                var entity = this.manager.createEntity(['Position', 'Displayable']);
+                this.manager.updateComponentDataForEntity('Displayable', entity, {sprite: backgroundSprites[i]});
             }
+
+            // var geneticTextStyle = { font: "16pt retroComputerDemo", fill: "#000000", align: "center" };
+            // var buttonTextStyle = { font: "16pt retroComputerDemo", fill: "#F7F48D", align: "center" };
+            // var nbGeneric = 0;
+            // for(var generic in this.playerGenetics){
+            //     this.game.add.sprite(81, 225 + (86 * nbGeneric), 'upgrade_menu_box');
+            //     this.game.add.text(91, 232 + (86 * nbGeneric), generic, geneticTextStyle);
+            //     this.game.add.text(330, 267 + (86 * nbGeneric), "A", buttonTextStyle);
+            //     nbGeneric++;
+            // }
 
             this.timer = this.game.time.create(false);
             this.timer.loop(5000, this.endUpgrade, this);
             this.timer.start();
 
-            var style = { font: "24pt retroComputerDemo", fill: "#000000", align: "center" };
-            this.remainingTimeText = this.game.add.text(676, 50, "5", style);
+            this.timerTextId = this.manager.createEntity(['Position', 'Text']);
+            this.manager.updateComponentDataForEntity('Text', this.timerTextId, {
+                content: '5',
+                font: '24pt retroComputerDemo',
+            });
+            this.manager.updateComponentDataForEntity('Position', this.timerTextId, {
+                x: 676,
+                y: 50,
+            });
         },
 
         endUpgrade: function () {
@@ -95,10 +84,13 @@ define([
         },
 
         update: function () {
+            GlobalManager.update(this.game.time.elapsed);
             this.manager.update(this.game.time.elapsed);
 
             if (this.timer.ms > 0) {
-                this.remainingTimeText.text = parseInt(this.timer.duration.toFixed(0) / 1000) + 1;
+                this.manager.updateComponentDataForEntity('Text', this.timerTextId, {
+                    content: parseInt(this.timer.duration.toFixed(0) / 1000) + 1,
+                });
             }
         },
 

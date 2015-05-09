@@ -167,7 +167,7 @@ function (
 
             // timer
             this.timer = this.game.time.create(false);
-            this.timer.loop(5000, this.endGame, this);
+            this.timer.loop(1000, this.endGame, this);
             this.timer.start();
 
             var style = { font: "24pt retroComputerDemo", fill: "#000000", align: "center" };
