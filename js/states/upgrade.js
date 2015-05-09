@@ -1,10 +1,20 @@
-define(['manager'], function (GlobalManager) {
+define(['entity-manager', 'manager', 'processors/upgrade/input'], function (EntityManager, GlobalManager, InputProcessor) {
     var Upgrade = function () {
         this.timer = null;
         this.remainingTimeText = null;
+        this.genetics = [];
+        this.manager = null;
     };
 
     Upgrade.prototype = {
+        init: function () {
+            this.genetics = GlobalManager.geneticManipulations;
+
+            this.manager = new EntityManager();
+
+            //this.manager.addProcessor(new InputProcessor(this.manager, this.game));
+        },
+
         create: function () {
             this.game.add.sprite(0, 0, 'upgrade_menu_back_ground');
             this.game.add.sprite(0, 0, 'upgrade_menu_middleground');
