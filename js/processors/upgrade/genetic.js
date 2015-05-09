@@ -1,4 +1,4 @@
-define(function () {
+define(['manager'], function (GlobalManager) {
 
     var GeneticProcessor = function (manager, game) {
         this.manager = manager;
@@ -15,9 +15,7 @@ define(function () {
 
         for (var input in inputs) {
             if (inputs[input].active) {
-                console.log('pouet');
-                console.log(inputs[input]);
-
+                GlobalManager.addGeneticToPlayer(inputs[input].player, inputs[input].genetic);
             }
         }
     };

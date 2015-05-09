@@ -32,12 +32,12 @@ define(['constants'], function (Const) {
         }
 
         var secondPlayerControls = [
-            {action: 1, keys: [Phaser.Keyboard.Z], padButtons: [Const.gamepad.STICK_UP, Const.gamepad.BUTTON_A]},
-            {action: 2, keys: [Phaser.Keyboard.Q], padButtons: [Const.gamepad.STICK_LEFT]},
-            {action: 3, keys: [Phaser.Keyboard.S], padButtons: [Const.gamepad.STICK_DOWN]},
-            {action: 4, keys: [Phaser.Keyboard.D], padButtons: [Const.gamepad.STICK_RIGHT]},
-            {action: 5, keys: [Phaser.Keyboard.T], padButtons: [Const.gamepad.BUTTON_X]},
-            {action: 6, keys: [Phaser.Keyboard.G], padButtons: [Const.gamepad.BUTTON_Y]}
+            {genetic: 1, keys: [Phaser.Keyboard.Z], padButtons: [Const.gamepad.STICK_UP, Const.gamepad.BUTTON_A]},
+            {genetic: 2, keys: [Phaser.Keyboard.Q], padButtons: [Const.gamepad.STICK_LEFT]},
+            {genetic: 3, keys: [Phaser.Keyboard.S], padButtons: [Const.gamepad.STICK_DOWN]},
+            {genetic: 4, keys: [Phaser.Keyboard.D], padButtons: [Const.gamepad.STICK_RIGHT]},
+            {genetic: 5, keys: [Phaser.Keyboard.T], padButtons: [Const.gamepad.BUTTON_X]},
+            {genetic: 6, keys: [Phaser.Keyboard.G], padButtons: [Const.gamepad.BUTTON_Y]}
         ];
 
         for (var secondPlayerControlId in secondPlayerControls) {

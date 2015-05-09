@@ -12,6 +12,12 @@ define(function () {
             }
         },
 
+        addGeneticToPlayer: function (player, genetic) {
+            if (this.players[player] && !this.players[player]['genetics'][genetic]) {
+                this.players[player]['genetics'][genetic] = genetic;
+            }
+        },
+
         addGeneticManipulation: function (geneticManipulation) {
             if (!this.geneticManipulations[geneticManipulation]) {
                 this.geneticManipulations[geneticManipulation] = geneticManipulation;
