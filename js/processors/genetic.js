@@ -17,7 +17,8 @@ define(function () {
             if (!this.speeded[entity]) {
                 this.speeded[entity] = entity;
                 if (this.manager.entityHasComponent(entity, 'Movable')) {
-                    this.manager.getComponentDataForEntity('Movable', entity).speed += speed[entity].speed;
+                    var movableData = this.manager.getComponentDataForEntity('Movable', entity);
+                    movableData.speed = movableData.speed * speed[entity].speedScale;
                 }
             }
         }

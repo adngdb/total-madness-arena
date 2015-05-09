@@ -1,6 +1,6 @@
 define({
     name: 'Speed',
     state: {
-        speed: -100,
+        speedScale: 2/3,
     }
 });
