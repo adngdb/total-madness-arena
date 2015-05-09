@@ -1,5 +1,8 @@
 define(['constants', 'lib/sat'], function (Const, SAT) {
 
+    var GRAVITY = 10;
+    var DECELERATION = 1; // in pixels per second
+
     var PhysicsProcessor = function (manager, game) {
         this.manager = manager;
         this.game = game;
@@ -19,8 +22,9 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         // Apply gravity.
         for (var m in movables) {
             var moveData = movables[m];
-            if (moveData.dy < 10) {
-                moveData.dy += 1;
+            moveData.dy += DECELERATION * moveData.gravityScale * dt;
+            if (moveData.dy > GRAVITY) {
+                moveData.dy = GRAVITY;
             }
             moveData.dx = 0;
         }
@@ -38,7 +42,7 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
 
                 switch (inputs[inputId].action) {
                     case Const.inputs.JUMP:
-                        moveData.dy = -10;
+                        moveData.dy = -50;
                         break;
                     case Const.inputs.LEFT:
                         moveData.dx -= (dt / 1000.) * moveData.speed;
@@ -144,11 +148,11 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                 if (areColliding) {
                     // console.log('HIT: ', movableId, id);
 
-console.log('---------------------------------------');
-console.log(satElement, this._boxes[id]);
-                    console.log(collisionResponse.overlap, collisionResponse.overlapV.x, collisionResponse.overlapV.y);
+                    // console.log('---------------------------------------');
+                    // console.log(satElement, this._boxes[id]);
+                    // console.log(collisionResponse.overlap, collisionResponse.overlapV.x, collisionResponse.overlapV.y);
 
-                    console.log(movablePosData.x, movablePosData.y, moveData.dy);
+                    // console.log(movablePosData.x, movablePosData.y, moveData.dy);
 
                     movablePosData.x -= collisionResponse.overlapV.x;
                     movablePosData.y -= collisionResponse.overlapV.y + 1;
