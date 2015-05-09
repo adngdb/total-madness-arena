@@ -1,5 +1,6 @@
 define([
     'entity-manager',
+    'manager',
 
     'components/bounding-box',
     'components/collision',
@@ -28,6 +29,7 @@ define([
 ],
 function (
     EntityManager,
+    GlobalManager,
 
     BoundingBox,
     Collision,
@@ -121,6 +123,12 @@ function (
 
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';
+
+            GlobalManager.addPlayer(this.manager.getComponentDataForEntity('Player', player).number);
+            GlobalManager.addPlayer(this.manager.getComponentDataForEntity('Player', player2).number);
+
+            GlobalManager.addGeneticManipulation('Gravity');
+            GlobalManager.addGeneticManipulation('Speed');
         },
 
     };
