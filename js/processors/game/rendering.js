@@ -60,21 +60,16 @@ define(['constants'], function (Const) {
         // Display all sprites.
         var displayables = this.manager.getComponentsData('Displayable');
         for (entity in displayables) {
+            // if 'deleted' : do not display (no sprite)
+            if (displayables[entity].deleted) {
+                continue;
+            }
             // First create the actual Phaser.Sprite object if it doesn't exist yet.
             if (!this.sprites[entity]) {
                 this.createSprite(entity, displayables[entity]);
             }
-            // if 'deleted' : do not display (delete sprite)
-            if (displayables[entity].deleted) {
-                // delete the current sprite
-                this.sprites[entity].visible = false;
-                this.sprites[entity].animations.getAnimation('attackFx').isFinished = true;
-                this.sprites[entity].animations.getAnimation('jumpFx').isFinished = true;
-                continue;
-            }
 
             var sprite = this.sprites[entity];
-            sprite.visible = true;
 
             // Then update the position of each sprite.
             if (this.manager.entityHasComponent(entity, 'Movable')) {
@@ -136,12 +131,14 @@ define(['constants'], function (Const) {
                         // non player => FX sprite
                         if (!animatedData.started) {
                             animatedData.started = true;
-                            this.sprites[entity].animations.play(animatedData.current);
-                        }
-                        if (this.sprites[entity].animations.getAnimation('attackFx').isFinished
-                            && this.sprites[entity].animations.getAnimation('jumpFx').isFinished) {
+                            this.sprites[entity].animations.play(animatedData.current, null, null, true);
                             displayables[entity].deleted = true;
+                            this.sprites[entity] = null;
                         }
+                        // if (this.sprites[entity].animations.getAnimation('attackFx').isFinished
+                        //     && this.sprites[entity].animations.getAnimation('jumpFx').isFinished) {
+                        //     displayables[entity].deleted = true;
+                        // }
                     }
                 }
             }
