@@ -5,7 +5,6 @@ define(function () {
     PlayerChoice.prototype = {
 
         create: function () {
-            console.log('player choice');
             this.game.state.start('Game');
         },
 
