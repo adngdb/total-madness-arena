@@ -3,7 +3,7 @@ define(function () {
     var Input = {
         name: 'Input',
         state: {
-            action: '',
+            genetic: '',
             keys: [],
             player: 0,
             active: false

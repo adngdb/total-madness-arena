@@ -1,18 +1,65 @@
-define(['entity-manager', 'manager', 'processors/upgrade/input'], function (EntityManager, GlobalManager, InputProcessor) {
+define([
+    'entity-manager',
+    'manager',
+
+    'components/upgrade/input',
+    'components/upgrade/genetic',
+
+    'processors/upgrade/input',
+    'processors/upgrade/genetic',
+], function (
+    EntityManager,
+    GlobalManager,
+
+    Input,
+    Genetic,
+
+    InputProcessor,
+    GeneticProcessor
+) {
     var Upgrade = function () {
         this.timer = null;
         this.remainingTimeText = null;
-        this.genetics = [];
+        this.playerGenetics = [];
+        this.player2Genetics = [];
         this.manager = null;
     };
 
     Upgrade.prototype = {
         init: function () {
-            this.genetics = GlobalManager.geneticManipulations;
+            var self = this;
+
+            this.playerGenetics = GlobalManager.geneticManipulations;
+            this.player2Genetics = GlobalManager.geneticManipulations;
 
             this.manager = new EntityManager();
+            var components = [
+                Input,
+                Genetic,
+            ];
 
-            //this.manager.addProcessor(new InputProcessor(this.manager, this.game));
+            components.forEach(function (element, index, array) {
+                self.manager.addComponent(element.name, element);
+            });
+
+            this.manager.addProcessor(new InputProcessor(this.manager, this.game));
+            this.manager.addProcessor(new GeneticProcessor(this.manager, this.game));
+
+            this.playerGenetics.forEach(function (element, index, array) {
+                var genetic = self.manager.createEntity([
+                    'Genetic', 'Input'
+                ]);
+                self.manager.getComponentDataForEntity('Genetic', genetic).name = element;
+                self.manager.getComponentDataForEntity('Genetic', genetic).player = 0;
+            });
+
+            this.player2Genetics.forEach(function (element, index, array) {
+                var genetic = self.manager.createEntity([
+                    'Genetic', 'Input'
+                ]);
+                self.manager.getComponentDataForEntity('Genetic', genetic).name = element;
+                self.manager.getComponentDataForEntity('Genetic', genetic).player = 01;
+            });
         },
 
         create: function () {
@@ -33,6 +80,8 @@ define(['entity-manager', 'manager', 'processors/upgrade/input'], function (Enti
         },
 
         update: function () {
+            this.manager.update(this.game.time.elapsed);
+
             if (this.timer.ms > 0) {
                 this.remainingTimeText.text = parseInt(this.timer.duration.toFixed(0) / 1000) + 1;
             }
