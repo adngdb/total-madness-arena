@@ -49,7 +49,7 @@ define(function() {
         },
 
         startGame: function() {
-             this.game.state.start('Game');
+             this.game.state.start('PlayerChoice');
         }
 
     };

@@ -1,9 +1,4 @@
-define([
-    'entity-manager',
-],
-function (
-    EntityManager
-) {
+define(function () {
     var Upgrade = function () {
     };
 
