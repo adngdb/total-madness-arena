@@ -101,6 +101,8 @@ function (
             this.manager.getComponentDataForEntity('Movable', player).gravity = 1.5;
             this.manager.getComponentDataForEntity('BoundingBox', player).height = 96;
             this.manager.getComponentDataForEntity('BoundingBox', player).width = 64;
+            this.manager.getComponentDataForEntity('BoundingBox', player).x = -32;
+            this.manager.getComponentDataForEntity('BoundingBox', player).y = -48;
 
             var player2 = this.manager.createEntity([
                 'Player', 'Position', 'BoundingBox', 'Displayable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
@@ -114,6 +116,8 @@ function (
             this.manager.getComponentDataForEntity('AnimationWalk', player2).speed = 8;
             this.manager.getComponentDataForEntity('BoundingBox', player2).height = 96;
             this.manager.getComponentDataForEntity('BoundingBox', player2).width = 64;
+            this.manager.getComponentDataForEntity('BoundingBox', player2).x = -32;
+            this.manager.getComponentDataForEntity('BoundingBox', player2).y = -48;
 
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';

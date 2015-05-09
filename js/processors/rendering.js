@@ -18,11 +18,7 @@ define(['constants'], function (Const) {
         var positionData = this.manager.getComponentDataForEntity('Position', entity);
 
         var sprite = this.game.add.sprite(positionData.x, positionData.y, displayableData.sprite);
-        // this.game.physics.p2.enable(sprite);
-
-        // if (this.manager.entityHasComponent(entity, 'Movable')) {
-        //     sprite.data.gravityScale = this.manager.getComponentDataForEntity('Movable', entity).gravity;
-        // }
+        sprite.anchor.setTo(.5, .5);
         this.sprites[entity] = sprite;
 
         if (this.manager.entityHasComponent(entity, 'Animated')) {
@@ -69,6 +65,17 @@ define(['constants'], function (Const) {
                 sprite.x = positionData.x;
                 sprite.y = positionData.y;
             }
+
+            // Flip the sprite horizontally if needed.
+            if (this.manager.entityHasComponent(entity, 'Movable')) {
+                var moveData = this.manager.getComponentDataForEntity('Movable', entity);
+                if (moveData.goingRight) {
+                    sprite.scale.x = 1;
+                }
+                else {
+                    sprite.scale.x = -1;
+                }
+            }
         }
 
         // Run animations.
@@ -92,11 +99,11 @@ define(['constants'], function (Const) {
                 var box = boxes[b];
                 var pos = this.manager.getComponentDataForEntity('Position', b);
 
-                this.graphics.moveTo(pos.x, pos.y);
-                this.graphics.lineTo(pos.x + box.width, pos.y);
-                this.graphics.lineTo(pos.x + box.width, pos.y + box.height);
-                this.graphics.lineTo(pos.x, pos.y + box.height);
-                this.graphics.lineTo(pos.x, pos.y);
+                this.graphics.moveTo(pos.x + box.x, pos.y + box.y);
+                this.graphics.lineTo(pos.x + box.x + box.width, pos.y + box.y);
+                this.graphics.lineTo(pos.x + box.x + box.width, pos.y + box.y + box.height);
+                this.graphics.lineTo(pos.x + box.x, pos.y + box.y + box.height);
+                this.graphics.lineTo(pos.x + box.x, pos.y + box.y);
                 this.graphics.endFill();
             }
         }

@@ -65,9 +65,11 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                             break;
                         case Const.inputs.LEFT:
                             moveData.dx = -(dt / 1000.) * moveData.speed;
+                            moveData.goingRight = false;
                             break;
                         case Const.inputs.RIGHT:
                             moveData.dx = (dt / 1000.) * moveData.speed;
+                            moveData.goingRight = true;
                             break;
                         case Const.inputs.ACTION1:
                             console.log('action1');

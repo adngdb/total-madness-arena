@@ -5,6 +5,7 @@ define({
         dx: 0,
         speed: 300, // in pixels per second
         speedY: 0,
+        goingRight: true,
         gravityScale: 1,
         jumpAllowed: true,
         lastJump: 0,
