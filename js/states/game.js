@@ -27,6 +27,7 @@ define([
     'processors/physics',
     'processors/death',
     'processors/genetic',
+    'processors/action',
 ],
 function (
     EntityManager,
@@ -55,7 +56,8 @@ function (
     InputProcessor,
     PhysicsProcessor,
     DeathProcessor,
-    GeneticProcessor
+    GeneticProcessor,
+    ActionProcessor
 ) {
     var Game = function () {
     };
@@ -94,15 +96,16 @@ function (
             }
 
             // Add processors.
-            this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
             this.manager.addProcessor(new InputProcessor(this.manager, this.game));
-            this.manager.addProcessor(new DeathProcessor(this.manager, this.game));
             this.manager.addProcessor(new PhysicsProcessor(this.manager, this.game));
             this.manager.addProcessor(new GeneticProcessor(this.manager, this.game));
+            this.manager.addProcessor(new ActionProcessor(this.manager, this.game));
+            this.manager.addProcessor(new DeathProcessor(this.manager, this.game));
+            this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
 
             var player = this.manager.createEntity([
                 'Player', 'Position', 'BoundingBox', 'Displayable', 'Movable', 'Life',
-                'Animated', 'AnimationIdle', 'AnimationJump', 'AnimationWalk'
+                'Animated', 'AnimationIdle', 'AnimationJump', 'AnimationWalk', 'Attack'
             ]);
             this.manager.getComponentDataForEntity('Movable', player).gravity = 1.5;
             this.manager.getComponentDataForEntity('BoundingBox', player).height = 96;
@@ -112,7 +115,7 @@ function (
 
             var player2 = this.manager.createEntity([
                 'Player', 'Position', 'BoundingBox', 'Displayable', 'Movable', 'Life',
-                'Animated', 'AnimationIdle', 'AnimationJump', 'AnimationWalk'
+                'Animated', 'AnimationIdle', 'AnimationJump', 'AnimationWalk', 'Attack'
             ]);
             this.manager.getComponentDataForEntity('Player', player2).number = 1;
             this.manager.getComponentDataForEntity('Displayable', player2).sprite = 'chara_thin';

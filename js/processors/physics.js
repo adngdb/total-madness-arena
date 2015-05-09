@@ -22,23 +22,7 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         // Apply gravity.
         for (var m in movables) {
             var moveData = movables[m];
-            // update current speed
-            // moveData.speedY += moveData.acceleration * (dt/1000);
-            // compute current dy
-            // moveData.dy += moveData.speedY * (dt/1000);
-            // if (moveData.dy > GRAVITY) {
-            //     moveData.dy = GRAVITY;
-            // }
             moveData.dx = 0;
-            // update acceleration for next frame
-            // moveData.lastJump += dt/1000;
-            // if (moveData.lastJump < 1) {
-            //     moveData.jumpAllowed = false;
-            // }
-            // moveData.acceleration += DECELERATION * moveData.gravityScale * (dt/1000) * (dt/1000);
-            // if (moveData.acceleration > 1) {
-            //     moveData.acceleration = 1;
-            // }
         }
 
         // Update movements for players given current inputs.
@@ -70,12 +54,6 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                         case Const.inputs.RIGHT:
                             moveData.dx = (dt / 1000.) * moveData.speed;
                             moveData.goingRight = true;
-                            break;
-                        case Const.inputs.ACTION1:
-                            console.log('action1');
-                            break;
-                        case Const.inputs.ACTION2:
-                            console.log('action2');
                             break;
                         }
                 }
@@ -120,6 +98,9 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         var maps = this.manager.getComponentsData('Map');
         for (var i in maps) {
             var map = maps[i]._map;
+            if (map === null) {
+                continue;
+            }
             var mapWidth = map.size.x;
             var mapHeight = map.size.y;
 
