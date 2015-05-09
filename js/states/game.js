@@ -13,6 +13,8 @@ define([
     'components/player',
     'components/map',
 
+    'components/genetics/speed',
+
     'components/animated',
     'components/animation-idle',
     'components/animation-walk',
@@ -20,7 +22,8 @@ define([
     'processors/rendering',
     'processors/input',
     'processors/physics',
-    'processors/death'
+    'processors/death',
+    'processors/genetic',
 ],
 function (
     EntityManager,
@@ -36,6 +39,7 @@ function (
     Position,
     Player,
     Map,
+    Speed,
 
     Animated,
     AnimationWalk,
@@ -44,7 +48,8 @@ function (
     RenderingProcessor,
     InputProcessor,
     PhysicsProcessor,
-    DeathProcessor
+    DeathProcessor,
+    GeneticProcessor
 ) {
     var Game = function () {
     };
@@ -90,7 +95,8 @@ function (
                 Map,
                 Animated,
                 AnimationWalk,
-                AnimationIdle
+                AnimationIdle,
+                Speed
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
@@ -101,6 +107,7 @@ function (
             this.manager.addProcessor(new InputProcessor(this.manager, this.game));
             this.manager.addProcessor(new DeathProcessor(this.manager, this.game));
             this.manager.addProcessor(new PhysicsProcessor(this.manager, this.game));
+            this.manager.addProcessor(new GeneticProcessor(this.manager, this.game));
 
             var player = this.manager.createEntity([
                 'Player', 'Position', 'BoundingBox', 'Displayable', 'Movable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
