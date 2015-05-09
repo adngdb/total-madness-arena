@@ -1,6 +1,5 @@
 define([
     'entity-manager',
-    'manager',
 
     'components/upgrade/input',
     'components/upgrade/genetic',
@@ -9,7 +8,6 @@ define([
     'processors/upgrade/genetic',
 ], function (
     EntityManager,
-    GlobalManager,
 
     Input,
     Genetic,
@@ -26,11 +24,10 @@ define([
     };
 
     Upgrade.prototype = {
-        init: function () {
-            var self = this;
+        init: function (matchManager) {
+            this.matchManager = matchManager;
 
-            this.playerGenetics = GlobalManager.geneticManipulations;
-            this.player2Genetics = GlobalManager.geneticManipulations;
+            var self = this;
 
             this.manager = new EntityManager();
             var components = [
@@ -86,7 +83,7 @@ define([
         },
 
         endUpgrade: function () {
-            this.game.state.start('Game');
+            this.game.state.start('Game', true, false, this.matchManager);
         },
 
         update: function () {

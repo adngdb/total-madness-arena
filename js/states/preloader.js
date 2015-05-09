@@ -12,6 +12,11 @@ define([
 
     Preloader.prototype = {
 
+        init: function () {
+            GlobalManager.addComponent(Input.name, Input);
+            GlobalManager.addProcessor(new InputProcessor(this.game));
+        },
+
         preload: function() {
             this.background = this.add.sprite(this.world.centerX - 162, this.world.centerY + 100, 'preloaderBackground');
             this.preloadBar = this.add.sprite(this.world.centerX - 162, this.world.centerY + 100, 'preloaderBar');
@@ -44,9 +49,6 @@ define([
         },
 
         create: function() {
-            GlobalManager.addComponent(Input.name, Input);
-            GlobalManager.addProcessor(new InputProcessor(this.game));
-
             // Animate away.
             this.add.tween(this.background)
                 .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true);

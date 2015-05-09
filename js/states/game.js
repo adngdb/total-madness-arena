@@ -2,7 +2,6 @@ define([
     // managers
     'entity-manager',
     'global-manager',
-    'manager',
 
     // components
     'components/game/bounding-box',
@@ -46,7 +45,6 @@ function (
     // managers
     EntityManager,
     GlobalManager,
-    MatchManager,
 
     // components
     BoundingBox,
@@ -92,9 +90,14 @@ function (
 
     Game.prototype = {
 
+        init: function (matchManager) {
+            this.matchManager = matchManager;
+        },
+
         update: function () {
             GlobalManager.update(this.game.time.elapsed);
             this.manager.update(this.game.time.elapsed);
+
             if (this.timer.ms > 0) {
                 this.remainingTimeText.text = parseInt(this.timer.duration.toFixed(0) / 1000) + 1;
             }
@@ -160,15 +163,9 @@ function (
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';
 
-            MatchManager.addPlayer(this.manager.getComponentDataForEntity('Player', player1).number);
-            MatchManager.addPlayer(this.manager.getComponentDataForEntity('Player', player2).number);
-
-            MatchManager.addGeneticManipulation('Gravity');
-            MatchManager.addGeneticManipulation('Speed');
-
             // timer
             this.timer = this.game.time.create(false);
-            this.timer.loop(50000, this.endGame, this);
+            this.timer.loop(5000, this.endGame, this);
             this.timer.start();
 
             var style = { font: "24pt retroComputerDemo", fill: "#000000", align: "center" };
@@ -176,7 +173,7 @@ function (
         },
 
         endGame: function () {
-            this.game.state.start('Upgrade');
+            this.game.state.start('Upgrade', true, false, this.matchManager);
         },
     };
 
