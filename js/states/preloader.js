@@ -2,40 +2,54 @@ define(function() {
 
     var Preloader = function(game) {
         this.background = null;
-
-        this.PLAYER_SIZE = 48;
+        this.preloadBar = null;
+        this.loadingText = null;
     };
 
     Preloader.prototype = {
 
         preload: function() {
-            // this.background = this.add.sprite(0, 0, 'preloaderBackground');
-            // this.preloadBar = this.add.sprite(this.world.centerX - 380, this.world.centerY - 10, 'preloaderBar');
+            this.background = this.add.sprite(this.world.centerX - 162, this.world.centerY + 100, 'preloaderBackground');
+            this.preloadBar = this.add.sprite(this.world.centerX - 162, this.world.centerY + 100, 'preloaderBar');
+            this.loadingText = this.add.sprite(this.world.centerX - 162, this.world.centerY - 10, 'preloaderText');
 
-            // this.load.setPreloadSprite(this.preloadBar);
+            //this.load.setPreloadSprite(this.preloadBar);
 
-            // this.load.spritesheet('player', 'assets/gfx/player.png', this.PLAYER_SIZE, this.PLAYER_SIZE);
+            /** Game state stuff **/
+            this.game.load.spritesheet('chara_fat', 'assets/gfx/chara_fat.png', 64, 96);
+            this.game.load.spritesheet('chara_thin', 'assets/gfx/chara_thin.png', 64, 96);
 
-            // this.load.image('background', 'assets/gfx/background.png');
+            var cacheKey = Phaser.Plugin.Tiled.utils.cacheKey;
+            this.game.load.tiledmap(
+                cacheKey('level_map', 'tiledmap'),
+                'assets/levels/map_01.json',
+                null,
+                Phaser.Tilemap.TILED_JSON
+            );
+            this.game.load.image(
+                cacheKey('level_map', 'tileset', 'lvl_all'),
+                'assets/gfx/lvl_all.png'
+            );
 
-            // this.load.spritesheet('muteToggle', 'assets/interface/sound.png', 128, 128);
-
-            // // audio for background soundtrack
-            // this.load.audio('theme_relax', 'assets/sfx/theme_main_relax.ogg');
-
-            // this.load.tilemap('access_map', 'assets/maps/access.json', null, Phaser.Tilemap.TILED_JSON);
+            /** Upgrade state stuff **/
+            this.game.load.spritesheet('upgradeMenuBackGround', 'assets/gfx/upgradeMenuBackGround.png', 960, 768);
+            this.game.load.spritesheet('upgradeMenuMiddleGround', 'assets/gfx/upgradeMenuMiddleGround.png', 960, 768);
+            this.game.load.spritesheet('upgradeMenuForeGround', 'assets/gfx/upgradeMenuForeGround.png', 960, 768);
+            this.game.load.spritesheet('upgradeMenuBox', 'assets/gfx/upgradeMenuBox.png', 321, 73);
         },
 
         create: function() {
-            // var tween = this.add.tween(this.background)
-            //     .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true);
-            // var tween = this.add.tween(this.preloadBar)
-            //     .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true);
-            // tween.onComplete.add(this.startGame, this);
+             this.add.tween(this.background)
+                 .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true);
+             this.add.tween(this.loadingText)
+                 .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true);
+             this.add.tween(this.preloadBar)
+                 .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true)
+                 .onComplete.add(this.startGame, this);
         },
 
         startGame: function() {
-            // this.game.state.start('MainMenu');
+             this.game.state.start('Game');
         }
 
     };

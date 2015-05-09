@@ -62,23 +62,6 @@ function (
             this.manager.update(this.game.time.elapsed);
         },
 
-        preload: function () {
-            this.game.load.spritesheet('chara_fat', 'assets/gfx/chara_fat.png', 64, 96);
-            this.game.load.spritesheet('chara_thin', 'assets/gfx/chara_thin.png', 64, 96);
-
-            var cacheKey = Phaser.Plugin.Tiled.utils.cacheKey;
-            this.game.load.tiledmap(
-                cacheKey('level_map', 'tiledmap'),
-                'assets/levels/map_01.json',
-                null,
-                Phaser.Tilemap.TILED_JSON
-            );
-            this.game.load.image(
-                cacheKey('level_map', 'tileset', 'lvl_all'),
-                'assets/gfx/lvl_all.png'
-            );
-        },
-
         create: function () {
             // set / reset a new entityManager
             this.manager = new EntityManager();

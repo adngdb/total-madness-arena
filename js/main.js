@@ -19,14 +19,9 @@
     function (Boot, Preloader, Game, Upgrade) {
 
         var game = new Phaser.Game(960, 768, Phaser.AUTO, 'stage', {
-            preload: preload,
             init: init,
-            create: create,
-            update: update
+            create: create
         });
-
-        function preload() {
-        }
 
         function create() {
             this.game.state.add('Boot', Boot);
@@ -34,15 +29,12 @@
             this.game.state.add('Game', Game);
             this.game.state.add('Upgrade', Upgrade);
 
-            this.game.state.start('Game');
+            this.game.state.start('Boot');
         }
 
         function init() {
             // Activate plugins.
             this.game.add.plugin(Phaser.Plugin.Tiled);
-        }
-
-        function update () {
         }
     });
 }());
