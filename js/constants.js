@@ -17,5 +17,7 @@ define({
         BUTTON_X: 'button_x',
         BUTTON_Y: 'button_y',
         BUTTON_A: 'button_a'
-    }
+    },
+    acceleration: -10,
+
 });

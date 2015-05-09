@@ -22,7 +22,11 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         // Apply gravity.
         for (var m in movables) {
             var moveData = movables[m];
-            moveData.dy += DECELERATION * moveData.gravityScale * dt;
+            moveData.acceleration += DECELERATION * moveData.gravityScale * dt * 0.15;
+            if (moveData.acceleration > 1) {
+                moveData.acceleration = 1;
+            }
+            moveData.dy += moveData.acceleration;
             if (moveData.dy > GRAVITY) {
                 moveData.dy = GRAVITY;
             }
@@ -45,7 +49,11 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                 if (moveData !== null) {
                     switch (inputs[inputId].action) {
                         case Const.inputs.JUMP:
-                            moveData.dy = -50;
+                            if (moveData.jumpAllowed) {
+                                console.log('JUMP');
+                                moveData.acceleration = Const.acceleration;
+                                moveData.jumpAllowed = false;
+                            }
                             break;
                         case Const.inputs.LEFT:
                             moveData.dx -= (dt / 1000.) * moveData.speed;
@@ -59,7 +67,7 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                         case Const.inputs.ACTION2:
                             console.log('action2');
                             break;
-                    }
+                        }
                 }
             }
         }
@@ -69,9 +77,9 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
             var moveData = movables[m];
             var posData = this.manager.getComponentDataForEntity('Position', m);
             posData.x += moveData.dx;
-            this.checkCollision();
+            this.checkCollision(m);
             posData.y += moveData.dy;
-            this.checkCollision();
+            this.checkCollision(m);
         }
 
         // Get the map to find platforms and boundaries.
@@ -113,62 +121,64 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         }
     }
 
-    PhysicsProcessor.prototype.checkCollision = function () {
+    PhysicsProcessor.prototype.checkCollision = function (movableId) {
         // Compute collisions and make appropriate moves to correct positions.
-        var movables = this.manager.getComponentsData('Movable');
         var boundingBoxes = this.manager.getComponentsData('BoundingBox');
         var areColliding = null;
         var collisionResponse = new SAT.Response();
 
-        for (var movableId in movables) {
-            var moveData = movables[movableId];
-            var movableBoxData = this.manager.getComponentDataForEntity('BoundingBox', movableId);
-            var movablePosData = this.manager.getComponentDataForEntity('Position', movableId);
+        var movableBoxData = this.manager.getComponentDataForEntity('BoundingBox', movableId);
+        var movablePosData = this.manager.getComponentDataForEntity('Position', movableId);
 
-            var satElement = new SAT.Box(
-                (new SAT.V(movableBoxData.x, movableBoxData.y)).add(new SAT.V(movablePosData.x, movablePosData.y)),
-                movableBoxData.width,
-                movableBoxData.height
-            ).toPolygon();
+        var satElement = new SAT.Box(
+            (new SAT.V(movableBoxData.x, movableBoxData.y)).add(new SAT.V(movablePosData.x, movablePosData.y)),
+            movableBoxData.width,
+            movableBoxData.height
+        ).toPolygon();
 
-            for (var id in boundingBoxes) {
-                if (id === movableId) {
-                    continue;
+        for (var id in boundingBoxes) {
+            if (id === movableId) {
+                continue;
+            }
+
+            boxData = boundingBoxes[id];
+            posData = this.manager.getComponentDataForEntity('Position', id);
+
+            if (!this._boxes[id] || this.manager.entityHasComponent(id, 'Movable')) {
+                this._boxes[id] = new SAT.Box(
+                    (new SAT.V(boxData.x, boxData.y)).add(new SAT.V(posData.x, posData.y)),
+                    boxData.width,
+                    boxData.height
+                ).toPolygon();
+            }
+
+            var areColliding = SAT.testPolygonPolygon(satElement, this._boxes[id], collisionResponse);
+
+            if (areColliding) {
+                // console.log('HIT: ', movableId, id);
+
+                // console.log('---------------------------------------');
+                // console.log(satElement, this._boxes[id]);
+                // console.log(collisionResponse.overlap, collisionResponse.overlapV.x, collisionResponse.overlapV.y);
+
+                // console.log(movablePosData.x, movablePosData.y, moveData.dy);
+
+                movablePosData.x -= collisionResponse.overlapV.x;
+                movablePosData.y -= collisionResponse.overlapV.y + 1;
+
+                if (collisionResponse.overlapV.y > 0) {
+                    // collision with ground : new jump allowed
+                    var moveData = this.manager.getComponentDataForEntity('Movable', movableId);
+                    moveData.jumpAllowed = true;
                 }
 
-                boxData = boundingBoxes[id];
-                posData = this.manager.getComponentDataForEntity('Position', id);
-
-                if (!this._boxes[id] || this.manager.entityHasComponent(id, 'Movable')) {
-                    this._boxes[id] = new SAT.Box(
-                        (new SAT.V(boxData.x, boxData.y)).add(new SAT.V(posData.x, posData.y)),
-                        boxData.width,
-                        boxData.height
-                    ).toPolygon();
-                }
-
-                var areColliding = SAT.testPolygonPolygon(satElement, this._boxes[id], collisionResponse);
-
-                if (areColliding) {
-                    // console.log('HIT: ', movableId, id);
-
-                    // console.log('---------------------------------------');
-                    // console.log(satElement, this._boxes[id]);
-                    // console.log(collisionResponse.overlap, collisionResponse.overlapV.x, collisionResponse.overlapV.y);
-
-                    // console.log(movablePosData.x, movablePosData.y, moveData.dy);
-
-                    movablePosData.x -= collisionResponse.overlapV.x;
-                    movablePosData.y -= collisionResponse.overlapV.y + 1;
-
-                    // update the boundingBox for the movable
-                    satElement = new SAT.Box(
-                        (new SAT.V(movableBoxData.x, movableBoxData.y)).add(new SAT.V(movablePosData.x, movablePosData.y)),
-                        movableBoxData.width,
-                        movableBoxData.height
-                    ).toPolygon();
-                    collisionResponse.clear();
-                }
+                // update the boundingBox for the movable
+                satElement = new SAT.Box(
+                    (new SAT.V(movableBoxData.x, movableBoxData.y)).add(new SAT.V(movablePosData.x, movablePosData.y)),
+                    movableBoxData.width,
+                    movableBoxData.height
+                ).toPolygon();
+                collisionResponse.clear();
             }
         }
     }

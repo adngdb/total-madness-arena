@@ -3,7 +3,9 @@ define({
     state: {
         dy: 10,
         dx: 0,
-        speed: 200, // in pixels per second
+        speed: 300, // in pixels per second
         gravityScale: 1,
+        jumpAllowed: true,
+        acceleration: 1,
     }
 });
