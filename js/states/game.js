@@ -1,6 +1,7 @@
 define([
     'entity-manager',
 
+    'components/bounding-box',
     'components/collision',
     'components/displayable',
     'components/wonGames',
@@ -24,6 +25,7 @@ define([
 function (
     EntityManager,
 
+    BoundingBox,
     Collision,
     Displayable,
     WonGames,
@@ -50,7 +52,7 @@ function (
     Game.prototype = {
 
         update: function () {
-            this.manager.update();
+            this.manager.update(this.game.time.elapsed);
         },
 
         preload: function () {
@@ -58,8 +60,16 @@ function (
             this.game.load.spritesheet('chara_thin', 'assets/gfx/chara_thin.png', 64, 96);
 
             var cacheKey = Phaser.Plugin.Tiled.utils.cacheKey;
-            this.game.load.tiledmap(cacheKey('level_map', 'tiledmap'), 'assets/levels/default.json', null, Phaser.Tilemap.TILED_JSON);
-            this.game.load.image(cacheKey('level_map', 'tileset', 'lvl_all'), 'assets/gfx/lvl_all.png');
+            this.game.load.tiledmap(
+                cacheKey('level_map', 'tiledmap'),
+                'assets/levels/default.json',
+                null,
+                Phaser.Tilemap.TILED_JSON
+            );
+            this.game.load.image(
+                cacheKey('level_map', 'tileset', 'lvl_all'),
+                'assets/gfx/lvl_all.png'
+            );
         },
 
         create: function () {
@@ -67,6 +77,7 @@ function (
             this.manager = new EntityManager();
             // Add all components to the system.
             var components = [
+                BoundingBox,
                 Collision,
                 Displayable,
                 WonGames,
@@ -92,11 +103,14 @@ function (
             this.manager.addProcessor(new PhysicsProcessor(this.manager, this.game));
 
             var player = this.manager.createEntity([
-                'Player', 'Position', 'Displayable', 'Movable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
+                'Player', 'Position', 'BoundingBox', 'Displayable', 'Movable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
             ]);
+            this.manager.getComponentDataForEntity('Movable', player).gravity = 1.5;
+            this.manager.getComponentDataForEntity('BoundingBox', player).height = 96;
+            this.manager.getComponentDataForEntity('BoundingBox', player).width = 64;
 
             var player2 = this.manager.createEntity([
-                'Player', 'Position', 'Displayable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
+                'Player', 'Position', 'BoundingBox', 'Displayable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
             ]);
             this.manager.getComponentDataForEntity('Player', player2).number = 1;
             this.manager.getComponentDataForEntity('Displayable', player2).sprite = 'chara_thin';
@@ -105,7 +119,8 @@ function (
             this.manager.getComponentDataForEntity('AnimationIdle', player2).keys = [0, 1, 2, 3];
             this.manager.getComponentDataForEntity('AnimationIdle', player2).speed = 8;
             this.manager.getComponentDataForEntity('AnimationWalk', player2).speed = 8;
-            this.manager.getComponentDataForEntity('Movable', player).gravity = 1.5;
+            this.manager.getComponentDataForEntity('BoundingBox', player2).height = 96;
+            this.manager.getComponentDataForEntity('BoundingBox', player2).width = 64;
 
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';

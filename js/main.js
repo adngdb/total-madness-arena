@@ -5,7 +5,8 @@
         baseUrl: 'js/',
 
         paths: {
-            'entity-manager': '../lib/entity-system-js/entity-manager'
+            'entity-manager': '../lib/entity-system-js/entity-manager',
+            'lib': '../lib'
         }
     });
 
@@ -35,10 +36,8 @@
         }
 
         function init() {
-
             // Activate plugins.
             this.game.add.plugin(Phaser.Plugin.Tiled);
-
         }
 
         function update () {

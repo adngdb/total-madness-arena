@@ -1,12 +1,9 @@
-define(function () {
-
-    var Movable = {
-        name: 'Movable',
-        state: {
-            gravity: 1
-        }
-    };
-
-    return Movable;
-
+define({
+    name: 'Movable',
+    state: {
+        dy: 10,
+        dx: 0,
+        speed: 200, // in pixels per second
+        gravity: 1,
+    }
 });

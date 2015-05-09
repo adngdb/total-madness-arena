@@ -1,4 +1,4 @@
-define(function () {
+define(['constants'], function (Const) {
 
     var InputProcessor = function (manager, game) {
         this.manager = manager;
@@ -9,24 +9,15 @@ define(function () {
         this.init();
     };
 
-    InputProcessor.actions = {
-        JUMP : 'jump',
-        LEFT : 'left',
-        DOWN : 'down',
-        RIGHT : 'right',
-        ACTION1: 'action1',
-        ACTION2: 'action2'
-    }
-
     InputProcessor.prototype.init = function () {
 
         var firstPlayerControls = [
-            {action: InputProcessor.actions.JUMP, keys: [Phaser.Keyboard.UP]},
-            {action: InputProcessor.actions.LEFT, keys: [Phaser.Keyboard.LEFT]},
-            {action: InputProcessor.actions.DOWN, keys: [Phaser.Keyboard.DOWN]},
-            {action: InputProcessor.actions.RIGHT, keys: [Phaser.Keyboard.RIGHT]},
-            {action: InputProcessor.actions.ACTION1, keys: [Phaser.Keyboard.NUMPAD_0]},
-            {action: InputProcessor.actions.ACTION2, keys: [Phaser.Keyboard.NUMPAD_DECIMAL]}
+            {action: Const.inputs.JUMP, keys: [Phaser.Keyboard.UP]},
+            {action: Const.inputs.LEFT, keys: [Phaser.Keyboard.LEFT]},
+            {action: Const.inputs.DOWN, keys: [Phaser.Keyboard.DOWN]},
+            {action: Const.inputs.RIGHT, keys: [Phaser.Keyboard.RIGHT]},
+            {action: Const.inputs.ACTION1, keys: [Phaser.Keyboard.NUMPAD_0]},
+            {action: Const.inputs.ACTION2, keys: [Phaser.Keyboard.NUMPAD_DECIMAL]}
         ];
 
         for (var firstPlayerControlId in firstPlayerControls) {
@@ -38,12 +29,12 @@ define(function () {
         }
 
         var secondPlayerControls = [
-            {action: InputProcessor.actions.JUMP, keys: [Phaser.Keyboard.Z]},
-            {action: InputProcessor.actions.LEFT, keys: [Phaser.Keyboard.Q]},
-            {action: InputProcessor.actions.DOWN, keys: [Phaser.Keyboard.S]},
-            {action: InputProcessor.actions.RIGHT, keys: [Phaser.Keyboard.D]},
-            {action: InputProcessor.actions.ACTION1, keys: [Phaser.Keyboard.T]},
-            {action: InputProcessor.actions.ACTION2, keys: [Phaser.Keyboard.G]}
+            {action: Const.inputs.JUMP, keys: [Phaser.Keyboard.Z]},
+            {action: Const.inputs.LEFT, keys: [Phaser.Keyboard.Q]},
+            {action: Const.inputs.DOWN, keys: [Phaser.Keyboard.S]},
+            {action: Const.inputs.RIGHT, keys: [Phaser.Keyboard.D]},
+            {action: Const.inputs.ACTION1, keys: [Phaser.Keyboard.T]},
+            {action: Const.inputs.ACTION2, keys: [Phaser.Keyboard.G]}
         ];
 
         for (var secondPlayerControlId in secondPlayerControls) {
