@@ -11,7 +11,8 @@ define([
     'components/game/input',
     'components/game/life',
     'components/game/movable',
-    'components/game/attack',
+    'components/game/attack1',
+    'components/game/attack2',
     'components/game/position',
     'components/game/player',
     'components/game/map',
@@ -23,6 +24,8 @@ define([
     'components/game/animation-idle',
     'components/game/animation-jump',
     'components/game/animation-walk',
+    'components/game/animation-attack1',
+    'components/game/animation-attack2',
 
     // assemblages
     'assemblages/game/character_01',
@@ -49,7 +52,8 @@ function (
     Input,
     Life,
     Movable,
-    Attack,
+    Attack1,
+    Attack2,
     Position,
     Player,
     Map,
@@ -60,6 +64,8 @@ function (
     AnimationIdle,
     AnimationJump,
     AnimationWalk,
+    AnimationAttack1,
+    AnimationAttack2,
 
     // assemblages
     Character_01,
@@ -74,12 +80,17 @@ function (
     ActionProcessor
 ) {
     var Game = function () {
+        this.remainingTimeText = null;
+        this.timer = null;
     };
 
     Game.prototype = {
 
         update: function () {
             this.manager.update(this.game.time.elapsed);
+            if (this.timer.ms > 0) {
+                this.remainingTimeText.text = parseInt(this.timer.duration.toFixed(0) / 1000) + 1;
+            }
         },
 
         create: function () {
@@ -94,7 +105,8 @@ function (
                 Input,
                 Life,
                 Movable,
-                Attack,
+                Attack1,
+                Attack2,
                 Position,
                 Player,
                 Map,
@@ -102,6 +114,8 @@ function (
                 AnimationIdle,
                 AnimationJump,
                 AnimationWalk,
+                AnimationAttack1,
+                AnimationAttack2,
                 Gravity,
                 Speed,
             ];
@@ -141,6 +155,18 @@ function (
 
             GlobalManager.addGeneticManipulation('Gravity');
             GlobalManager.addGeneticManipulation('Speed');
+
+            // timer
+            this.timer = this.game.time.create(false);
+            this.timer.loop(50000, this.endGame, this);
+            this.timer.start();
+
+            var style = { font: "24pt retroComputerDemo", fill: "#000000", align: "center" };
+            this.remainingTimeText = this.game.add.text(676, 50, "5", style);
+        },
+
+        endGame: function () {
+            this.game.state.start('Upgrade');
         },
     };
 

@@ -11,9 +11,18 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
     };
 
     ActionProcessor.prototype.update = function (dt) {
+        // compute Action 1
+        var attacks = this.manager.getComponentsData('Attack1');
+        this.computeAction(dt, attacks, Const.inputs.ACTION1, 1);
+        // compute Action 2
+        attacks = this.manager.getComponentsData('Attack2');
+        this.computeAction(dt, attacks, Const.inputs.ACTION2, 2);
+
+    };
+
+    ActionProcessor.prototype.computeAction = function (dt, attacks, input, action) {
         var inputs = this.manager.getComponentsData('Input');
         var players = this.manager.getComponentsData('Player');
-        var attacks = this.manager.getComponentsData('Attack');
         // attack cooldown
         for (var attack in attacks) {
             attacks[attack].lastAttack += dt/1000.;
@@ -31,22 +40,22 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                     }
                 }
                 if (currentPlayer !== null) {
-                    switch (inputs[inputId].action) {
-                        case Const.inputs.ACTION1:
+                    if (inputs[inputId].action == input) {
+                        if (action === 1) {
                             this.action1(currentPlayer);
-                            break;
-                        case Const.inputs.ACTION2:
-                            this.action2(currentPlayer);
-                            break;
                         }
+                        else {
+                            this.action2(currentPlayer);
+                        }
+                    }
                 }
             }
         }
-    };
+    }
 
     ActionProcessor.prototype.action1 = function (player) {
         // get the Attack of the current player
-        var attack = this.manager.getComponentDataForEntity('Attack', player);
+        var attack = this.manager.getComponentDataForEntity('Attack1', player);
         if (attack.lastAttack > attack.cooldown) {
             // attack allowed
             attack.lastAttack = 0;
@@ -56,14 +65,13 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                 var life = this.manager.getComponentDataForEntity('Life', otherPlayer);
                 life.value -= attack.value;
                 console.log('action 1 : dmg : ', -attack.value);
-            } else {
             }
         }
     }
 
     ActionProcessor.prototype.action2 = function (player) {
         // get the Attack of the current player
-        var attack = this.manager.getComponentDataForEntity('Attack', player);
+        var attack = this.manager.getComponentDataForEntity('Attack2', player);
         if (attack.lastAttack > attack.cooldown) {
             // attack allowed
             attack.lastAttack = 0;
@@ -73,7 +81,6 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                 var life = this.manager.getComponentDataForEntity('Life', otherPlayer);
                 life.value -= attack.value;
                 console.log('action 2 : dmg : ', -attack.value);
-            } else {
             }
         }
     }

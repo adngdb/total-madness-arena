@@ -3,7 +3,9 @@ define(['constants'], function (Const) {
     var ANIMATION_COMPONENTS = [
         'AnimationIdle',
         'AnimationJump',
-        'AnimationWalk'
+        'AnimationWalk',
+        'AnimationAttack1',
+        'AnimationAttack2'
     ];
 
     var RenderingProcessor = function (manager, game) {
@@ -81,15 +83,23 @@ define(['constants'], function (Const) {
                     sprite.scale.x = -1;
                 }
 
-                // Change the animation depending on the movement data.
+                // Change the animation depending on the movement / action data.
                 if (this.manager.entityHasComponent(entity, 'Animated')) {
                     var animatedData = this.manager.getComponentDataForEntity('Animated', entity);
+                    var attack1 = this.manager.getComponentDataForEntity('Attack1', entity);
+                    var attack2 = this.manager.getComponentDataForEntity('Attack2', entity);
 
                     if (!moveData.jumpAllowed) {
                         animatedData.current = 'jump';
                     }
                     else if (moveData.dx !== 0) {
                         animatedData.current = 'walk';
+                    }
+                    else if (attack1.lastAttack < attack1.cooldown) {
+                        animatedData.current = 'attack1';
+                    }
+                    else if (attack2.lastAttack < attack2.cooldown) {
+                        animatedData.current = 'attack2';
                     }
                     else {
                         animatedData.current = 'idle';
