@@ -14,6 +14,7 @@ define([
     'components/map',
 
     'components/genetics/speed',
+    'components/genetics/gravity',
 
     'components/animated',
     'components/animation-idle',
@@ -40,6 +41,7 @@ function (
     Player,
     Map,
     Speed,
+    Gravity,
 
     Animated,
     AnimationWalk,
@@ -96,7 +98,8 @@ function (
                 Animated,
                 AnimationWalk,
                 AnimationIdle,
-                Speed
+                Gravity,
+                Speed,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
