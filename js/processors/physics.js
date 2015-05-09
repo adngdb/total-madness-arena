@@ -1,7 +1,7 @@
 define(['constants', 'lib/sat'], function (Const, SAT) {
 
     var GRAVITY = 10;
-    var DECELERATION = 1; // in pixels per second
+    var DECELERATION = 1000; // in pixels per second
 
     var PhysicsProcessor = function (manager, game) {
         this.manager = manager;
@@ -22,15 +22,23 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         // Apply gravity.
         for (var m in movables) {
             var moveData = movables[m];
-            moveData.acceleration += DECELERATION * moveData.gravityScale * dt * 0.15;
-            if (moveData.acceleration > 1) {
-                moveData.acceleration = 1;
-            }
-            moveData.dy += moveData.acceleration;
-            if (moveData.dy > GRAVITY) {
-                moveData.dy = GRAVITY;
-            }
+            // update current speed
+            // moveData.speedY += moveData.acceleration * (dt/1000);
+            // compute current dy
+            // moveData.dy += moveData.speedY * (dt/1000);
+            // if (moveData.dy > GRAVITY) {
+            //     moveData.dy = GRAVITY;
+            // }
             moveData.dx = 0;
+            // update acceleration for next frame
+            // moveData.lastJump += dt/1000;
+            // if (moveData.lastJump < 1) {
+            //     moveData.jumpAllowed = false;
+            // }
+            // moveData.acceleration += DECELERATION * moveData.gravityScale * (dt/1000) * (dt/1000);
+            // if (moveData.acceleration > 1) {
+            //     moveData.acceleration = 1;
+            // }
         }
 
         // Update movements for players given current inputs.
@@ -49,16 +57,17 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                 if (moveData !== null) {
                     switch (inputs[inputId].action) {
                         case Const.inputs.JUMP:
-                            if (moveData.jumpAllowed) {
-                                moveData.acceleration = Const.acceleration;
+                            if (moveData.jumpAllowed && (moveData.lastJump > 0.3)) {
+                                moveData.speedY = -600;
                                 moveData.jumpAllowed = false;
+                                moveData.lastJump = 0;
                             }
                             break;
                         case Const.inputs.LEFT:
-                            moveData.dx -= (dt / 1000.) * moveData.speed;
+                            moveData.dx = -(dt / 1000.) * moveData.speed;
                             break;
                         case Const.inputs.RIGHT:
-                            moveData.dx += (dt / 1000.) * moveData.speed;
+                            moveData.dx = (dt / 1000.) * moveData.speed;
                             break;
                         case Const.inputs.ACTION1:
                             console.log('action1');
@@ -68,6 +77,22 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                             break;
                         }
                 }
+            }
+        }
+
+        // Apply gravity.
+        for (var m in movables) {
+            var moveData = movables[m];
+            // update current speed
+            moveData.speedY += DECELERATION * moveData.gravityScale * (dt/1000.);
+            // compute current dy
+            moveData.dy = moveData.speedY * (dt/1000.);
+            if (moveData.dy > GRAVITY) {
+                moveData.dy = GRAVITY;
+            }
+            moveData.lastJump += dt/1000;
+            if (moveData.lastJump < 1) {
+                moveData.jumpAllowed = false;
             }
         }
 
@@ -85,6 +110,7 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         if (!this.mapIsLoaded) {
             this.loadMap();
         }
+
     };
 
     PhysicsProcessor.prototype.loadMap = function () {
@@ -210,12 +236,15 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                 movablePosData.x -= collisionResponse.overlapV.x;
                 movablePosData.y -= collisionResponse.overlapV.y + 1;
 
-                if (collisionResponse.overlapV.y > 0) {
-                    // collision with ground : new jump allowed
+                if (collisionResponse.overlapV.y != 0) {
+                    // collision with ground OR 'roof' : SpeedY = 0
                     var moveData = this.manager.getComponentDataForEntity('Movable', movableId);
-                    moveData.jumpAllowed = true;
+                    moveData.speedY = 100;
+                    if (collisionResponse.overlapV.y > 0) {
+                        // collision with ground : new jump allowed
+                        moveData.jumpAllowed = true;
+                    }
                 }
-
                 // update the boundingBox for the movable
                 satElement = new SAT.Box(
                     (new SAT.V(movableBoxData.x, movableBoxData.y)).add(new SAT.V(movablePosData.x, movablePosData.y)),
