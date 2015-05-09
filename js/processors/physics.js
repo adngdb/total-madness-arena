@@ -50,7 +50,6 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                     switch (inputs[inputId].action) {
                         case Const.inputs.JUMP:
                             if (moveData.jumpAllowed) {
-                                console.log('JUMP');
                                 moveData.acceleration = Const.acceleration;
                                 moveData.jumpAllowed = false;
                             }
@@ -93,28 +92,73 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         var maps = this.manager.getComponentsData('Map');
         for (var i in maps) {
             var map = maps[i]._map;
+            var mapWidth = map.size.x;
+            var mapHeight = map.size.y;
+
             console.debug('Found a new map, adding BoundingBoxes');
 
+            var platformTiles = [];
             for (var l in map.layers) {
                 var layer = map.layers[l];
                 if (layer.name === 'collision') {
-                    for (var t in layer.tileIds) {
-                        if (layer.tileIds[t] !== 0) {
-                            // Create a bounding box for that tile.
-                            var boxId = this.manager.createEntity(['Position', 'BoundingBox']);
-                            boxData = this.manager.getComponentDataForEntity('BoundingBox', boxId);
-                            boxData.x = 0
-                            boxData.y = 0;
-                            boxData.width = map.tileWidth;
-                            boxData.height = map.tileHeight;
+                    platformTiles = layer.tileIds;
+                    break;
+                }
+            }
 
-                            posData = this.manager.getComponentDataForEntity('Position', boxId);
-                            posData.x = (t % map.size.x) * map.tileWidth;
-                            posData.y = Math.floor(t / map.size.x) * map.tileHeight;
-                            // console.log(posData.x, posData.y);
+            var markedTiles = [];
+            for (var i = 0; i < platformTiles.length; i++) {
+                if (platformTiles[i] === 0 || markedTiles[i]) {
+                    continue;
+                }
+
+                markedTiles[i] = true;
+                var combinedBox = [i];
+
+                var rowEnd = (Math.floor(i / mapWidth) + 1) * mapWidth - 1;
+                var columnEnd = mapWidth * mapHeight - 1;
+                var horizontalBox = true;
+
+                // First check in the rest of the row if there are adjacents tiles.
+                for (var j = i + 1; j <= rowEnd; j++) {
+                    if (platformTiles[j] === 0 || markedTiles[j]) {
+                        break;
+                    }
+
+                    markedTiles[j] = true;
+                    combinedBox.push(j);
+                }
+
+                if (combinedBox.length === 1) {
+                    // Then check in the rest of the column if there are adjacents tiles.
+                    for (var k = i + mapWidth; k <= columnEnd; k += mapWidth) {
+                        if (platformTiles[k] === 0 || markedTiles[k]) {
+                            break;
                         }
+
+                        markedTiles[k] = true;
+                        combinedBox.push(k);
+                        horizontalBox = false;
                     }
                 }
+
+                // Create a bounding box for that group of tiles.
+                var boxId = this.manager.createEntity(['Position', 'BoundingBox']);
+                boxData = this.manager.getComponentDataForEntity('BoundingBox', boxId);
+                boxData.x = 0
+                boxData.y = 0;
+                if (horizontalBox) {
+                    boxData.width = map.tileWidth * combinedBox.length;
+                    boxData.height = map.tileHeight;
+                }
+                else {
+                    boxData.width = map.tileWidth;
+                    boxData.height = map.tileHeight * combinedBox.length;
+                }
+
+                posData = this.manager.getComponentDataForEntity('Position', boxId);
+                posData.x = (i % mapWidth) * map.tileWidth;
+                posData.y = Math.floor(i / mapWidth) * map.tileHeight;
             }
 
             this.mapIsLoaded = true;
