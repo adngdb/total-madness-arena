@@ -7,3 +7,8 @@ body {
 #stage canvas {
     margin: auto;
 }
+
+@font-face {
+    font-family: retroComputerDemo;
+    src: url(../assets/fonts/retro_computer_demo.ttf);
+}
