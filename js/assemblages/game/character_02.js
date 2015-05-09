@@ -18,12 +18,20 @@ define({
         'Position',
     ],
     initialState: {
+        'AnimationAttack1': {
+            keys: [8, 9, 10, 9],
+            speed: 10,
+        },
+        'AnimationAttack2': {
+            keys: [16, 17, 18, 17],
+            speed: 10,
+        },
         'AnimationIdle': {
             keys: [0, 1, 2, 3],
             speed: 8,
         },
         'AnimationWalk': {
-            speed: 8,
+            speed: 20,
         },
         'BoundingBox': {
             x: -32,

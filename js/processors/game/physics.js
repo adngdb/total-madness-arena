@@ -90,7 +90,6 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         if (!this.mapIsLoaded) {
             this.loadMap();
         }
-
     };
 
     PhysicsProcessor.prototype.loadMap = function () {
@@ -208,14 +207,6 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
             var areColliding = SAT.testPolygonPolygon(satElement, this._boxes[id], collisionResponse);
 
             if (areColliding) {
-                // console.log('HIT: ', movableId, id);
-
-                // console.log('---------------------------------------');
-                // console.log(satElement, this._boxes[id]);
-                // console.log(collisionResponse.overlap, collisionResponse.overlapV.x, collisionResponse.overlapV.y);
-
-                // console.log(movablePosData.x, movablePosData.y, moveData.dy);
-
                 movablePosData.x -= collisionResponse.overlapV.x;
                 movablePosData.y -= collisionResponse.overlapV.y + 1;
 
