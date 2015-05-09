@@ -32,10 +32,10 @@ define(function() {
             );
 
             /** Upgrade state stuff **/
-            this.game.load.spritesheet('upgradeMenuBackGround', 'assets/gfx/upgrade_menu_back_ground.png', 960, 768);
-            this.game.load.spritesheet('upgradeMenuMiddleGround', 'assets/gfx/upgrade_menu_box.png', 960, 768);
-            this.game.load.spritesheet('upgradeMenuForeGround', 'assets/gfx/upgrade_menu_foreground.png', 960, 768);
-            this.game.load.spritesheet('upgradeMenuBox', 'assets/gfx/upgrade_menu_middleground.png', 321, 73);
+            this.game.load.image('upgrade_menu_back_ground', 'assets/gfx/upgrade_menu_back_ground.png');
+            this.game.load.image('upgrade_menu_box', 'assets/gfx/upgrade_menu_box.png');
+            this.game.load.image('upgrade_menu_foreground', 'assets/gfx/upgrade_menu_foreground.png');
+            this.game.load.image('upgrade_menu_middleground', 'assets/gfx/upgrade_menu_middleground.png');
         },
 
         create: function() {
