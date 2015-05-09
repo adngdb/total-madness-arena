@@ -67,6 +67,16 @@ define([
             this.game.add.sprite(0, 0, 'upgrade_menu_middleground');
             this.game.add.sprite(0, 0, 'upgrade_menu_foreground');
 
+            var geneticTextStyle = { font: "16pt retroComputerDemo", fill: "#000000", align: "center" };
+            var buttonTextStyle = { font: "16pt retroComputerDemo", fill: "#F7F48D", align: "center" };
+            var nbGeneric = 0;
+            for(var generic in this.playerGenetics){
+                this.game.add.sprite(81, 225 + (86 * nbGeneric), 'upgrade_menu_box');
+                this.game.add.text(91, 232 + (86 * nbGeneric), generic, geneticTextStyle);
+                this.game.add.text(330, 267 + (86 * nbGeneric), "A", buttonTextStyle);
+                nbGeneric++;
+            }
+
             this.timer = this.game.time.create(false);
             this.timer.loop(5000, this.endUpgrade, this);
             this.timer.start();
