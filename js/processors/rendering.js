@@ -66,16 +66,30 @@ define(['constants'], function (Const) {
                 sprite.y = positionData.y;
             }
 
-            // Flip the sprite horizontally if needed.
             if (this.manager.entityHasComponent(entity, 'Movable')) {
                 var moveData = this.manager.getComponentDataForEntity('Movable', entity);
+
+                // Flip the sprite horizontally if needed.
                 if (moveData.goingRight) {
                     sprite.scale.x = 1;
                 }
                 else {
                     sprite.scale.x = -1;
                 }
+
+                // Change the animation depending on the movement data.
+                if (this.manager.entityHasComponent(entity, 'Animated')) {
+                    var animatedData = this.manager.getComponentDataForEntity('Animated', entity);
+
+                    if (moveData.dx !== 0) {
+                        animatedData.current = 'walk';
+                    }
+                    else {
+                        animatedData.current = 'idle';
+                    }
+                }
             }
+
         }
 
         // Run animations.

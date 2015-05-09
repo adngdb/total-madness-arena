@@ -105,12 +105,12 @@ function (
             this.manager.getComponentDataForEntity('BoundingBox', player).y = -48;
 
             var player2 = this.manager.createEntity([
-                'Player', 'Position', 'BoundingBox', 'Displayable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
+                'Player', 'Position', 'BoundingBox', 'Displayable', 'Movable', 'Life', 'Animated', 'AnimationIdle', 'AnimationWalk'
             ]);
             this.manager.getComponentDataForEntity('Player', player2).number = 1;
             this.manager.getComponentDataForEntity('Displayable', player2).sprite = 'chara_thin';
-            this.manager.getComponentDataForEntity('Position', player2).y = 100;
-            this.manager.getComponentDataForEntity('Position', player2).x = 300;
+            this.manager.getComponentDataForEntity('Position', player2).y = 500;
+            this.manager.getComponentDataForEntity('Position', player2).x = 700;
             this.manager.getComponentDataForEntity('AnimationIdle', player2).keys = [0, 1, 2, 3];
             this.manager.getComponentDataForEntity('AnimationIdle', player2).speed = 8;
             this.manager.getComponentDataForEntity('AnimationWalk', player2).speed = 8;
