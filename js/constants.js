@@ -1,5 +1,5 @@
 define({
-    debug: true,
+    debug: false,
 
     inputs: {
         JUMP: 'jump',
