@@ -89,7 +89,7 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
 
             for (var l in map.layers) {
                 var layer = map.layers[l];
-                if (layer.name === 'platforms') {
+                if (layer.name === 'collision') {
                     for (var t in layer.tileIds) {
                         if (layer.tileIds[t] !== 0) {
                             // Create a bounding box for that tile.

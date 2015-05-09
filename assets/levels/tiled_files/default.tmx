@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="30" height="24" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="24" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" name="lvl_all" tilewidth="32" tileheight="32">
-  <image source="../../gfx/lvl_all.png" width="256" height="160"/>
+  <image source="C:/Users/Kezhaar/Desktop/game jam/level1_tiles.png" width="462" height="288"/>
  </tileset>
  <layer name="background" width="30" height="24">
   <data encoding="base64" compression="zlib">
-   eJztwzENAAAMA6B+9e+4InYOEpJfqqqqhwNCqxIN
+   eJztlc0JgDAMRgvqALqAruHPXXQBvbuB+x+MYCGUpqYxVBADDwtCH9GvqTF/paomMRxvDwzXukvonYBZuH8G5ELvAqxKfVLeWrjPdiH1UrQMr13bDOBcSL1jZP8noVxo9esjlAuuVxvXe9b+cE/8bai8Ya/xvE/hvYOaAS44gxreEqiY/dp/RZ3pGK+Et7wUHO/mPL/uxX6tuzjWi2cud75kQq89t4XRu4vfrAPD1E4t
   </data>
  </layer>
- <layer name="platforms" width="30" height="24">
+ <layer name="collision" width="30" height="24">
   <data encoding="base64" compression="zlib">
-   eJxjYBhZQAyIJeiMxYFYiB6eQwNCo/bS1V5Y2hKns72idLIP3V56A2LtFRwge6kNRu0lDRBbtqPnz6Hq3+FkL664o0ZZOhj9O2ovde0dqHYdAN3cCoA=
+   eJztlI0JgCAQhc8WqAVsgWqPFrAJ3H+GChSOw/OnPAvqwaMge5/l4wC+pe4hLy0+jmj4uUXSh9Vh46wY94VcnztFMq4oxNWVsjmtDLeFPHcT5liGG5M/Y+586XPcBdw3/B7l0n1JiXL93iV7FeK2Ug5X4t+nuBaZE+1VzjlxcwNnGHKVmle1FOtoq7mB9YY5iSXR39SctJDXYQis4daH8k7u6Dyj+7vOydoB1+4U4w==
   </data>
  </layer>
 </map>
