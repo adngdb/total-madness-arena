@@ -13,7 +13,7 @@ define(function() {
             this.preloadBar = this.add.sprite(this.world.centerX - 162, this.world.centerY + 100, 'preloaderBar');
             this.loadingText = this.add.sprite(this.world.centerX - 162, this.world.centerY - 10, 'preloaderText');
 
-            //this.load.setPreloadSprite(this.preloadBar);
+            this.load.setPreloadSprite(this.preloadBar);
 
             /** Game state stuff **/
             this.game.load.spritesheet('chara_fat', 'assets/gfx/chara_fat.png', 64, 96);
@@ -32,10 +32,10 @@ define(function() {
             );
 
             /** Upgrade state stuff **/
-            this.game.load.spritesheet('upgradeMenuBackGround', 'assets/gfx/upgradeMenuBackGround.png', 960, 768);
-            this.game.load.spritesheet('upgradeMenuMiddleGround', 'assets/gfx/upgradeMenuMiddleGround.png', 960, 768);
-            this.game.load.spritesheet('upgradeMenuForeGround', 'assets/gfx/upgradeMenuForeGround.png', 960, 768);
-            this.game.load.spritesheet('upgradeMenuBox', 'assets/gfx/upgradeMenuBox.png', 321, 73);
+            this.game.load.spritesheet('upgradeMenuBackGround', 'assets/gfx/upgrade_menu_back_ground.png', 960, 768);
+            this.game.load.spritesheet('upgradeMenuMiddleGround', 'assets/gfx/upgrade_menu_box.png', 960, 768);
+            this.game.load.spritesheet('upgradeMenuForeGround', 'assets/gfx/upgrade_menu_foreground.png', 960, 768);
+            this.game.load.spritesheet('upgradeMenuBox', 'assets/gfx/upgrade_menu_middleground.png', 321, 73);
         },
 
         create: function() {
