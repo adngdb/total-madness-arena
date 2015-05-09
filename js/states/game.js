@@ -4,15 +4,16 @@ define([
     'global-manager',
 
     // components
+    'components/global/displayable',
+    'components/global/position',
+
     'components/game/bounding-box',
     'components/game/collision',
-    'components/game/displayable',
     'components/game/wonGames',
     'components/game/life',
     'components/game/movable',
     'components/game/attack1',
     'components/game/attack2',
-    'components/game/position',
     'components/game/player',
     'components/game/map',
 
@@ -47,15 +48,16 @@ function (
     GlobalManager,
 
     // components
+    Displayable,
+    Position,
+
     BoundingBox,
     Collision,
-    Displayable,
     WonGames,
     Life,
     Movable,
     Attack1,
     Attack2,
-    Position,
     Player,
     Map,
     Speed,

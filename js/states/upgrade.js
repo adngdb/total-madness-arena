@@ -1,6 +1,10 @@
 define([
     'entity-manager',
 
+    // components
+    'components/global/displayable',
+    'components/global/position',
+
     'components/upgrade/input',
     'components/upgrade/genetic',
 
@@ -8,6 +12,10 @@ define([
     'processors/upgrade/genetic',
 ], function (
     EntityManager,
+
+    // components
+    Displayable,
+    Position,
 
     Input,
     Genetic,
