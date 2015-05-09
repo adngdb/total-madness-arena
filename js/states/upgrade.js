@@ -11,7 +11,7 @@ define(['manager'], function (GlobalManager) {
             this.game.add.sprite(0, 0, 'upgrade_menu_foreground');
 
             this.timer = this.game.time.create(false);
-            this.timer.loop(6000, this.endUpgrade, this);
+            this.timer.loop(5000, this.endUpgrade, this);
             this.timer.start();
 
             var style = { font: "19.5pt retroComputerDemo", fill: "#000000", align: "center" };
@@ -24,7 +24,7 @@ define(['manager'], function (GlobalManager) {
 
         update: function () {
             if (this.timer.ms > 0) {
-                this.remainingTimeText.text = parseInt(this.timer.duration.toFixed(0) / 1000);
+                this.remainingTimeText.text = parseInt(this.timer.duration.toFixed(0) / 1000) + 1;
             }
         },
 

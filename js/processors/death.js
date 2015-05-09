@@ -18,13 +18,12 @@ define(function () {
             var currentLife = life[entityId];
             if (currentLife.value <= 0) {
                 var player = this.manager.getComponentDataForEntity('Player', entityId);
-console.log('MORT du joueur n°' + player.number);
+                console.log('MORT du joueur n°' + player.number);
                 reboot = true;
             }
         }
         if (reboot) {
-console.log('REBOOOT!!!');
-            this.game.state.restart('Game');
+            this.game.state.start('Upgrade');
         }
     };
 
