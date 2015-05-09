@@ -45,6 +45,7 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                                 moveData.speedY = -600;
                                 moveData.jumpAllowed = false;
                                 moveData.lastJump = 0;
+                                this.activateFx(playerId);
                             }
                             break;
                         case Const.inputs.LEFT:
@@ -62,6 +63,9 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
 
         // Apply gravity.
         for (var m in movables) {
+            if (!this.manager.entityHasComponent(m, 'Player')) {
+                continue;
+            }
             var moveData = movables[m];
             // update current speed
             moveData.speedY += DECELERATION * moveData.gravityScale * (dt/1000.);
@@ -78,6 +82,9 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
 
         // Move all movables.
         for (var m in movables) {
+            if (!this.manager.entityHasComponent(m, 'Player')) {
+                continue;
+            }
             var moveData = movables[m];
             var posData = this.manager.getComponentDataForEntity('Position', m);
             posData.x += moveData.dx;
@@ -174,6 +181,10 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
     }
 
     PhysicsProcessor.prototype.checkCollision = function (movableId) {
+        // if not a player (FX entity) do nothing
+        if (!this.manager.entityHasComponent(movableId, 'Player')) {
+            return;
+        }
         // Compute collisions and make appropriate moves to correct positions.
         var boundingBoxes = this.manager.getComponentsData('BoundingBox');
         var areColliding = null;
@@ -228,6 +239,27 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
                 collisionResponse.clear();
             }
         }
+    }
+
+    PhysicsProcessor.prototype.activateFx = function (player) {
+        // search for the Fx entity
+        var movables = this.manager.getComponentsData('Movable');
+        var fxMov = null;
+        for (fxMov in movables) {
+            if (!this.manager.entityHasComponent(fxMov, 'Player')) {
+                continue;
+            }
+        }
+        var playerPos = this.manager.getComponentDataForEntity('Position', player);
+        var playerMovable = this.manager.getComponentDataForEntity('Movable', player);
+
+        // set the FX entity position
+        this.manager.getComponentDataForEntity('Position', fxMov).x = playerPos.x;
+        this.manager.getComponentDataForEntity('Position', fxMov).y = playerPos.y;
+        this.manager.getComponentDataForEntity('Displayable', fxMov).deleted = false;
+        this.manager.getComponentDataForEntity('Animated', fxMov).current = 'jumpFx';
+        this.manager.getComponentDataForEntity('Animated', fxMov).started = false;
+        movables[fxMov].goingRight = playerMovable.goingRight;
     }
 
     return PhysicsProcessor;

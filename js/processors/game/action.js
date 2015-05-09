@@ -59,6 +59,7 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         if (attack.lastAttack > attack.cooldown) {
             // attack allowed
             attack.lastAttack = 0;
+            this.activateFx(player);
             var otherPlayer = this.checkCollisionWithMovableOnly(player);
             if (otherPlayer) {
                 // hit the other player's Life
@@ -75,6 +76,7 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         if (attack.lastAttack > attack.cooldown) {
             // attack allowed
             attack.lastAttack = 0;
+            this.activateFx(player);
             var otherPlayer = this.checkCollisionWithMovableOnly(player);
             if (otherPlayer) {
                 // hit the other player's Life
@@ -121,5 +123,25 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         }
     }
 
+    ActionProcessor.prototype.activateFx = function (player) {
+        // search for the Fx entity
+        var movables = this.manager.getComponentsData('Movable');
+        var fxMov = null;
+        for (fxMov in movables) {
+            if (!this.manager.entityHasComponent(fxMov, 'Player')) {
+                continue;
+            }
+        }
+        var playerPos = this.manager.getComponentDataForEntity('Position', player);
+        var playerMovable = this.manager.getComponentDataForEntity('Movable', player);
+
+        // set the FX entity position
+        this.manager.getComponentDataForEntity('Position', fxMov).x = playerPos.x;
+        this.manager.getComponentDataForEntity('Position', fxMov).y = playerPos.y;
+        this.manager.getComponentDataForEntity('Displayable', fxMov).deleted = false;
+        this.manager.getComponentDataForEntity('Animated', fxMov).current = 'attackFx';
+        this.manager.getComponentDataForEntity('Animated', fxMov).started = false;
+        movables[fxMov].goingRight = playerMovable.goingRight;
+    }
     return ActionProcessor;
 });

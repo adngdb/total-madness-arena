@@ -27,9 +27,13 @@ define([
     'components/game/animation-attack1',
     'components/game/animation-attack2',
 
+    'components/game/animation-attack-fx',
+    'components/game/animation-jump-fx',
+
     // assemblages
     'assemblages/game/character_01',
     'assemblages/game/character_02',
+    'assemblages/game/fx',
 
     // processors
     'processors/game/rendering',
@@ -67,9 +71,13 @@ function (
     AnimationAttack1,
     AnimationAttack2,
 
+    AnimationAttackFx,
+    AnimationJumpFx,
+
     // assemblages
     Character_01,
     Character_02,
+    Fx,
 
     // processors
     RenderingProcessor,
@@ -116,6 +124,8 @@ function (
                 AnimationWalk,
                 AnimationAttack1,
                 AnimationAttack2,
+                AnimationAttackFx,
+                AnimationJumpFx,
                 Gravity,
                 Speed,
             ];
@@ -128,6 +138,7 @@ function (
             var assemblages = [
                 Character_01,
                 Character_02,
+                Fx,
             ];
             for (var i = assemblages.length - 1; i >= 0; i--) {
                 this.manager.addAssemblage(assemblages[i].name, assemblages[i]);
@@ -146,6 +157,8 @@ function (
 
             var player2 = this.manager.createEntityFromAssemblage('Character_02');
             this.manager.updateComponentDataForEntity('Player', player2, {number: 1});
+
+            this.manager.createEntityFromAssemblage('fx');
 
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';

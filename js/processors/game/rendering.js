@@ -5,7 +5,9 @@ define(['constants'], function (Const) {
         'AnimationJump',
         'AnimationWalk',
         'AnimationAttack1',
-        'AnimationAttack2'
+        'AnimationAttack2',
+        'AnimationJumpFx',
+        'AnimationAttackFx',
     ];
 
     var RenderingProcessor = function (manager, game) {
@@ -62,8 +64,17 @@ define(['constants'], function (Const) {
             if (!this.sprites[entity]) {
                 this.createSprite(entity, displayables[entity]);
             }
+            // if 'deleted' : do not display (delete sprite)
+            if (displayables[entity].deleted) {
+                // delete the current sprite
+                this.sprites[entity].visible = false;
+                this.sprites[entity].animations.getAnimation('attackFx').isFinished = true;
+                this.sprites[entity].animations.getAnimation('jumpFx').isFinished = true;
+                continue;
+            }
 
             var sprite = this.sprites[entity];
+            sprite.visible = true;
 
             // Then update the position of each sprite.
             if (this.manager.entityHasComponent(entity, 'Movable')) {
@@ -86,33 +97,55 @@ define(['constants'], function (Const) {
                 // Change the animation depending on the movement / action data.
                 if (this.manager.entityHasComponent(entity, 'Animated')) {
                     var animatedData = this.manager.getComponentDataForEntity('Animated', entity);
-                    var attack1 = this.manager.getComponentDataForEntity('Attack1', entity);
-                    var attack2 = this.manager.getComponentDataForEntity('Attack2', entity);
+                    if (this.manager.entityHasComponent(entity, 'Player')) {
+                        var attack1 = this.manager.getComponentDataForEntity('Attack1', entity);
+                        var attack2 = this.manager.getComponentDataForEntity('Attack2', entity);
 
-                    if (!moveData.jumpAllowed) {
-                        animatedData.current = 'jump';
-                    }
-                    else if (moveData.dx !== 0) {
-                        animatedData.current = 'walk';
-                    }
-                    else if (attack1.lastAttack < attack1.cooldown) {
-                        animatedData.current = 'attack1';
-                    }
-                    else if (attack2.lastAttack < attack2.cooldown) {
-                        animatedData.current = 'attack2';
+                        if (!moveData.jumpAllowed) {
+                            if (animatedData.current != 'jump') {
+                                animatedData.current = 'jump';
+                                this.sprites[entity].animations.play(animatedData.current);
+                            }
+                        }
+                        else if (moveData.dx !== 0) {
+                            if (animatedData.current != 'walk') {
+                                animatedData.current = 'walk';
+                                this.sprites[entity].animations.play(animatedData.current);
+                            }
+                        }
+                        else if (attack1.lastAttack < attack1.cooldown) {
+                            if (animatedData.current != 'attack1') {
+                                animatedData.current = 'attack1';
+                                this.sprites[entity].animations.play(animatedData.current);
+                            }
+                        }
+                        else if (attack2.lastAttack < attack2.cooldown) {
+                            if (animatedData.current != 'attack2') {
+                                animatedData.current = 'attack2';
+                                this.sprites[entity].animations.play(animatedData.current);
+                            }
+                        }
+                        else {
+                            if (animatedData.current != 'idle') {
+                                animatedData.current = 'idle';
+                                this.sprites[entity].animations.play(animatedData.current);
+                            }
+                        }
                     }
                     else {
-                        animatedData.current = 'idle';
+                        // non player => FX sprite
+                        if (!animatedData.started) {
+                            animatedData.started = true;
+                            this.sprites[entity].animations.play(animatedData.current);
+                        }
+                        if (this.sprites[entity].animations.getAnimation('attackFx').isFinished
+                            && this.sprites[entity].animations.getAnimation('jumpFx').isFinished) {
+                            displayables[entity].deleted = true;
+                        }
                     }
                 }
             }
 
-        }
-
-        // Run animations.
-        var animated = this.manager.getComponentsData('Animated');
-        for (entity in animated) {
-            this.sprites[entity].animations.play(animated[entity].current);
         }
 
         // DEBUG
