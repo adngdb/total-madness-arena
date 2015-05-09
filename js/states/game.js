@@ -69,7 +69,7 @@ function (
             var cacheKey = Phaser.Plugin.Tiled.utils.cacheKey;
             this.game.load.tiledmap(
                 cacheKey('level_map', 'tiledmap'),
-                'assets/levels/default.json',
+                'assets/levels/map_01.json',
                 null,
                 Phaser.Tilemap.TILED_JSON
             );
