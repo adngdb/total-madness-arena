@@ -13,9 +13,10 @@
     require([
     'states/boot',
     'states/preloader',
-    'states/game'
+    'states/game',
+    'states/upgrade'
     ],
-    function (Boot, Preloader, Game) {
+    function (Boot, Preloader, Game, Upgrade) {
 
         var game = new Phaser.Game(960, 768, Phaser.AUTO, 'stage', {
             preload: preload,
@@ -31,6 +32,7 @@
             this.game.state.add('Boot', Boot);
             this.game.state.add('Preload', Preloader);
             this.game.state.add('Game', Game);
+            this.game.state.add('Upgrade', Upgrade);
 
             this.game.state.start('Game');
         }
