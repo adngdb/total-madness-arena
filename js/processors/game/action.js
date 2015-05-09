@@ -1,4 +1,8 @@
-define(['constants', 'lib/sat'], function (Const, SAT) {
+define([
+    'lib/sat',
+    'constants',
+    'global-manager',
+], function (SAT, Const, GlobalManager) {
 
     var ActionProcessor = function (manager, game) {
         this.manager = manager;
@@ -21,7 +25,7 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
     };
 
     ActionProcessor.prototype.computeAction = function (dt, attacks, input, action) {
-        var inputs = this.manager.getComponentsData('Input');
+        var inputs = GlobalManager.getComponentsData('Input');
         var players = this.manager.getComponentsData('Player');
         // attack cooldown
         for (var attack in attacks) {

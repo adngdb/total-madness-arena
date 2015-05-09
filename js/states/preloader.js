@@ -1,4 +1,8 @@
-define(function() {
+define([
+    'global-manager',
+    'components/global/input',
+    'processors/global/input',
+], function(GlobalManager, Input, InputProcessor) {
 
     var Preloader = function(game) {
         this.background = null;
@@ -40,13 +44,17 @@ define(function() {
         },
 
         create: function() {
-             this.add.tween(this.background)
-                 .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true);
-             this.add.tween(this.loadingText)
-                 .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true);
-             this.add.tween(this.preloadBar)
-                 .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true)
-                 .onComplete.add(this.startGame, this);
+            GlobalManager.addComponent(Input.name, Input);
+            GlobalManager.addProcessor(new InputProcessor(this.game));
+
+            // Animate away.
+            this.add.tween(this.background)
+                .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true);
+            this.add.tween(this.loadingText)
+                .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true);
+            this.add.tween(this.preloadBar)
+                .to({alpha: 0}, 800, Phaser.Easing.Linear.None, true)
+                .onComplete.add(this.startGame, this);
         },
 
         startGame: function() {

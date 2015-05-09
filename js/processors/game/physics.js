@@ -1,4 +1,8 @@
-define(['constants', 'lib/sat'], function (Const, SAT) {
+define([
+    'lib/sat',
+    'constants',
+    'global-manager',
+], function (SAT, Const, GlobalManager) {
 
     var GRAVITY = 10;
     var DECELERATION = 1000; // in pixels per second
@@ -15,7 +19,7 @@ define(['constants', 'lib/sat'], function (Const, SAT) {
         var boxData = null;
         var posData = null;
 
-        var inputs = this.manager.getComponentsData('Input');
+        var inputs = GlobalManager.getComponentsData('Input');
         var players = this.manager.getComponentsData('Player');
         var movables = this.manager.getComponentsData('Movable');
 

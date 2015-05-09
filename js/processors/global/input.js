@@ -1,7 +1,11 @@
-define(['constants', 'assemblages/game/controls'], function (Const, Controls) {
+define([
+    'constants',
+    'global-manager',
+    'assemblages/global/controls'
+], function (Const, GlobalManager, Controls) {
 
-    var InputProcessor = function (manager, game) {
-        this.manager = manager;
+    var InputProcessor = function (game) {
+        this.manager = GlobalManager;
         this.game = game;
 
         this.init();
