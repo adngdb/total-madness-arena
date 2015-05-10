@@ -3,64 +3,64 @@ define(['constants'], function (Const) {
         0: [
             {
                 action: Const.inputs.JUMP,
-                keys: [Phaser.Keyboard.UP],
+                keys: ['U'],
                 padButtons: [Const.gamepad.STICK_UP, Const.gamepad.BUTTON_A]
             },
             {
                 action: Const.inputs.LEFT,
-                keys: [Phaser.Keyboard.LEFT],
+                keys: ['H'],
                 padButtons: [Const.gamepad.STICK_LEFT]
             },
             {
                 action: Const.inputs.DOWN,
-                keys: [Phaser.Keyboard.DOWN],
+                keys: ['J'],
                 padButtons: [Const.gamepad.STICK_DOWN]
             },
             {
                 action: Const.inputs.RIGHT,
-                keys: [Phaser.Keyboard.RIGHT],
+                keys: ['K'],
                 padButtons: [Const.gamepad.STICK_RIGHT]
             },
             {
                 action: Const.inputs.ACTION1,
-                keys: [Phaser.Keyboard.NUMPAD_0],
+                keys: ['O'],
                 padButtons: [Const.gamepad.BUTTON_X]
             },
             {
                 action: Const.inputs.ACTION2,
-                keys: [Phaser.Keyboard.NUMPAD_DECIMAL],
+                keys: ['P'],
                 padButtons: [Const.gamepad.BUTTON_Y]
             },
         ],
         1: [
             {
                 action: Const.inputs.JUMP,
-                keys: [Phaser.Keyboard.Z, Phaser.Keyboard.W],
+                keys: ['Z', 'W'],
                 padButtons: [Const.gamepad.STICK_UP, Const.gamepad.BUTTON_A]
             },
             {
                 action: Const.inputs.LEFT,
-                keys: [Phaser.Keyboard.Q, Phaser.Keyboard.A],
+                keys: ['Q', 'A'],
                 padButtons: [Const.gamepad.STICK_LEFT]
             },
             {
                 action: Const.inputs.DOWN,
-                keys: [Phaser.Keyboard.S],
+                keys: ['S'],
                 padButtons: [Const.gamepad.STICK_DOWN]
             },
             {
                 action: Const.inputs.RIGHT,
-                keys: [Phaser.Keyboard.D],
+                keys: ['D'],
                 padButtons: [Const.gamepad.STICK_RIGHT]
             },
             {
                 action: Const.inputs.ACTION1,
-                keys: [Phaser.Keyboard.T],
+                keys: ['R'],
                 padButtons: [Const.gamepad.BUTTON_X]
             },
             {
                 action: Const.inputs.ACTION2,
-                keys: [Phaser.Keyboard.G],
+                keys: ['T'],
                 padButtons: [Const.gamepad.BUTTON_Y]
             },
         ]

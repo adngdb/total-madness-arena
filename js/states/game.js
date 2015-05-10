@@ -6,7 +6,11 @@ define([
     // components
     'components/global/displayable',
     'components/global/position',
+<<<<<<< HEAD
     'components/global/text',
+=======
+    'components/global/player',
+>>>>>>> Added manipulation choice in upgrade menu and pass that data to the next state.
 
     'components/game/bounding-box',
     'components/game/collision',
@@ -15,7 +19,6 @@ define([
     'components/game/movable',
     'components/game/attack1',
     'components/game/attack2',
-    'components/game/player',
     'components/game/map',
     'components/game/life-bar',
 
@@ -52,7 +55,11 @@ function (
     // components
     Displayable,
     Position,
+<<<<<<< HEAD
     Text,
+=======
+    Player,
+>>>>>>> Added manipulation choice in upgrade menu and pass that data to the next state.
 
     BoundingBox,
     Collision,
@@ -61,7 +68,6 @@ function (
     Movable,
     Attack1,
     Attack2,
-    Player,
     Map,
     LifeBar,
 
@@ -99,6 +105,11 @@ function (
 
         init: function (matchManager) {
             this.matchManager = matchManager;
+
+            var players = matchManager.getComponentsData('Player');
+            for (var p in players) {
+                console.log(players[p].number, players[p].manipulations);
+            }
         },
 
         update: function () {
@@ -176,7 +187,6 @@ function (
 
             // create GUI
             this.createGUI();
-
         },
 
         endGame: function () {

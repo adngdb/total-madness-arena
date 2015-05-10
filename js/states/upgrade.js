@@ -6,9 +6,15 @@ define([
     'components/global/displayable',
     'components/global/position',
     'components/global/text',
+    'components/global/player',
+
+    'components/upgrade/manipulations',
+    'components/upgrade/available-manips',
+    'components/upgrade/manip-input',
 
     // processors
     'processors/upgrade/rendering',
+    'processors/upgrade/input',
 ], function (
     EntityManager,
     GlobalManager,
@@ -17,9 +23,15 @@ define([
     Displayable,
     Position,
     Text,
+    Player,
+
+    Manipulations,
+    AvailableManips,
+    ManipInput,
 
     // processors
-    RenderingProcessor
+    RenderingProcessor,
+    InputProcessor
 ) {
     var Upgrade = function () {
         this.timer = null;
@@ -35,15 +47,70 @@ define([
                 Displayable,
                 Position,
                 Text,
+                Player,
+                Manipulations,
+                AvailableManips,
+                ManipInput,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
             }
 
             this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
+            this.manager.addProcessor(new InputProcessor(this.manager));
         },
 
         create: function () {
+            var NUMBER_OF_CHOICES = 2;
+
+            // Create manipulation entities.
+            var allManipsId = this.manager.createEntity(['Manipulations']);
+            var allManips = this.manager.getComponentDataForEntity('Manipulations', allManipsId).allManips;
+
+            var allInputs = GlobalManager.getComponentsData('Input');
+
+            // Generate a list of available manipulations for each player.
+            for (var i = 0; i < 2; i++) {
+                var pl = this.manager.createEntity(['Player', 'AvailableManips']);
+                this.manager.updateComponentDataForEntity('Player', pl, {number: i});
+
+                var choices = [];
+                // TODO: exclude choices that have already been chosen.
+                for (var j = 0, maxln = allManips.length; j < NUMBER_OF_CHOICES && j < maxln; j++) {
+                    choices.push(allManips[j]);
+                }
+                this.manager.updateComponentDataForEntity('AvailableManips', pl, {manips: choices});
+
+                var markedInput = {};
+                for (var k = 0, ln = choices.length; k < ln; k++) {
+                    var manipInputId = this.manager.createEntity(['ManipInput', 'Player']);
+                    this.manager.updateComponentDataForEntity('Player', manipInputId, {number: i});
+
+                    var inputId = null;
+                    for (var key in allInputs) {
+                        var input = allInputs[key];
+
+                        if (input.player === i && !markedInput[key]) {
+                            inputId = key;
+                            markedInput[key] = true;
+                            break;
+                        }
+                    }
+
+                    var newState = {
+                        manip: choices[k],
+                        input: inputId,
+                    };
+                    this.manager.updateComponentDataForEntity('ManipInput', manipInputId, newState);
+                }
+            }
+
+            // Create timer to end the screen.
+            this.timer = this.game.time.create(false);
+            this.timer.loop(5000, this.endUpgrade, this);
+            this.timer.start();
+
+            // Create all background sprites.
             var backgroundSprites = [
                 'upgrade_menu_back_ground',
                 'upgrade_menu_middleground',
@@ -54,20 +121,41 @@ define([
                 this.manager.updateComponentDataForEntity('Displayable', entity, {sprite: backgroundSprites[i]});
             }
 
-            // var geneticTextStyle = { font: "16pt retroComputerDemo", fill: "#000000", align: "center" };
-            // var buttonTextStyle = { font: "16pt retroComputerDemo", fill: "#F7F48D", align: "center" };
-            // var nbGeneric = 0;
-            // for(var generic in this.playerGenetics){
-            //     this.game.add.sprite(81, 225 + (86 * nbGeneric), 'upgrade_menu_box');
-            //     this.game.add.text(91, 232 + (86 * nbGeneric), generic, geneticTextStyle);
-            //     this.game.add.text(330, 267 + (86 * nbGeneric), "A", buttonTextStyle);
-            //     nbGeneric++;
-            // }
+            var manips = this.manager.getComponentsData('ManipInput');
+            var manipNumber = 0;
+            for (var m in manips) {
+                var playerData = this.manager.getComponentDataForEntity('Player', m);
+                var manipData = manips[m];
 
-            this.timer = this.game.time.create(false);
-            this.timer.loop(5000, this.endUpgrade, this);
-            this.timer.start();
+                var backId = this.manager.createEntity(['Displayable', 'Position']);
 
+                this.manager.updateComponentDataForEntity('Displayable', backId, {sprite: 'upgrade_menu_box'});
+                this.manager.updateComponentDataForEntity('Position', backId, {
+                    x: (480 * playerData.number) + 81,
+                    y: (86 * (manipNumber % NUMBER_OF_CHOICES)) + 225,
+                });
+
+                var nameTextId = this.manager.createEntity(['Text', 'Position']);
+                this.manager.updateComponentDataForEntity('Text', nameTextId, {content: manipData.manip});
+                this.manager.updateComponentDataForEntity('Position', nameTextId, {
+                    x: (480 * playerData.number) + 91,
+                    y: (86 * (manipNumber % NUMBER_OF_CHOICES)) + 232,
+                });
+
+                var keyTextId = this.manager.createEntity(['Text', 'Position']);
+                this.manager.updateComponentDataForEntity('Text', keyTextId, {
+                    content: allInputs[manipData.input].keys.join(', '),
+                    fill: '#F7F48D',
+                });
+                this.manager.updateComponentDataForEntity('Position', keyTextId, {
+                    x: (480 * playerData.number) + 330,
+                    y: (86 * (manipNumber % NUMBER_OF_CHOICES)) + 267,
+                });
+
+                manipNumber++;
+            }
+
+            // Show timer text.
             this.timerTextId = this.manager.createEntity(['Position', 'Text']);
             this.manager.updateComponentDataForEntity('Text', this.timerTextId, {
                 content: '5',
@@ -81,6 +169,26 @@ define([
         },
 
         endUpgrade: function () {
+            var choices = this.manager.getComponentsData('AvailableManips');
+            var matchPlayers = this.matchManager.getComponentsData('Player');
+
+            for (var c in choices) {
+                var manip = choices[c];
+                var player = this.manager.getComponentDataForEntity('Player', c);
+
+                if (!manip.choice) {
+                    // TODO choose a random manipulation.
+                    manip.choice = 'Speed';
+                }
+
+                for (var p in matchPlayers) {
+                    var mpl = matchPlayers[p];
+                    if (mpl.number === player.number) {
+                        mpl.manipulations.push(manip.choice);
+                    }
+                }
+            }
+
             this.game.state.start('Game', true, false, this.matchManager);
         },
 

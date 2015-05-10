@@ -43,7 +43,8 @@ define([
 
         var self = this;
         keys.forEach(function (element, index, array) {
-            atLeastOneKeyIsDown = atLeastOneKeyIsDown || self.game.input.keyboard.isDown(element);
+            var key = Phaser.Keyboard[element];
+            atLeastOneKeyIsDown = atLeastOneKeyIsDown || self.game.input.keyboard.isDown(key);
         });
 
         return atLeastOneKeyIsDown;
