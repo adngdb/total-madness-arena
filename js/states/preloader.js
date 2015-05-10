@@ -52,6 +52,9 @@ define([
             this.game.load.image('upgrade_menu_foreground', 'assets/gfx/upgrade_menu_foreground.png');
             this.game.load.image('upgrade_menu_middleground', 'assets/gfx/upgrade_menu_middleground.png');
 
+            /** Score state stuff **/
+            this.game.load.image('score_menu_background', 'assets/gfx/score_menu_background.png');
+
             /** Ambiance music **/
             this.game.load.audio('ambiance_lvl_1', 'assets/sfx/ambiance_lvl_1.ogg');
             this.game.load.audio('ambiance_menu_all', 'assets/sfx/ambiance_menu_all.ogg');

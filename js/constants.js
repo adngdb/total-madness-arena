@@ -1,6 +1,10 @@
 define({
     debug: false,
 
+    game: {
+        GAMES_TO_WIN: 2,
+    },
+
     inputs: {
         JUMP: 'jump',
         LEFT: 'left',

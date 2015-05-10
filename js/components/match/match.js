@@ -1,7 +1,7 @@
 define({
-    name: 'Game',
+    name: 'Match',
     state: {
-        gameOver: false,
+        matchOver: false,
         winner: null,
     }
 });

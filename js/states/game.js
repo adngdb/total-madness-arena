@@ -1,4 +1,6 @@
 define([
+    'constants',
+
     // managers
     'entity-manager',
     'global-manager',
@@ -49,6 +51,8 @@ define([
     'processors/game/action',
 ],
 function (
+    Const,
+
     // managers
     EntityManager,
     GlobalManager,
@@ -129,7 +133,25 @@ function (
             // Check if the game is over or not.
             var state = this.manager.getComponentDataForEntity('Game', this.gameStateId);
             if (state.gameOver) {
-                this.endGame();
+                var matchOver = false;
+
+                var matchPlayers = this.matchManager.getComponentsData('Player');
+                for (var p in matchPlayers) {
+                    if (matchPlayers[p].number === state.winner) {
+                        matchPlayers[p].score++;
+
+                        if (matchPlayers[p].score >= Const.game.GAMES_TO_WIN) {
+                            matchOver = true;
+                            var matches = this.matchManager.getComponentsData('Match');
+                            for (var m in matches) {
+                                matches[m].matchOver = true;
+                                matches[m].winner = state.winner;
+                            }
+                        }
+                    }
+                }
+
+                this.endGame(matchOver);
             }
         },
 
@@ -224,9 +246,14 @@ function (
             this.createGUI();
         },
 
-        endGame: function () {
+        endGame: function (matchOver) {
             this.soundProcessor.stopAll();
-            this.game.state.start('Upgrade', true, false, this.matchManager);
+            if (matchOver) {
+                this.game.state.start('Score', true, false, this.matchManager);
+            }
+            else {
+                this.game.state.start('Upgrade', true, false, this.matchManager);
+            }
         },
 
         createGUI: function () {
