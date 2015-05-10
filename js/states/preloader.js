@@ -62,6 +62,7 @@ define([
             this.game.load.image('upgrade_menu_box', 'assets/gfx/upgrade_menu_box.png');
             this.game.load.image('upgrade_menu_foreground', 'assets/gfx/upgrade_menu_foreground.png');
             this.game.load.image('upgrade_menu_middleground', 'assets/gfx/upgrade_menu_middleground.png');
+            this.game.load.image('ingame_foreground', 'assets/gfx/ingame_foreground.png');
 
             /** Title state stuff **/
             this.game.load.image('title_menu_background', 'assets/gfx/title_screen.png');

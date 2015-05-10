@@ -267,6 +267,15 @@ function (
 
             // create GUI
             this.createGUI();
+
+            var foreground = this.manager.createEntity(['Position', 'Displayable']);
+            this.manager.updateComponentDataForEntity('Displayable', foreground, {
+                sprite: 'ingame_foreground',
+            });
+            this.manager.updateComponentDataForEntity('Position', foreground, {
+                x: 480,
+                y: 384,
+            });
         },
 
         endGame: function (matchOver) {
