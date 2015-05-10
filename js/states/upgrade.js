@@ -71,6 +71,7 @@ define([
 
         create: function () {
             var NUMBER_OF_CHOICES = 2;
+            var currentNumberOfChoices = 0;
 
             // Create manipulation entities.
             var allManipsId = this.manager.createEntity(['Manipulations']);
@@ -96,6 +97,7 @@ define([
                     choices.push(allManips[j]);
                 }
                 choices = choices.filter(function(i) {return playerManips.indexOf(i) < 0;});
+                currentNumberOfChoices = choices.length;
                 this.manager.updateComponentDataForEntity('AvailableManips', pl, {manips: choices});
 
                 var markedInput = {};
@@ -156,14 +158,14 @@ define([
                 this.manager.updateComponentDataForEntity('Displayable', backId, {sprite: 'upgrade_menu_box'});
                 this.manager.updateComponentDataForEntity('Position', backId, {
                     x: (480 * playerData.number) + 81,
-                    y: (86 * (manipNumber % NUMBER_OF_CHOICES)) + 225,
+                    y: (86 * (manipNumber % (NUMBER_OF_CHOICES - (NUMBER_OF_CHOICES - currentNumberOfChoices)))) + 225,
                 });
 
                 var nameTextId = this.manager.createEntity(['Text', 'Position']);
                 this.manager.updateComponentDataForEntity('Text', nameTextId, {content: manipData.manip});
                 this.manager.updateComponentDataForEntity('Position', nameTextId, {
                     x: (480 * playerData.number) + 91,
-                    y: (86 * (manipNumber % NUMBER_OF_CHOICES)) + 225,
+                    y: (86 * (manipNumber % (NUMBER_OF_CHOICES - (NUMBER_OF_CHOICES - currentNumberOfChoices)))) + 225,
                 });
 
                 var keyTextId = this.manager.createEntity(['Text', 'Position']);
@@ -173,7 +175,7 @@ define([
                 });
                 this.manager.updateComponentDataForEntity('Position', keyTextId, {
                     x: (480 * playerData.number) + 330,
-                    y: (86 * (manipNumber % NUMBER_OF_CHOICES)) + 260,
+                    y: (86 * (manipNumber % (NUMBER_OF_CHOICES - (NUMBER_OF_CHOICES - currentNumberOfChoices)))) + 260,
                 });
 
                 manipNumber++;
