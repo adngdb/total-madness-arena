@@ -92,7 +92,6 @@ define([
                 }
 
                 var choices = [];
-                // TODO: exclude choices that have already been chosen.
                 for (var j = 0, maxln = allManips.length; j < NUMBER_OF_CHOICES && j < maxln; j++) {
                     choices.push(allManips[j]);
                 }
@@ -164,7 +163,7 @@ define([
                 this.manager.updateComponentDataForEntity('Text', nameTextId, {content: manipData.manip});
                 this.manager.updateComponentDataForEntity('Position', nameTextId, {
                     x: (480 * playerData.number) + 91,
-                    y: (86 * (manipNumber % NUMBER_OF_CHOICES)) + 232,
+                    y: (86 * (manipNumber % NUMBER_OF_CHOICES)) + 225,
                 });
 
                 var keyTextId = this.manager.createEntity(['Text', 'Position']);
@@ -174,7 +173,7 @@ define([
                 });
                 this.manager.updateComponentDataForEntity('Position', keyTextId, {
                     x: (480 * playerData.number) + 330,
-                    y: (86 * (manipNumber % NUMBER_OF_CHOICES)) + 267,
+                    y: (86 * (manipNumber % NUMBER_OF_CHOICES)) + 260,
                 });
 
                 manipNumber++;
@@ -196,20 +195,20 @@ define([
         endUpgrade: function () {
             var choices = this.manager.getComponentsData('AvailableManips');
             var matchPlayers = this.matchManager.getComponentsData('Player');
-
             for (var c in choices) {
                 var manip = choices[c];
                 var player = this.manager.getComponentDataForEntity('Player', c);
 
-                if (!manip.choice) {
-                    // TODO choose a random manipulation.
-                    manip.choice = 'Speed';
-                }
+                if (manip.manips.length > 0) {
+                    if (!manip.choice) {
+                        manip.choice = manip.manips[Math.floor(Math.random() * Object.keys(manip.manips).length)];
+                    }
 
-                for (var p in matchPlayers) {
-                    var mpl = matchPlayers[p];
-                    if (mpl.number === player.number) {
-                        mpl.manipulations.push(manip.choice);
+                    for (var p in matchPlayers) {
+                        var mpl = matchPlayers[p];
+                        if (mpl.number === player.number) {
+                            mpl.manipulations.push(manip.choice);
+                        }
                     }
                 }
             }
