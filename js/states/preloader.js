@@ -1,8 +1,9 @@
 define([
+    'constants',
     'global-manager',
     'components/global/input',
     'processors/global/input',
-], function(GlobalManager, Input, InputProcessor) {
+], function(Const, GlobalManager, Input, InputProcessor) {
 
     var Preloader = function(game) {
         this.background = null;
@@ -35,16 +36,18 @@ define([
             this.game.load.image('inGameGUITimer', 'assets/gfx/inGameGUITimer.png');
 
             var cacheKey = Phaser.Plugin.Tiled.utils.cacheKey;
-            this.game.load.tiledmap(
-                cacheKey('level_map', 'tiledmap'),
-                'assets/levels/map_01.json',
-                null,
-                Phaser.Tilemap.TILED_JSON
-            );
-            this.game.load.image(
-                cacheKey('level_map', 'tileset', 'lvl_all'),
-                'assets/gfx/lvl_all.png'
-            );
+            for (var i = 1; i <= Const.game.NUMBER_OF_MAPS; i++) {
+                this.game.load.tiledmap(
+                    cacheKey('level_map_0' + i, 'tiledmap'),
+                    'assets/levels/map_0' + i + '.json',
+                    null,
+                    Phaser.Tilemap.TILED_JSON
+                );
+                this.game.load.image(
+                    cacheKey('level_map_0' + i, 'tileset', 'level_all'),
+                    'assets/gfx/lvl_all.png'
+                );
+            }
 
             /** Upgrade state stuff **/
             this.game.load.image('upgrade_menu_back_ground', 'assets/gfx/upgrade_menu_back_ground.png');

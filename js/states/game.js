@@ -236,7 +236,9 @@ function (
             this.manager.createEntityFromAssemblage('fx');
 
             var map = this.manager.createEntity(['Map']);
-            this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';
+            var lvlNum = this.game.rnd.between(1, 4);
+            this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map_0' + lvlNum;
+            console.log('using map: ', 'level_map_0' + lvlNum);
 
             // Create ambiance music.
             var ambiance = this.manager.createEntity(['Sound']);
