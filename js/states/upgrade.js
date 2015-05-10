@@ -7,12 +7,14 @@ define([
     'components/global/position',
     'components/global/text',
     'components/global/player',
+    'components/global/sound',
 
     'components/upgrade/manipulations',
     'components/upgrade/available-manips',
     'components/upgrade/manip-input',
 
     // processors
+    'processors/global/sound',
     'processors/upgrade/rendering',
     'processors/upgrade/input',
 ], function (
@@ -24,12 +26,14 @@ define([
     Position,
     Text,
     Player,
+    Sound,
 
     Manipulations,
     AvailableManips,
     ManipInput,
 
     // processors
+    SoundProcessor,
     RenderingProcessor,
     InputProcessor
 ) {
@@ -42,11 +46,13 @@ define([
             this.matchManager = matchManager;
             this.manager = new EntityManager();
 
+            // add components
             var components = [
                 Displayable,
                 Position,
                 Text,
                 Player,
+                Sound,
                 Manipulations,
                 AvailableManips,
                 ManipInput,
@@ -55,8 +61,12 @@ define([
                 this.manager.addComponent(components[i].name, components[i]);
             }
 
-            this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
+            // add processors
+            this.soundProcessor = new SoundProcessor(this.manager, this.game);
+
             this.manager.addProcessor(new InputProcessor(this.manager));
+            this.manager.addProcessor(this.soundProcessor);
+            this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
         },
 
         create: function () {
@@ -108,6 +118,13 @@ define([
             this.timer = this.game.time.create(false);
             this.timer.loop(5000, this.endUpgrade, this);
             this.timer.start();
+
+            // Create ambiance music.
+            var ambiance = this.manager.createEntity(['Sound']);
+            this.manager.updateComponentDataForEntity('Sound', ambiance, {
+                source: 'ambiance_menu_all',
+                loop: true,
+            });
 
             // Create all background sprites.
             var backgroundSprites = [
@@ -188,6 +205,7 @@ define([
                 }
             }
 
+            this.soundProcessor.stopAll();
             this.game.state.start('Game', true, false, this.matchManager);
         },
 

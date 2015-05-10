@@ -8,6 +8,7 @@ define([
     'components/global/position',
     'components/global/text',
     'components/global/player',
+    'components/global/sound',
 
     'components/game/bounding-box',
     'components/game/collision',
@@ -39,6 +40,8 @@ define([
     'assemblages/game/fx',
 
     // processors
+    'processors/global/sound',
+
     'processors/game/rendering',
     'processors/game/physics',
     'processors/game/death',
@@ -55,6 +58,7 @@ function (
     Position,
     Text,
     Player,
+    Sound,
 
     BoundingBox,
     Collision,
@@ -86,6 +90,8 @@ function (
     Fx,
 
     // processors
+    SoundProcessor,
+
     RenderingProcessor,
     PhysicsProcessor,
     DeathProcessor,
@@ -129,13 +135,14 @@ function (
                 Collision,
                 Displayable,
                 Text,
+                Player,
+                Sound,
                 WonGames,
                 Life,
                 Movable,
                 Attack1,
                 Attack2,
                 Position,
-                Player,
                 Map,
                 LifeBar,
                 Animated,
@@ -166,10 +173,13 @@ function (
             }
 
             // Add processors.
+            this.soundProcessor = new SoundProcessor(this.manager, this.game)
+
             this.manager.addProcessor(new PhysicsProcessor(this.manager, this.game));
             this.manager.addProcessor(new ManipulationProcessor(this.manager, this.game));
             this.manager.addProcessor(new ActionProcessor(this.manager, this.game));
             this.manager.addProcessor(new DeathProcessor(this.manager, this.game, this.matchManager));
+            this.manager.addProcessor(this.soundProcessor);
             this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
 
             var player1 = this.manager.createEntityFromAssemblage('Character_01');
@@ -192,11 +202,19 @@ function (
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';
 
+            // Create ambiance music.
+            var ambiance = this.manager.createEntity(['Sound']);
+            this.manager.updateComponentDataForEntity('Sound', ambiance, {
+                source: 'ambiance_lvl_1',
+                loop: true,
+            });
+
             // create GUI
             this.createGUI();
         },
 
         endGame: function () {
+            this.soundProcessor.stopAll();
             this.game.state.start('Upgrade', true, false, this.matchManager);
         },
 
