@@ -12,7 +12,7 @@ define([
 
     'components/game/bounding-box',
     'components/game/collision',
-    'components/game/wonGames',
+    'components/game/game',
     'components/game/life',
     'components/game/movable',
     'components/game/attack1',
@@ -62,7 +62,7 @@ function (
 
     BoundingBox,
     Collision,
-    WonGames,
+    GameComp,
     Life,
     Movable,
     Attack1,
@@ -102,6 +102,7 @@ function (
         this.remainingTimeText = null;
         this.timer = null;
         this.newPlayerManipulations = [];
+        this.gameStateId = null;
     };
 
     Game.prototype = {
@@ -124,11 +125,18 @@ function (
                     content: parseInt(this.timer.duration.toFixed(0) / 1000) + 1,
                 });
             }
+
+            // Check if the game is over or not.
+            var state = this.manager.getComponentDataForEntity('Game', this.gameStateId);
+            if (state.gameOver) {
+                this.endGame();
+            }
         },
 
         create: function () {
             // set / reset a new entityManager
             this.manager = new EntityManager();
+
             // Add all components to the system.
             var components = [
                 BoundingBox,
@@ -137,7 +145,7 @@ function (
                 Text,
                 Player,
                 Sound,
-                WonGames,
+                GameComp,
                 Life,
                 Movable,
                 Attack1,
@@ -181,6 +189,9 @@ function (
             this.manager.addProcessor(new DeathProcessor(this.manager, this.game, this.matchManager));
             this.manager.addProcessor(this.soundProcessor);
             this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
+
+            // Create a state for the current game.
+            this.gameStateId = this.manager.createEntity(['Game']);
 
             var player1 = this.manager.createEntityFromAssemblage('Character_01');
             this.manager.updateComponentDataForEntity('Player', player1, {number: 0});
