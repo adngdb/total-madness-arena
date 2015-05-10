@@ -1,9 +1,9 @@
 define(function () {
 
-    var DeathProcessor = function (manager, game) {
+    var DeathProcessor = function (manager, game, matchManager) {
         this.manager = manager;
         this.game = game;
-
+        this.matchManager = matchManager;
         this.init();
     };
 
@@ -30,11 +30,11 @@ define(function () {
         }
         if (end) {
             console.log('FIN DE PARTIE');
-            this.game.state.start('Boot');
+            this.game.state.start('Boot', true, false, this.matchManager);
         }
         else if (reboot) {
             console.log('Upgrade');
-            this.game.state.start('Upgrade');
+            this.game.state.start('Upgrade', true, false, this.matchManager);
         }
     };
 

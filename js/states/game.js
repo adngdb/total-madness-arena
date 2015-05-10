@@ -18,6 +18,7 @@ define([
     'components/game/attack2',
     'components/game/map',
     'components/game/life-bar',
+    'components/game/character',
 
     'components/genetics/speed',
     'components/genetics/gravity',
@@ -64,6 +65,7 @@ function (
     Attack2,
     Map,
     LifeBar,
+    Character,
 
     Speed,
     Gravity,
@@ -145,6 +147,7 @@ function (
                 AnimationJumpFx,
                 Gravity,
                 Speed,
+                Character,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
@@ -165,7 +168,7 @@ function (
             this.manager.addProcessor(new PhysicsProcessor(this.manager, this.game));
             this.manager.addProcessor(new GeneticProcessor(this.manager, this.game));
             this.manager.addProcessor(new ActionProcessor(this.manager, this.game));
-            this.manager.addProcessor(new DeathProcessor(this.manager, this.game));
+            this.manager.addProcessor(new DeathProcessor(this.manager, this.game, this.matchManager));
             this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
 
             var player1 = this.manager.createEntityFromAssemblage('Character_01');
@@ -248,7 +251,7 @@ function (
 
             this.timerTextId = this.manager.createEntity(['Position', 'Text']);
             this.manager.updateComponentDataForEntity('Text', this.timerTextId, {
-                content: '5',
+                content: '30',
                 font: 'retroComputerDemo',
                 fontSize: '19.5px',
             });
@@ -256,6 +259,41 @@ function (
                 x: 480,
                 y: 54,
             });
+
+            // player Name text
+            var players = this.manager.getComponentsData('Player');
+            for (entity in players) {
+                var nameText = this.manager.createEntity(['Position', 'Text']);
+                var charData = this.manager.getComponentDataForEntity('Character', entity);
+                if (players[entity].number == 0) {
+                    this.manager.updateComponentDataForEntity('Text', nameText, {
+                        content: charData.name,
+                        fill: '#E8E043',
+                        font: 'retroComputerDemo',
+                        fontSize: '19.5px',
+                        align: 'right',
+                        anchorX: 1.,
+                    });
+                    this.manager.updateComponentDataForEntity('Position', nameText, {
+                        x: 350,
+                        y: 27,
+                    });
+                } else if (players[entity].number == 1) {
+                    this.manager.updateComponentDataForEntity('Text', nameText, {
+                        content: charData.name,
+                        fill: '#E8E043',
+                        font: 'retroComputerDemo',
+                        fontSize: '19.5px',
+                        align: 'left',
+                        anchorX: 0.,
+                    });
+                    this.manager.updateComponentDataForEntity('Position', nameText, {
+                        x: 611,
+                        y: 27,
+                    });
+                }
+            }
+
 
         },
 

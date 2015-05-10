@@ -16,6 +16,7 @@ define({
         'Movable',
         'Player',
         'Position',
+        'Character',
     ],
     initialState: {
         'BoundingBox': {
@@ -26,6 +27,9 @@ define({
         },
         'Displayable': {
             sprite: 'chara_fat',
+        },
+        'Character': {
+            name: 'Imperator',
         },
         'Position': {
             x: 200,

@@ -16,6 +16,7 @@ define({
         'Movable',
         'Player',
         'Position',
+        'Character',
     ],
     initialState: {
         'AnimationAttack1': {
@@ -41,6 +42,9 @@ define({
         },
         'Displayable': {
             sprite: 'chara_thin',
+        },
+        'Character': {
+            name: 'Gino',
         },
         'Position': {
             x: 500,

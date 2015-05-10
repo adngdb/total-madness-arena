@@ -73,7 +73,7 @@ define(['constants'], function (Const) {
             align: textData.align,
         };
         var text = this.game.add.text(posData.x, posData.y, textData.content, style);
-        text.anchor.setTo(.5, .5);
+        text.anchor.setTo(textData.anchorX, textData.anchorY);
         this.texts[entity] = text;
     };
 
@@ -98,9 +98,6 @@ define(['constants'], function (Const) {
             if (players[entity].number == 0) {
                 this.updateLife(lifeData, this.player0LifeBar);
             } else if (players[entity].number == 1) {
-                if (this.player1LifeBar != null) {
-    // console.log(this.player1LifeBar.offsetX)
-}
                 this.updateLife(lifeData, this.player1LifeBar);
             }
         }
