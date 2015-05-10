@@ -13,6 +13,7 @@ define([
     'components/manipulations/gravity',
     'components/manipulations/zangief',
     'components/manipulations/flash',
+    'components/manipulations/pervert',
 
     'components/upgrade/manipulations',
     'components/upgrade/available-manips',
@@ -37,6 +38,7 @@ define([
     Gravity,
     Zangief,
     Flash,
+    Pervert,
 
     Manipulations,
     AvailableManips,
@@ -70,6 +72,7 @@ define([
                 Gravity,
                 Zangief,
                 Flash,
+                Pervert,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
@@ -84,12 +87,13 @@ define([
         },
 
         create: function () {
-            var NUMBER_OF_CHOICES = 5;
-            var currentNumberOfChoices = 0;
-
             // Create manipulation entities.
             var allManipsId = this.manager.createEntity(['Manipulations']);
             var allManips = this.manager.getComponentDataForEntity('Manipulations', allManipsId).allManips;
+
+            var NUMBER_OF_CHOICES = allManips.length;
+            console.log(NUMBER_OF_CHOICES);
+            var currentNumberOfChoices = 0;
 
             var allManipNames = [];
             var manipulationsData = this.manager.createEntity(allManips);

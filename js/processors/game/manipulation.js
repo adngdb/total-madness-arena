@@ -17,6 +17,7 @@ define(function () {
         this.manipulateGravity();
         this.manipulateZangief();
         this.manipulateFlash();
+        this.manipulatePervert();
     };
 
     ManipulationProcessor.prototype.manipulateSpeed = function () {
@@ -78,6 +79,22 @@ define(function () {
                     var attack2Data = this.manager.getComponentDataForEntity('Attack2', entity);
                     attack2Data.value = attack2Data.value * flash[entity].value;
                     attack2Data.cooldown = attack2Data.cooldown * flash[entity].cooldown;
+                }
+            }
+        }
+    };
+
+    ManipulationProcessor.prototype.manipulatePervert = function () {
+        var pervert = this.manager.getComponentsData('Pervert');
+        for (var entity in pervert) {
+            if (!this.speeded[entity]) {
+                this.speeded[entity] = entity;
+                if (this.manager.entityHasComponent(entity, 'Displayable')) {
+                    console.log('pouet');
+                    var movableData = this.manager.getComponentDataForEntity('Displayable', entity);
+                    console.log(movableData.deleted);
+                    movableData.deleted = !pervert[entity].visible;
+                    console.log(movableData.deleted);
                 }
             }
         }

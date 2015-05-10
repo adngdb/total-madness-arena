@@ -27,6 +27,7 @@ define([
     'components/manipulations/gravity',
     'components/manipulations/zangief',
     'components/manipulations/flash',
+    'components/manipulations/pervert',
 
     'components/game/animated',
     'components/game/animation-idle',
@@ -81,6 +82,7 @@ function (
     Gravity,
     Zangief,
     Flash,
+    Pervert,
 
     Animated,
     AnimationIdle,
@@ -191,6 +193,7 @@ function (
                 Speed,
                 Zangief,
                 Flash,
+                Pervert,
                 Character,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
