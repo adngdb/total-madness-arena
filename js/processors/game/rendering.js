@@ -142,34 +142,23 @@ define(['constants'], function (Const) {
                         var attack2 = this.manager.getComponentDataForEntity('Attack2', entity);
 
                         if (!moveData.jumpAllowed) {
-                            if (animatedData.current != 'jump') {
-                                animatedData.current = 'jump';
-                                this.sprites[entity].animations.play(animatedData.current);
-                            }
+                            animatedData.current = 'jump';
                         }
                         else if (moveData.dx !== 0) {
-                            if (animatedData.current != 'walk') {
-                                animatedData.current = 'walk';
-                                this.sprites[entity].animations.play(animatedData.current);
-                            }
+                            animatedData.current = 'walk';
                         }
                         else if (attack1.lastAttack < attack1.cooldown) {
-                            if (animatedData.current != 'attack1') {
-                                animatedData.current = 'attack1';
-                                this.sprites[entity].animations.play(animatedData.current);
-                            }
+                            animatedData.current = 'attack1';
                         }
                         else if (attack2.lastAttack < attack2.cooldown) {
-                            if (animatedData.current != 'attack2') {
-                                animatedData.current = 'attack2';
-                                this.sprites[entity].animations.play(animatedData.current);
-                            }
+                            animatedData.current = 'attack2';
                         }
                         else {
-                            if (animatedData.current != 'idle') {
-                                animatedData.current = 'idle';
-                                this.sprites[entity].animations.play(animatedData.current);
-                            }
+                            animatedData.current = 'idle';
+                        }
+
+                        if (this.sprites[entity].animations.currentAnim.name !== animatedData.current) {
+                            this.sprites[entity].animations.play(animatedData.current);
                         }
                     }
                     else {
