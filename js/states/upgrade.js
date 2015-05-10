@@ -83,11 +83,20 @@ define([
                 var pl = this.manager.createEntity(['Player', 'AvailableManips']);
                 this.manager.updateComponentDataForEntity('Player', pl, {number: i});
 
+                var matchPlayers = this.matchManager.getComponentsData('Player');
+                var playerManips = [];
+                for (var matchPlayer in matchPlayers) {
+                    if (matchPlayers[matchPlayer].number === i) {
+                        playerManips = matchPlayers[matchPlayer].manipulations;
+                    }
+                }
+
                 var choices = [];
                 // TODO: exclude choices that have already been chosen.
                 for (var j = 0, maxln = allManips.length; j < NUMBER_OF_CHOICES && j < maxln; j++) {
                     choices.push(allManips[j]);
                 }
+                choices = choices.filter(function(i) {return playerManips.indexOf(i) < 0;});
                 this.manager.updateComponentDataForEntity('AvailableManips', pl, {manips: choices});
 
                 var markedInput = {};
