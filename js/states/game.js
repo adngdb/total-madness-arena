@@ -25,6 +25,7 @@ define([
 
     'components/manipulations/speed',
     'components/manipulations/gravity',
+    'components/manipulations/zangief',
 
     'components/game/animated',
     'components/game/animation-idle',
@@ -77,6 +78,7 @@ function (
 
     Speed,
     Gravity,
+    Zangief,
 
     Animated,
     AnimationIdle,
@@ -185,6 +187,7 @@ function (
                 AnimationJumpFx,
                 Gravity,
                 Speed,
+                Zangief,
                 Character,
             ];
             for (var i = components.length - 1; i >= 0; i--) {

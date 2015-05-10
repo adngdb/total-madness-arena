@@ -15,6 +15,7 @@ define(function () {
     ManipulationProcessor.prototype.update = function () {
         this.manipulateSpeed();
         this.manipulateGravity();
+        this.manipulateZangief();
     };
 
     ManipulationProcessor.prototype.manipulateSpeed = function () {
@@ -38,6 +39,25 @@ define(function () {
                 if (this.manager.entityHasComponent(entity, 'Movable')) {
                     var movableData = this.manager.getComponentDataForEntity('Movable', entity);
                     movableData.gravity = movableData.gravity * gravity[entity].gravityScale;
+                }
+            }
+        }
+    };
+
+    ManipulationProcessor.prototype.manipulateZangief = function () {
+        var zangief = this.manager.getComponentsData('Zangief');
+        for (var entity in zangief) {
+            if (!this.gravited[entity]) {
+                this.gravited[entity] = entity;
+                if (this.manager.entityHasComponent(entity, 'Attack1')) {
+                    var attack1Data = this.manager.getComponentDataForEntity('Attack1', entity);
+                    attack1Data.value = attack1Data.value * zangief[entity].value;
+                    attack1Data.cooldown = attack1Data.cooldown * zangief[entity].cooldown;
+                }
+                if (this.manager.entityHasComponent(entity, 'Attack2')) {
+                    var attack2Data = this.manager.getComponentDataForEntity('Attack2', entity);
+                    attack2Data.value = attack2Data.value * zangief[entity].value;
+                    attack2Data.cooldown = attack2Data.cooldown * zangief[entity].cooldown;
                 }
             }
         }

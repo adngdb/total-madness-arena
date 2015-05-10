@@ -11,6 +11,7 @@ define([
 
     'components/manipulations/speed',
     'components/manipulations/gravity',
+    'components/manipulations/zangief',
 
     'components/upgrade/manipulations',
     'components/upgrade/available-manips',
@@ -33,6 +34,7 @@ define([
 
     Speed,
     Gravity,
+    Zangief,
 
     Manipulations,
     AvailableManips,
@@ -64,6 +66,7 @@ define([
                 ManipInput,
                 Speed,
                 Gravity,
+                Zangief,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
@@ -78,7 +81,7 @@ define([
         },
 
         create: function () {
-            var NUMBER_OF_CHOICES = 2;
+            var NUMBER_OF_CHOICES = 3;
             var currentNumberOfChoices = 0;
 
             // Create manipulation entities.
@@ -87,7 +90,7 @@ define([
             console.log(allManips);
 
             var allManipNames = [];
-            var manipulationsData = this.manager.createEntity(['Speed', 'Gravity']);
+            var manipulationsData = this.manager.createEntity(['Speed', 'Gravity', 'Zangief']);
             for (var manip in allManips) {
                 allManipNames[allManips[manip]] = this.manager.getComponentDataForEntity(allManips[manip], manipulationsData).name;
             }
