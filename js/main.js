@@ -13,12 +13,13 @@
     require([
     'states/boot',
     'states/preloader',
+    'states/title',
     'states/game',
     'states/upgrade',
     'states/player-choice',
     'states/score'
     ],
-    function (Boot, Preloader, Game, Upgrade, PlayerChoice, Score) {
+    function (Boot, Preloader, Title, Game, Upgrade, PlayerChoice, Score) {
 
         var game = new Phaser.Game(960, 768, Phaser.AUTO, 'stage', {
             init: init,
@@ -28,6 +29,7 @@
         function create() {
             this.game.state.add('Boot', Boot);
             this.game.state.add('Preload', Preloader);
+            this.game.state.add('Title', Title);
             this.game.state.add('Game', Game);
             this.game.state.add('Upgrade', Upgrade);
             this.game.state.add('PlayerChoice', PlayerChoice);
