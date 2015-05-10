@@ -90,11 +90,8 @@ define(function () {
             if (!this.speeded[entity]) {
                 this.speeded[entity] = entity;
                 if (this.manager.entityHasComponent(entity, 'Displayable')) {
-                    console.log('pouet');
                     var movableData = this.manager.getComponentDataForEntity('Displayable', entity);
-                    console.log(movableData.deleted);
                     movableData.deleted = !pervert[entity].visible;
-                    console.log(movableData.deleted);
                 }
             }
         }
