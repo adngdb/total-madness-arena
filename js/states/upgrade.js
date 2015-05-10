@@ -14,6 +14,7 @@ define([
     'components/manipulations/zangief',
     'components/manipulations/flash',
     'components/manipulations/pervert',
+    'components/manipulations/nega',
 
     'components/upgrade/manipulations',
     'components/upgrade/available-manips',
@@ -39,6 +40,7 @@ define([
     Zangief,
     Flash,
     Pervert,
+    Nega,
 
     Manipulations,
     AvailableManips,
@@ -73,6 +75,7 @@ define([
                 Zangief,
                 Flash,
                 Pervert,
+                Nega,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);

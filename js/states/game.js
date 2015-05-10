@@ -28,6 +28,7 @@ define([
     'components/manipulations/zangief',
     'components/manipulations/flash',
     'components/manipulations/pervert',
+    'components/manipulations/nega',
 
     'components/game/animated',
     'components/game/animation-idle',
@@ -83,6 +84,7 @@ function (
     Zangief,
     Flash,
     Pervert,
+    Nega,
 
     Animated,
     AnimationIdle,
@@ -194,6 +196,7 @@ function (
                 Zangief,
                 Flash,
                 Pervert,
+                Nega,
                 Character,
             ];
             for (var i = components.length - 1; i >= 0; i--) {

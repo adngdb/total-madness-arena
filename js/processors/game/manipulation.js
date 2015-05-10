@@ -18,6 +18,7 @@ define(function () {
         this.manipulateZangief();
         this.manipulateFlash();
         this.manipulatePervert();
+        this.manipulateNega();
     };
 
     ManipulationProcessor.prototype.manipulateSpeed = function () {
@@ -90,8 +91,23 @@ define(function () {
             if (!this.speeded[entity]) {
                 this.speeded[entity] = entity;
                 if (this.manager.entityHasComponent(entity, 'Displayable')) {
-                    var movableData = this.manager.getComponentDataForEntity('Displayable', entity);
-                    movableData.deleted = !pervert[entity].visible;
+                    var displayableData = this.manager.getComponentDataForEntity('Displayable', entity);
+                    displayableData.deleted = !pervert[entity].visible;
+                }
+            }
+        }
+    };
+
+    ManipulationProcessor.prototype.manipulateNega = function () {
+        var pervert = this.manager.getComponentsData('Nega');
+        for (var entity in pervert) {
+            if (!this.speeded[entity]) {
+                this.speeded[entity] = entity;
+                if (this.manager.entityHasComponent(entity, 'Displayable')) {
+                    var displayableData = this.manager.getComponentDataForEntity('Displayable', entity);
+                    console.log(displayableData);
+                    displayableData.sprite = 'nega_' + displayableData.sprite;
+                    console.log(displayableData);
                 }
             }
         }

@@ -28,6 +28,8 @@ define([
             /** Game state stuff **/
             this.game.load.spritesheet('chara_fat', 'assets/gfx/chara_fat.png', 64, 96);
             this.game.load.spritesheet('chara_thin', 'assets/gfx/chara_thin.png', 64, 96);
+            this.game.load.spritesheet('nega_chara_fat', 'assets/gfx/nega_chara_fat.png', 64, 96);
+            this.game.load.spritesheet('nega_chara_thin', 'assets/gfx/nega_chara_thin.png', 64, 96);
             this.game.load.spritesheet('fx', 'assets/gfx/fx.png', 64, 96);
 
             // GUI

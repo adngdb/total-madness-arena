@@ -1,6 +1,6 @@
 define({
     name: 'Manipulations',
     state: {
-        allManips: ['Speed', 'Gravity', 'Zangief', 'Flash', 'Pervert'],
+        allManips: ['Speed', 'Gravity', 'Zangief', 'Flash', 'Pervert', 'Nega'],
     }
 });
