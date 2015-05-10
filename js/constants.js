@@ -4,7 +4,7 @@ define({
     game: {
         GAMES_TO_WIN: 2,
         NUMBER_OF_MAPS: 5,
-        DURATION: 300000,
+        DURATION: 30000,
     },
 
     inputs: {
