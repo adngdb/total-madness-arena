@@ -43,6 +43,9 @@ define([
     // assemblages
     'assemblages/game/character_01',
     'assemblages/game/character_02',
+    'assemblages/game/character_03',
+    'assemblages/game/character_04',
+    'assemblages/game/character_05',
     'assemblages/game/fx',
 
     // processors
@@ -99,6 +102,9 @@ function (
     // assemblages
     Character_01,
     Character_02,
+    Character_03,
+    Character_04,
+    Character_05,
     Fx,
 
     // processors
@@ -208,6 +214,9 @@ function (
             var assemblages = [
                 Character_01,
                 Character_02,
+                Character_03,
+                Character_04,
+                Character_05,
                 Fx,
             ];
             for (var i = assemblages.length - 1; i >= 0; i--) {
@@ -227,10 +236,10 @@ function (
             // Create a state for the current game.
             this.gameStateId = this.manager.createEntity(['Game']);
 
-            var player1 = this.manager.createEntityFromAssemblage('Character_01');
+            var player1 = this.manager.createEntityFromAssemblage('Character_04');
             this.manager.updateComponentDataForEntity('Player', player1, {number: 0});
 
-            var player2 = this.manager.createEntityFromAssemblage('Character_02');
+            var player2 = this.manager.createEntityFromAssemblage('Character_05');
             this.manager.updateComponentDataForEntity('Player', player2, {number: 1});
 
             for(var player in this.newPlayerManipulations) {
@@ -326,7 +335,7 @@ function (
 
             // timer text
             this.timer = this.game.time.create(false);
-            this.timer.loop(30000, this.endGame, this);
+            this.timer.loop(Const.game.DURATION, this.endGame, this);
             this.timer.start();
 
             this.timerTextId = this.manager.createEntity(['Position', 'Text']);

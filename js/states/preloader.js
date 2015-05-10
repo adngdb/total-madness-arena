@@ -27,9 +27,15 @@ define([
 
             /** Game state stuff **/
             this.game.load.spritesheet('chara_fat', 'assets/gfx/chara_fat.png', 64, 96);
-            this.game.load.spritesheet('chara_thin', 'assets/gfx/chara_thin.png', 64, 96);
             this.game.load.spritesheet('nega_chara_fat', 'assets/gfx/nega_chara_fat.png', 64, 96);
+            this.game.load.spritesheet('chara_thin', 'assets/gfx/chara_thin.png', 64, 96);
             this.game.load.spritesheet('nega_chara_thin', 'assets/gfx/nega_chara_thin.png', 64, 96);
+            this.game.load.spritesheet('chara_punkette', 'assets/gfx/chara_punkette.png', 64, 96);
+            this.game.load.spritesheet('nega_chara_punkette', 'assets/gfx/nega_chara_punkette.png', 64, 96);
+            this.game.load.spritesheet('chara_eva', 'assets/gfx/chara_eva.png', 64, 96);
+            this.game.load.spritesheet('nega_chara_eva', 'assets/gfx/nega_chara_eva.png', 64, 96);
+            this.game.load.spritesheet('chara_kaput', 'assets/gfx/chara_kaput.png', 64, 96);
+            this.game.load.spritesheet('nega_chara_kaput', 'assets/gfx/nega_chara_kaput.png', 64, 96);
             this.game.load.spritesheet('fx', 'assets/gfx/fx.png', 64, 96);
 
             // GUI
