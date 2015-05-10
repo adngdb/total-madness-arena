@@ -6,11 +6,8 @@ define([
     // components
     'components/global/displayable',
     'components/global/position',
-<<<<<<< HEAD
     'components/global/text',
-=======
     'components/global/player',
->>>>>>> Added manipulation choice in upgrade menu and pass that data to the next state.
 
     'components/game/bounding-box',
     'components/game/collision',
@@ -55,11 +52,8 @@ function (
     // components
     Displayable,
     Position,
-<<<<<<< HEAD
     Text,
-=======
     Player,
->>>>>>> Added manipulation choice in upgrade menu and pass that data to the next state.
 
     BoundingBox,
     Collision,
