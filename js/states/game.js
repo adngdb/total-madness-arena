@@ -23,8 +23,8 @@ define([
     'components/game/life-bar',
     'components/game/character',
 
-    'components/genetics/speed',
-    'components/genetics/gravity',
+    'components/manipulations/speed',
+    'components/manipulations/gravity',
 
     'components/game/animated',
     'components/game/animation-idle',
