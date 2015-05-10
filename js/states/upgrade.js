@@ -9,6 +9,9 @@ define([
     'components/global/player',
     'components/global/sound',
 
+    'components/manipulations/speed',
+    'components/manipulations/gravity',
+
     'components/upgrade/manipulations',
     'components/upgrade/available-manips',
     'components/upgrade/manip-input',
@@ -27,6 +30,9 @@ define([
     Text,
     Player,
     Sound,
+
+    Speed,
+    Gravity,
 
     Manipulations,
     AvailableManips,
@@ -56,6 +62,8 @@ define([
                 Manipulations,
                 AvailableManips,
                 ManipInput,
+                Speed,
+                Gravity,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
@@ -76,6 +84,14 @@ define([
             // Create manipulation entities.
             var allManipsId = this.manager.createEntity(['Manipulations']);
             var allManips = this.manager.getComponentDataForEntity('Manipulations', allManipsId).allManips;
+            console.log(allManips);
+
+            var allManipNames = [];
+            var manipulationsData = this.manager.createEntity(['Speed', 'Gravity']);
+            for (var manip in allManips) {
+                allManipNames[allManips[manip]] = this.manager.getComponentDataForEntity(allManips[manip], manipulationsData).name;
+            }
+            console.log(allManipNames);
 
             var allInputs = GlobalManager.getComponentsData('Input');
 
@@ -162,7 +178,7 @@ define([
                 });
 
                 var nameTextId = this.manager.createEntity(['Text', 'Position']);
-                this.manager.updateComponentDataForEntity('Text', nameTextId, {content: manipData.manip});
+                this.manager.updateComponentDataForEntity('Text', nameTextId, {content: allManipNames[manipData.manip]});
                 this.manager.updateComponentDataForEntity('Position', nameTextId, {
                     x: (480 * playerData.number) + 91,
                     y: (86 * (manipNumber % (NUMBER_OF_CHOICES - (NUMBER_OF_CHOICES - currentNumberOfChoices)))) + 225,
