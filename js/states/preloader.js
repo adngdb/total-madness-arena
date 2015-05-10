@@ -25,6 +25,11 @@ define([
 
             this.load.setPreloadSprite(this.preloadBar);
 
+            /** Player Choice state stuff **/
+            this.game.load.image('menuSelectionPerso', 'assets/gfx/menuSelectionPerso.png');
+            // missing char portrait
+            // this.game.load.image('upgrade_menu_middleground', 'assets/gfx/upgrade_menu_middleground.png');
+
             /** Game state stuff **/
             this.game.load.spritesheet('chara_fat', 'assets/gfx/chara_fat.png', 64, 96);
             this.game.load.spritesheet('nega_chara_fat', 'assets/gfx/nega_chara_fat.png', 64, 96);

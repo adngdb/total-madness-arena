@@ -5,6 +5,7 @@ define({
     initialState: {
         'Player': {
             number: 0,
+            character: 'Character_01',
         }
     }
 });

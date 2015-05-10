@@ -4,5 +4,6 @@ define({
         sprite: '',
         deleted: false,
         scaleX: 1,
+        scaleY: 1,
     }
 });
