@@ -19,6 +19,11 @@ define(['constants'], function (Const) {
         // Phaser handles all the displaying so we only need to create Sprites
         // once, and then keep a track of those Sprite objects.
         this.sprites = {};
+        this.texts = {};
+
+        this.player0LifeBar = null;
+        this.player1LifeBar = null;
+        this.lifeGaugeMaxSize = null;
 
         // For debug.
         this.graphics = null;
@@ -29,6 +34,7 @@ define(['constants'], function (Const) {
 
         var sprite = this.game.add.sprite(positionData.x, positionData.y, displayableData.sprite);
         sprite.anchor.setTo(.5, .5);
+        sprite.scale.x = displayableData.scaleX;
         this.sprites[entity] = sprite;
 
         if (this.manager.entityHasComponent(entity, 'Animated')) {
@@ -41,6 +47,34 @@ define(['constants'], function (Const) {
                 }
             }
         }
+        if (this.manager.entityHasComponent(entity, 'LifeBar')) {
+            var lifeBar = this.manager.getComponentDataForEntity('LifeBar', entity);
+            sprite.cropEnabled = true;
+            if (lifeBar.player == 1) {
+                // player0 lifebar anchor LEFT
+                sprite.anchor.setTo(0, 0.5);
+                this.player1LifeBar = sprite;
+                this.lifeGaugeMaxSize = -sprite.width;
+            }
+            else {
+                // player0 lifebar anchor LEFT
+                sprite.anchor.setTo(0, 0.5);
+                this.player0LifeBar = sprite;
+            }
+        }
+    };
+
+    RenderingProcessor.prototype.createText = function (entity, textData) {
+        var posData = this.manager.getComponentDataForEntity('Position', entity);
+
+        var style = {
+            font: textData.fontSize + ' ' + textData.font,
+            fill: textData.fill,
+            align: textData.align,
+        };
+        var text = this.game.add.text(posData.x, posData.y, textData.content, style);
+        text.anchor.setTo(.5, .5);
+        this.texts[entity] = text;
     };
 
     RenderingProcessor.prototype.update = function (dt) {
@@ -54,6 +88,20 @@ define(['constants'], function (Const) {
                 // Store the created map object in the component, so that it
                 // can be re-used by the PhysicsProcessor for collisions.
                 maps[mapId]._map = this.game.add.tiledmap(maps[mapId].resourceId);
+            }
+        }
+
+        // update lifeGauge
+        var players = this.manager.getComponentsData('Player');
+        for (entity in players) {
+            var lifeData = this.manager.getComponentDataForEntity('Life', entity);
+            if (players[entity].number == 0) {
+                this.updateLife(lifeData, this.player0LifeBar);
+            } else if (players[entity].number == 1) {
+                if (this.player1LifeBar != null) {
+    // console.log(this.player1LifeBar.offsetX)
+}
+                this.updateLife(lifeData, this.player1LifeBar);
             }
         }
 
@@ -135,14 +183,21 @@ define(['constants'], function (Const) {
                             displayables[entity].deleted = true;
                             this.sprites[entity] = null;
                         }
-                        // if (this.sprites[entity].animations.getAnimation('attackFx').isFinished
-                        //     && this.sprites[entity].animations.getAnimation('jumpFx').isFinished) {
-                        //     displayables[entity].deleted = true;
-                        // }
                     }
                 }
             }
+        }
 
+        // Display all texts.
+        var texts = this.manager.getComponentsData('Text');
+        for (entity in texts) {
+            // First create the actual Phaser.Text object if it doesn't exist yet.
+            if (!this.texts[entity]) {
+                this.createText(entity, texts[entity]);
+            }
+            else {
+                this.texts[entity].text = texts[entity].content;
+            }
         }
 
         // DEBUG
@@ -169,6 +224,20 @@ define(['constants'], function (Const) {
             }
         }
     };
+
+    RenderingProcessor.prototype.updateLife = function(lifeData, lifeBar) {
+        if (lifeBar === null) {
+            return;
+        }
+        var croppedWidth = (lifeData.value / 100.) * this.lifeGaugeMaxSize;
+        lifeBar.crop({
+            x: 0,
+            y: 0,
+            width: croppedWidth,
+            height: lifeBar.height
+        });
+
+    }
 
     return RenderingProcessor;
 });

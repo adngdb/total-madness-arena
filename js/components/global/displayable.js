@@ -5,6 +5,7 @@ define(function () {
         state: {
             sprite: '',
             deleted: false,
+            scaleX: 1,
         }
     };
 

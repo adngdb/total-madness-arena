@@ -71,7 +71,8 @@ define([
             this.timerTextId = this.manager.createEntity(['Position', 'Text']);
             this.manager.updateComponentDataForEntity('Text', this.timerTextId, {
                 content: '5',
-                font: '24pt retroComputerDemo',
+                font: 'retroComputerDemo',
+                fontSize: '24pt',
             });
             this.manager.updateComponentDataForEntity('Position', this.timerTextId, {
                 x: 676,

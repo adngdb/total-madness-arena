@@ -6,6 +6,7 @@ define([
     // components
     'components/global/displayable',
     'components/global/position',
+    'components/global/text',
 
     'components/game/bounding-box',
     'components/game/collision',
@@ -16,6 +17,7 @@ define([
     'components/game/attack2',
     'components/game/player',
     'components/game/map',
+    'components/game/life-bar',
 
     'components/genetics/speed',
     'components/genetics/gravity',
@@ -50,6 +52,7 @@ function (
     // components
     Displayable,
     Position,
+    Text,
 
     BoundingBox,
     Collision,
@@ -60,6 +63,8 @@ function (
     Attack2,
     Player,
     Map,
+    LifeBar,
+
     Speed,
     Gravity,
 
@@ -101,7 +106,9 @@ function (
             this.manager.update(this.game.time.elapsed);
 
             if (this.timer.ms > 0) {
-                this.remainingTimeText.text = parseInt(this.timer.duration.toFixed(0) / 1000) + 1;
+                this.manager.updateComponentDataForEntity('Text', this.timerTextId, {
+                    content: parseInt(this.timer.duration.toFixed(0) / 1000) + 1,
+                });
             }
         },
 
@@ -113,6 +120,7 @@ function (
                 BoundingBox,
                 Collision,
                 Displayable,
+                Text,
                 WonGames,
                 Life,
                 Movable,
@@ -121,6 +129,7 @@ function (
                 Position,
                 Player,
                 Map,
+                LifeBar,
                 Animated,
                 AnimationIdle,
                 AnimationJump,
@@ -165,18 +174,87 @@ function (
             var map = this.manager.createEntity(['Map']);
             this.manager.getComponentDataForEntity('Map', map).resourceId = 'level_map';
 
-            // timer
-            this.timer = this.game.time.create(false);
-            this.timer.loop(1000, this.endGame, this);
-            this.timer.start();
+            // create GUI
+            this.createGUI();
 
-            var style = { font: "24pt retroComputerDemo", fill: "#000000", align: "center" };
-            this.remainingTimeText = this.game.add.text(676, 50, "5", style);
         },
 
         endGame: function () {
             this.game.state.start('Upgrade', true, false, this.matchManager);
         },
+
+        createGUI: function () {
+            // player 1
+            var gUIElement = this.manager.createEntity(['Position', 'Displayable']);
+            this.manager.updateComponentDataForEntity('Displayable', gUIElement, {
+                sprite: 'inGameGUIBarBorder',
+            });
+            this.manager.updateComponentDataForEntity('Position', gUIElement, {
+                x: 186,
+                y: 40,
+            });
+
+            gUIElement = this.manager.createEntity(['Position', 'Displayable', 'LifeBar']);
+            this.manager.updateComponentDataForEntity('Displayable', gUIElement, {
+                sprite: 'inGameGUIBarFill',
+            });
+            this.manager.updateComponentDataForEntity('Position', gUIElement, {
+                x: 19,
+                y: 40,
+            });
+
+            // player 2
+            var gUIElement = this.manager.createEntity(['Position', 'Displayable']);
+            this.manager.updateComponentDataForEntity('Displayable', gUIElement, {
+                sprite: 'inGameGUIBarBorder',
+                scaleX: -1,
+            });
+            this.manager.updateComponentDataForEntity('Position', gUIElement, {
+                x: 778,
+                y: 40,
+            });
+
+            gUIElement = this.manager.createEntity(['Position', 'Displayable', 'LifeBar']);
+            this.manager.updateComponentDataForEntity('Displayable', gUIElement, {
+                sprite: 'inGameGUIBarFill',
+                scaleX: -1,
+            });
+            this.manager.updateComponentDataForEntity('Position', gUIElement, {
+                x: 945,
+                y: 40,
+            });
+            this.manager.updateComponentDataForEntity('LifeBar', gUIElement, {
+                player: 1,
+            });
+
+            // timer
+            gUIElement = this.manager.createEntity(['Position', 'Displayable']);
+            this.manager.updateComponentDataForEntity('Displayable', gUIElement, {
+                sprite: 'inGameGUITimer',
+            });
+            this.manager.updateComponentDataForEntity('Position', gUIElement, {
+                x: 480,
+                y: 40,
+            });
+
+            // timer text
+            this.timer = this.game.time.create(false);
+            this.timer.loop(30000, this.endGame, this);
+            this.timer.start();
+
+            this.timerTextId = this.manager.createEntity(['Position', 'Text']);
+            this.manager.updateComponentDataForEntity('Text', this.timerTextId, {
+                content: '5',
+                font: 'retroComputerDemo',
+                fontSize: '19.5px',
+            });
+            this.manager.updateComponentDataForEntity('Position', this.timerTextId, {
+                x: 480,
+                y: 54,
+            });
+
+        },
+
     };
 
     return Game;

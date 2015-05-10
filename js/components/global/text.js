@@ -2,8 +2,9 @@ define({
     name: 'Text',
     state: {
         content: '',
-        font: '16pt retroComputerDemo',
+        font: 'retroComputerDemo',
         fill: '#000000',
         align: 'center',
+        fontSize: '24pt',
     }
 });

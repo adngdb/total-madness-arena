@@ -29,6 +29,11 @@ define([
             this.game.load.spritesheet('chara_thin', 'assets/gfx/chara_thin.png', 64, 96);
             this.game.load.spritesheet('fx', 'assets/gfx/fx.png', 64, 96);
 
+            // GUI
+            this.game.load.image('inGameGUIBarBorder', 'assets/gfx/inGameGUIBarBorder.png');
+            this.game.load.image('inGameGUIBarFill', 'assets/gfx/inGameGUIBarFill.png');
+            this.game.load.image('inGameGUITimer', 'assets/gfx/inGameGUITimer.png');
+
             var cacheKey = Phaser.Plugin.Tiled.utils.cacheKey;
             this.game.load.tiledmap(
                 cacheKey('level_map', 'tiledmap'),

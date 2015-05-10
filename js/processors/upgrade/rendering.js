@@ -28,7 +28,7 @@ define(function () {
         var posData = this.manager.getComponentDataForEntity('Position', entity);
 
         var style = {
-            font: textData.font,
+            font: textData.fontSize + ' ' + textData.font,
             fill: textData.fill,
             align: textData.align,
         };
