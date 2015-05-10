@@ -42,7 +42,7 @@ define([
     'processors/game/rendering',
     'processors/game/physics',
     'processors/game/death',
-    'processors/game/genetic',
+    'processors/game/manipulation',
     'processors/game/action',
 ],
 function (
@@ -89,12 +89,13 @@ function (
     RenderingProcessor,
     PhysicsProcessor,
     DeathProcessor,
-    GeneticProcessor,
+    ManipulationProcessor,
     ActionProcessor
 ) {
     var Game = function () {
         this.remainingTimeText = null;
         this.timer = null;
+        this.newPlayerManipulations = [];
     };
 
     Game.prototype = {
@@ -104,7 +105,7 @@ function (
 
             var players = matchManager.getComponentsData('Player');
             for (var p in players) {
-                console.log(players[p].number, players[p].manipulations);
+                this.newPlayerManipulations[players[p].number] = players[p].manipulations;
             }
         },
 
@@ -166,7 +167,7 @@ function (
 
             // Add processors.
             this.manager.addProcessor(new PhysicsProcessor(this.manager, this.game));
-            this.manager.addProcessor(new GeneticProcessor(this.manager, this.game));
+            this.manager.addProcessor(new ManipulationProcessor(this.manager, this.game));
             this.manager.addProcessor(new ActionProcessor(this.manager, this.game));
             this.manager.addProcessor(new DeathProcessor(this.manager, this.game, this.matchManager));
             this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
@@ -176,6 +177,15 @@ function (
 
             var player2 = this.manager.createEntityFromAssemblage('Character_02');
             this.manager.updateComponentDataForEntity('Player', player2, {number: 1});
+
+            for(var player in this.newPlayerManipulations) {
+                if (player == 0) {
+                    this.manager.addComponentsToEntity(player2, this.newPlayerManipulations[player]);
+                }
+                else {
+                    this.manager.addComponentsToEntity(player1, this.newPlayerManipulations[player]);
+                }
+            }
 
             this.manager.createEntityFromAssemblage('fx');
 

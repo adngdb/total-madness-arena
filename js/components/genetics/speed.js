@@ -2,6 +2,6 @@ define({
     name: 'Speed',
     state: {
         name: 'Road Runner',
-        speedScale: 2/3,
+        speedScale: 2,
     }
 });

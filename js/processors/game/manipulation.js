@@ -1,6 +1,6 @@
 define(function () {
 
-    var GeneticProcessor = function (manager, game) {
+    var ManipulationProcessor = function (manager, game) {
         this.manager = manager;
         this.game = game;
         this.speeded = [];
@@ -9,15 +9,15 @@ define(function () {
         this.init();
     };
 
-    GeneticProcessor.prototype.init = function () {
+    ManipulationProcessor.prototype.init = function () {
     };
 
-    GeneticProcessor.prototype.update = function () {
+    ManipulationProcessor.prototype.update = function () {
         this.manipulateSpeed();
         this.manipulateGravity();
     };
 
-    GeneticProcessor.prototype.manipulateSpeed = function () {
+    ManipulationProcessor.prototype.manipulateSpeed = function () {
         var speed = this.manager.getComponentsData('Speed');
         for (var entity in speed) {
             if (!this.speeded[entity]) {
@@ -30,7 +30,7 @@ define(function () {
         }
     };
 
-    GeneticProcessor.prototype.manipulateGravity = function () {
+    ManipulationProcessor.prototype.manipulateGravity = function () {
         var gravity = this.manager.getComponentsData('Gravity');
         for (var entity in gravity) {
             if (!this.gravited[entity]) {
@@ -43,5 +43,5 @@ define(function () {
         }
     };
 
-    return GeneticProcessor;
+    return ManipulationProcessor;
 });

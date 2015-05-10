@@ -35,7 +35,6 @@ define([
 ) {
     var Upgrade = function () {
         this.timer = null;
-        this.remainingTimeText = null;
     };
 
     Upgrade.prototype = {
