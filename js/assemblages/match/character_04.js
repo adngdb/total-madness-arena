@@ -1,6 +1,6 @@
 define({
-    name: 'Character_02',
-    description: 'Playable character 02. Nickname: Mario the Plumber. ',
+    name: 'Character_04',
+    description: 'Playable character 04. Nickname: Eva. ',
     components: [
         'Animated',
         'AnimationIdle',
@@ -15,12 +15,12 @@ define({
             speed: 8,
         },
         'Displayable': {
-            sprite: 'chara_thin',
+            sprite: 'chara_eva',
             scaleX: 4,
             scaleY: 4,
         },
         'Character': {
-            name: 'Gino',
+            name: 'Eva',
         },
     }
 });

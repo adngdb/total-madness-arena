@@ -132,44 +132,7 @@ function (
             for (var p in players) {
                 this.newPlayerManipulations[players[p].number] = players[p].manipulations;
             }
-        },
 
-        update: function () {
-            GlobalManager.update(this.game.time.elapsed);
-            this.manager.update(this.game.time.elapsed);
-
-            if (this.timer.ms > 0) {
-                this.manager.updateComponentDataForEntity('Text', this.timerTextId, {
-                    content: parseInt(this.timer.duration.toFixed(0) / 1000) + 1,
-                });
-            }
-
-            // Check if the game is over or not.
-            var state = this.manager.getComponentDataForEntity('Game', this.gameStateId);
-            if (state.gameOver) {
-                var matchOver = false;
-
-                var matchPlayers = this.matchManager.getComponentsData('Player');
-                for (var p in matchPlayers) {
-                    if (matchPlayers[p].number === state.winner) {
-                        matchPlayers[p].score++;
-
-                        if (matchPlayers[p].score >= Const.game.GAMES_TO_WIN) {
-                            matchOver = true;
-                            var matches = this.matchManager.getComponentsData('Match');
-                            for (var m in matches) {
-                                matches[m].matchOver = true;
-                                matches[m].winner = state.winner;
-                            }
-                        }
-                    }
-                }
-
-                this.endGame(matchOver);
-            }
-        },
-
-        create: function () {
             // set / reset a new entityManager
             this.manager = new EntityManager();
 
@@ -232,23 +195,56 @@ function (
             this.manager.addProcessor(new DeathProcessor(this.manager, this.game, this.matchManager));
             this.manager.addProcessor(this.soundProcessor);
             this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
+        },
 
+        update: function () {
+            GlobalManager.update(this.game.time.elapsed);
+            this.manager.update(this.game.time.elapsed);
+
+            if (this.timer.ms > 0) {
+                this.manager.updateComponentDataForEntity('Text', this.timerTextId, {
+                    content: parseInt(this.timer.duration.toFixed(0) / 1000) + 1,
+                });
+            }
+
+            // Check if the game is over or not.
+            var state = this.manager.getComponentDataForEntity('Game', this.gameStateId);
+            if (state.gameOver) {
+                var matchOver = false;
+
+                var matchPlayers = this.matchManager.getComponentsData('Player');
+                for (var p in matchPlayers) {
+                    if (matchPlayers[p].number === state.winner) {
+                        matchPlayers[p].score++;
+
+                        if (matchPlayers[p].score >= Const.game.GAMES_TO_WIN) {
+                            matchOver = true;
+                            var matches = this.matchManager.getComponentsData('Match');
+                            for (var m in matches) {
+                                matches[m].matchOver = true;
+                                matches[m].winner = state.winner;
+                            }
+                        }
+                    }
+                }
+
+                this.endGame(matchOver);
+            }
+        },
+
+        create: function () {
             // Create a state for the current game.
             this.gameStateId = this.manager.createEntity(['Game']);
 
-            var player1 = this.manager.createEntityFromAssemblage('Character_04');
-            this.manager.updateComponentDataForEntity('Player', player1, {number: 0});
+            var players = this.matchManager.getComponentsData('Player');
+            for (var p in players) {
+                var player = players[p];
+                // Load the character from the choice of the player.
+                var newPlayer = this.manager.createEntityFromAssemblage(player.character);
+                this.manager.updateComponentDataForEntity('Player', newPlayer, {number: player.number});
 
-            var player2 = this.manager.createEntityFromAssemblage('Character_05');
-            this.manager.updateComponentDataForEntity('Player', player2, {number: 1});
-
-            for(var player in this.newPlayerManipulations) {
-                if (player == 0) {
-                    this.manager.addComponentsToEntity(player2, this.newPlayerManipulations[player]);
-                }
-                else {
-                    this.manager.addComponentsToEntity(player1, this.newPlayerManipulations[player]);
-                }
+                // Add the manipulations that were chosen by the other player.
+                this.manager.addComponentsToEntity(newPlayer, this.newPlayerManipulations[1 - player.number]);
             }
 
             this.manager.createEntityFromAssemblage('fx');

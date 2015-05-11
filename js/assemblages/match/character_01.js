@@ -12,13 +12,11 @@ define({
     initialState: {
         'Displayable': {
             sprite: 'chara_fat',
+            scaleX: 4,
+            scaleY: 4,
         },
         'Character': {
             name: 'Imperator',
-        },
-        'Position': {
-            x: 200,
-            y: 200,
         },
     }
 });

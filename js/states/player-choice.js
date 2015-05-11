@@ -9,13 +9,18 @@ define([
     'assemblages/match/player-2',
     'assemblages/match/character_01',
     'assemblages/match/character_02',
+    'assemblages/match/character_03',
+    'assemblages/match/character_04',
+    'assemblages/match/character_05',
 
     'components/global/displayable',
     'components/global/position',
     'components/global/text',
     'components/global/player',
+    'components/global/sound',
 
-    'processors/player-choice/input',
+    'processors/global/sound',
+    'processors/player-choice/character-choice',
     'processors/player-choice/rendering',
 
     'components/game/animated',
@@ -33,14 +38,19 @@ define([
     Player_2,
     Character_01,
     Character_02,
+    Character_03,
+    Character_04,
+    Character_05,
 
     Displayable,
     Position,
     Text,
     Player,
+    Sound,
 
     // processors
-    InputProcessor,
+    SoundProcessor,
+    CharacterChoiceProcessor,
     RenderingProcessor,
 
     Animated,
@@ -48,13 +58,13 @@ define([
     Character
 ) {
     var PlayerChoice = function () {
-
-        this.current = [0,1];
+        // Current choice of character for each player.
+        this.currentChoice = [0, 1];
     };
 
     PlayerChoice.prototype = {
 
-        init: function() {
+        init: function () {
             // Create the Match Manager.
             this.matchManager = new EntityManager();
             this.matchManager.addComponent(PlayerMatch.name, PlayerMatch);
@@ -76,7 +86,8 @@ define([
                 Position,
                 Text,
                 Character,
-                Player
+                Player,
+                Sound,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
@@ -85,62 +96,53 @@ define([
             // create all possible characters (in 'local' manager)
             this.charAssemblages = [
                 Character_01,
-                Character_02
+                Character_02,
+                Character_03,
+                Character_04,
+                Character_05,
             ];
             for (var i = this.charAssemblages.length - 1; i >= 0; i--) {
                 this.manager.addAssemblage(this.charAssemblages[i].name, this.charAssemblages[i]);
             }
 
-            var newPlayer = this.manager.createEntityFromAssemblage(this.charAssemblages[this.current[0]].name);
-            this.manager.updateComponentDataForEntity('Displayable', newPlayer,
-                {
-                    scaleX: 4,
-                    scaleY: 4,
-                });
-            this.manager.updateComponentDataForEntity('Player', newPlayer,
-                {
-                    number: 0,
-                });
-            this.manager.updateComponentDataForEntity('Position', newPlayer,
-                {
-                    x: 700,
-                    y: 340,
-                });
-            newPlayer = this.manager.createEntityFromAssemblage(this.charAssemblages[this.current[1]].name);
-            this.manager.updateComponentDataForEntity('Displayable', newPlayer,
-                {
-                    scaleX: 4,
-                    scaleY: 4,
-                });
-            this.manager.updateComponentDataForEntity('Player', newPlayer,
-                {
-                    number: 1,
-                });
-            this.manager.updateComponentDataForEntity('Position', newPlayer,
-                {
-                    x: 220,
-                    y: 340,
-                });
-            this.manager.addProcessor(new InputProcessor(this.manager, this.charAssemblages, this.current));
-            this.manager.addProcessor(new RenderingProcessor(this.manager, this.game, this.matchManager));
+            this.soundProcessor = new SoundProcessor(this.manager, this.game);
 
+            this.manager.addProcessor(new CharacterChoiceProcessor(this.manager, this.charAssemblages, this.currentChoice));
+            this.manager.addProcessor(this.soundProcessor);
+            this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
         },
 
         create: function () {
+            // Create the initial two choices.
+            var positions = [
+                {
+                    x: 700,
+                    y: 340,
+                },
+                {
+                    x: 220,
+                    y: 340,
+                }
+            ];
+
+            for (var i = 0; i < 2; i++) {
+                var newPlayer = this.manager.createEntityFromAssemblage(this.charAssemblages[this.currentChoice[i]].name);
+                this.manager.updateComponentDataForEntity('Player', newPlayer, {
+                    number: i,
+                });
+                this.manager.updateComponentDataForEntity('Position', newPlayer, positions[i]);
+            }
+
             // Create timer to end the screen.
             this.timer = this.game.time.create(false);
             this.timer.loop(5000, this.endChoice, this);
             this.timer.start();
-            // Show timer text.
-            this.timerTextId = this.manager.createEntity(['Position', 'Text']);
-            this.manager.updateComponentDataForEntity('Text', this.timerTextId, {
-                content: '15',
-                font: 'retroComputerDemo',
-                fontSize: '24pt',
-            });
-            this.manager.updateComponentDataForEntity('Position', this.timerTextId, {
-                x: 680,
-                y: 33,
+
+            // Create ambiance music.
+            var ambiance = this.manager.createEntity(['Sound']);
+            this.manager.updateComponentDataForEntity('Sound', ambiance, {
+                source: 'ambiance_menu_all',
+                loop: true,
             });
 
             // Create all background sprites.
@@ -152,6 +154,17 @@ define([
                 this.manager.updateComponentDataForEntity('Displayable', entity, {sprite: backgroundSprites[i]});
             }
 
+            // Show timer text.
+            this.timerTextId = this.manager.createEntity(['Position', 'Text']);
+            this.manager.updateComponentDataForEntity('Text', this.timerTextId, {
+                content: '15',
+                font: 'retroComputerDemo',
+                fontSize: '24pt',
+            });
+            this.manager.updateComponentDataForEntity('Position', this.timerTextId, {
+                x: 680,
+                y: 33,
+            });
         },
 
         update: function () {
@@ -166,24 +179,16 @@ define([
             }
         },
 
-        endChoice: function() {
+        endChoice: function () {
             // save player choice
             var players = this.matchManager.getComponentsData('Player');
-            for (entity in players) {
-                if (players[entity].number == 0) {
-                    this.matchManager.updateComponentDataForEntity('Player', entity,
-                        {
-                            character: this.charAssemblages[0].name,
-                        });
-                }
-                else if (players[entity].number == 1) {
-                    this.matchManager.updateComponentDataForEntity('Player', entity,
-                        {
-                            character: this.charAssemblages[1].name,
-                        });
-                }
+            for (var entity in players) {
+                this.matchManager.updateComponentDataForEntity('Player', entity, {
+                    character: this.charAssemblages[this.currentChoice[players[entity].number]].name,
+                });
             }
 
+            this.soundProcessor.stopAll();
             this.game.state.start('Game', true, false, this.matchManager);
         }
     };

@@ -1,9 +1,9 @@
 define(function () {
 
-    var RenderingProcessor = function (manager, game, matchManager) {
+    var RenderingProcessor = function (manager, game) {
         this.manager = manager;
         this.game = game;
-        this.matchManager = matchManager;
+
         // An associative array for entities' sprites.
         //      entityId -> Sprite{}
         // Phaser handles all the displaying so we only need to create Sprites
@@ -49,13 +49,14 @@ define(function () {
     RenderingProcessor.prototype.update = function (dt) {
         var entity;
 
+        // Destroy the sprites of all missing entities.
         for (var id in this.sprites) {
-            if (this.manager.entities.indexOf(parseInt(id)) < 0) {
-
+            if (this.manager.entities.indexOf(parseInt(id)) === -1) {
                 this.sprites[id].destroy();
-                this.sprites[id] = null;
+                delete this.sprites[id];
             }
         }
+
         // Display all sprites.
         var displayables = this.manager.getComponentsData('Displayable');
         for (entity in displayables) {
@@ -70,7 +71,7 @@ define(function () {
             // Change the animation depending on the movement / action data.
             if (this.manager.entityHasComponent(entity, 'Animated')) {
                 var animatedData = this.manager.getComponentDataForEntity('Animated', entity);
-                if (animatedData.current != 'idle') {
+                if (animatedData.current !== 'idle') {
                     animatedData.current = 'idle';
                     this.sprites[entity].animations.play(animatedData.current);
                 }

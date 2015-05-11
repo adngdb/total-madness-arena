@@ -14,6 +14,7 @@ define([
     InputProcessor.prototype.init = function () {
         this.game.input.gamepad.start();
 
+        // Create all Input entities to control the game.
         for (var key in Controls) {
             var control = Controls[key];
 
@@ -30,9 +31,14 @@ define([
             var pad = this.game.input.gamepad[padId];
 
             if (this.isDown(input.keys) || this.padUsed(pad, input.padButtons)) {
+                // This is a trick so that `justPressed` is set to `true` only
+                // when the key was not active during the last frame. This way
+                // it is true only once per key stroke.
+                input.justPressed = !input.active;
                 input.active = true;
             }
             else {
+                input.justPressed = false;
                 input.active = false;
             }
         }

@@ -1,6 +1,6 @@
 define({
-    name: 'Character_02',
-    description: 'Playable character 02. Nickname: Mario the Plumber. ',
+    name: 'Character_05',
+    description: 'Playable character 05. Nickname: Sg. Kaput. ',
     components: [
         'Animated',
         'AnimationIdle',
@@ -11,16 +11,16 @@ define({
     ],
     initialState: {
         'AnimationIdle': {
-            keys: [0, 1, 2, 3],
+            keys: [0, 1, 2],
             speed: 8,
         },
         'Displayable': {
-            sprite: 'chara_thin',
+            sprite: 'chara_kaput',
             scaleX: 4,
             scaleY: 4,
         },
         'Character': {
-            name: 'Gino',
+            name: 'Sg. Kaput',
         },
     }
 });

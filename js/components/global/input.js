@@ -3,9 +3,10 @@ define({
     state: {
         action: '',
         keys: [],
+        padButtons: [],
         player: 0,
         active: false,
-        padButtons: [],
+        justPressed: false,
     }
 });
 
