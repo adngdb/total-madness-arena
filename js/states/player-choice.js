@@ -106,31 +106,17 @@ define([
             }
 
             this.soundProcessor = new SoundProcessor(this.manager, this.game);
+            this.charaProcessor = new CharacterChoiceProcessor(this.manager, this.charAssemblages, this.currentChoice);
 
-            this.manager.addProcessor(new CharacterChoiceProcessor(this.manager, this.charAssemblages, this.currentChoice));
+            this.manager.addProcessor(this.charaProcessor);
             this.manager.addProcessor(this.soundProcessor);
             this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
         },
 
         create: function () {
             // Create the initial two choices.
-            var positions = [
-                {
-                    x: 700,
-                    y: 340,
-                },
-                {
-                    x: 220,
-                    y: 340,
-                }
-            ];
-
             for (var i = 0; i < 2; i++) {
-                var newPlayer = this.manager.createEntityFromAssemblage(this.charAssemblages[this.currentChoice[i]].name);
-                this.manager.updateComponentDataForEntity('Player', newPlayer, {
-                    number: i,
-                });
-                this.manager.updateComponentDataForEntity('Position', newPlayer, positions[i]);
+                this.charaProcessor.createCharacter(i);
             }
 
             // Create timer to end the screen.

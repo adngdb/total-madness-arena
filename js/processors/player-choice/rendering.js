@@ -43,6 +43,7 @@ define(function () {
             align: textData.align,
         };
         var text = this.game.add.text(posData.x, posData.y, textData.content, style);
+        text.anchor.setTo(.5, .5);
         this.texts[entity] = text;
     };
 
@@ -54,6 +55,14 @@ define(function () {
             if (this.manager.entities.indexOf(parseInt(id)) === -1) {
                 this.sprites[id].destroy();
                 delete this.sprites[id];
+            }
+        }
+
+        // Destroy the texts of all missing entities.
+        for (var id in this.texts) {
+            if (this.manager.entities.indexOf(parseInt(id)) === -1) {
+                this.texts[id].destroy();
+                delete this.texts[id];
             }
         }
 

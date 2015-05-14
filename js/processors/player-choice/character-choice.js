@@ -6,7 +6,7 @@ define([
     var CharacterChoiceProcessor = function (manager, charAssemblages, current) {
         this.manager = manager;
         this.charAssemblages = charAssemblages;
-        this.current = current;
+        this.currentChoice = current;
     };
 
     CharacterChoiceProcessor.prototype.update = function () {
@@ -34,34 +34,64 @@ define([
             }
 
             if (input.action === Const.inputs.RIGHT) {
-                this.current[input.player] = (this.current[input.player] + 1) % this.charAssemblages.length;
+                this.currentChoice[input.player] = (this.currentChoice[input.player] + 1) % this.charAssemblages.length;
             }
             else if (input.action === Const.inputs.LEFT) {
-                var choice = this.current[input.player] - 1;
+                var choice = this.currentChoice[input.player] - 1;
                 var ln = this.charAssemblages.length;
 
                 // This is the actual correct way of doing a modulo.
                 // See http://stackoverflow.com/questions/23126440/
-                this.current[input.player] = (choice % ln + ln) % ln;
+                this.currentChoice[input.player] = (choice % ln + ln) % ln;
             }
 
             // create new Entity
-            var newPlayer = this.manager.createEntityFromAssemblage(this.charAssemblages[this.current[input.player]].name)
-            this.manager.updateComponentDataForEntity('Player', newPlayer, {
-                number: input.player,
-            });
-            if (input.player === 1) {
-                this.manager.updateComponentDataForEntity('Position', newPlayer, {
-                    x: 220,
-                    y: 340,
-                });
-            } else {
-                this.manager.updateComponentDataForEntity('Position', newPlayer, {
+            this.createCharacter(input.player);
+        }
+    };
+
+    CharacterChoiceProcessor.prototype.createCharacter = function (playerNumber) {
+        var positions = {
+            character: [
+                {
                     x: 700,
                     y: 340,
-                });
-            }
-        }
+                },
+                {
+                    x: 220,
+                    y: 340,
+                }
+            ],
+            text: [
+                {
+                    x: 720,
+                    y: 618,
+                },
+                {
+                    x: 240,
+                    y: 618,
+                }
+            ]
+        };
+
+        var newPlayer = this.manager.createEntityFromAssemblage(
+            this.charAssemblages[this.currentChoice[playerNumber]].name
+        );
+        this.manager.updateComponentDataForEntity('Player', newPlayer, {
+            number: playerNumber,
+        });
+        this.manager.updateComponentDataForEntity('Position', newPlayer, positions['character'][playerNumber]);
+
+        var characterData = this.manager.getComponentDataForEntity('Character', newPlayer);
+
+        var text = this.manager.createEntity(['Text', 'Position', 'Player']);
+        this.manager.updateComponentDataForEntity('Player', text, {
+            number: playerNumber,
+        });
+        this.manager.updateComponentDataForEntity('Text', text, {
+            content: characterData.name
+        });
+        this.manager.updateComponentDataForEntity('Position', text, positions['text'][playerNumber]);
     };
 
     return CharacterChoiceProcessor;
