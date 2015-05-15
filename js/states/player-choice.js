@@ -148,8 +148,8 @@ define([
                 fontSize: '24pt',
             });
             this.manager.updateComponentDataForEntity('Position', this.timerTextId, {
-                x: 680,
-                y: 33,
+                x: 695,
+                y: 48,
             });
         },
 
