@@ -187,7 +187,7 @@ define(['constants'], function (Const) {
         }
 
         // DEBUG
-        if (Const.debug) {
+        if (Const.DEBUG) {
             if (this.graphics) {
                 this.game.world.remove(this.graphics);
             }

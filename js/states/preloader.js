@@ -3,7 +3,13 @@ define([
     'global-manager',
     'components/global/input',
     'processors/global/input',
-], function(Const, GlobalManager, Input, InputProcessor) {
+],
+function (
+    Const,
+    GlobalManager,
+    Input,
+    InputProcessor
+) {
 
     var Preloader = function(game) {
         this.background = null;

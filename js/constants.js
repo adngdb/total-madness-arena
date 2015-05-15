@@ -1,5 +1,5 @@
 define({
-    debug: false,
+    DEBUG: false,
 
     game: {
         GAMES_TO_WIN: 2,
