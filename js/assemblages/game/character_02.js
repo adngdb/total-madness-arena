@@ -35,10 +35,10 @@ define({
             speed: 20,
         },
         'BoundingBox': {
-            x: -32,
-            y: -48,
-            width: 64,
-            height: 96,
+            x: -22,
+            y: -26,
+            width: 40,
+            height: 74,
         },
         'Displayable': {
             sprite: 'chara_thin',

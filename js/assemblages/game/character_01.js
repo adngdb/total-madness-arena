@@ -20,10 +20,10 @@ define({
     ],
     initialState: {
         'BoundingBox': {
-            x: -32,
-            y: -48,
-            width: 64,
-            height: 96,
+            x: -22,
+            y: -28,
+            width: 54,
+            height: 76,
         },
         'Displayable': {
             sprite: 'chara_fat',

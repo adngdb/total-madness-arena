@@ -32,10 +32,10 @@ define({
             speed: 8,
         },
         'BoundingBox': {
-            x: -32,
-            y: -48,
-            width: 64,
-            height: 96,
+            x: -26,
+            y: -34,
+            width: 42,
+            height: 82,
         },
         'Displayable': {
             sprite: 'chara_eva',

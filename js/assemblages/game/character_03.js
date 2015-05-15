@@ -20,10 +20,10 @@ define({
     ],
     initialState: {
         'BoundingBox': {
-            x: -32,
-            y: -48,
-            width: 64,
-            height: 96,
+            x: -16,
+            y: -36,
+            width: 30,
+            height: 84,
         },
         'Displayable': {
             sprite: 'chara_punkette',

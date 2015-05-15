@@ -36,10 +36,10 @@ define({
             speed: 15,
         },
         'BoundingBox': {
-            x: -32,
-            y: -48,
-            width: 64,
-            height: 96,
+            x: -22,
+            y: -30,
+            width: 34,
+            height: 78,
         },
         'Displayable': {
             sprite: 'chara_kaput',
