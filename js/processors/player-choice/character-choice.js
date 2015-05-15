@@ -51,6 +51,7 @@ define([
     };
 
     CharacterChoiceProcessor.prototype.createCharacter = function (playerNumber) {
+        var spriteLetters = ['a', 'b'];
         var positions = {
             character: [
                 {
@@ -83,6 +84,9 @@ define([
         this.manager.updateComponentDataForEntity('Position', newPlayer, positions['character'][playerNumber]);
 
         var characterData = this.manager.getComponentDataForEntity('Character', newPlayer);
+        this.manager.updateComponentDataForEntity('Displayable', newPlayer, {
+            sprite: characterData.sprite + spriteLetters[playerNumber],
+        });
 
         var text = this.manager.createEntity(['Text', 'Position', 'Player']);
         this.manager.updateComponentDataForEntity('Player', text, {

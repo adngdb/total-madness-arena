@@ -25,11 +25,9 @@ define({
             width: 54,
             height: 76,
         },
-        'Displayable': {
-            sprite: 'chara_imperator_a',
-        },
         'Character': {
             name: 'Imperator',
+            sprite: 'chara_imperator_',
         },
         'Position': {
             x: 200,

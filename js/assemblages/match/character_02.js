@@ -15,12 +15,12 @@ define({
             speed: 8,
         },
         'Displayable': {
-            sprite: 'chara_gino_a',
             scaleX: 4,
             scaleY: 4,
         },
         'Character': {
             name: 'Gino',
+            sprite: 'chara_gino_',
         },
     }
 });

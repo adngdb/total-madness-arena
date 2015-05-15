@@ -11,12 +11,12 @@ define({
     ],
     initialState: {
         'Displayable': {
-            sprite: 'chara_imperator_a',
             scaleX: 4,
             scaleY: 4,
         },
         'Character': {
             name: 'Imperator',
+            sprite: 'chara_imperator_',
         },
     }
 });

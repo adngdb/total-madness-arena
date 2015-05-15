@@ -15,12 +15,12 @@ define({
             speed: 8,
         },
         'Displayable': {
-            sprite: 'chara_kaput_a',
             scaleX: 4,
             scaleY: 4,
         },
         'Character': {
             name: 'Sg. Kaput',
+            sprite: 'chara_kaput_',
         },
     }
 });

@@ -37,11 +37,9 @@ define({
             width: 42,
             height: 82,
         },
-        'Displayable': {
-            sprite: 'chara_eva_a',
-        },
         'Character': {
             name: 'Eva',
+            sprite: 'chara_eva_',
         },
         'Position': {
             x: 200,

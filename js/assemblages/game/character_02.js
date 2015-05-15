@@ -40,11 +40,9 @@ define({
             width: 40,
             height: 74,
         },
-        'Displayable': {
-            sprite: 'chara_gino_a',
-        },
         'Character': {
             name: 'Gino',
+            sprite: 'chara_gino_a',
         },
         'Position': {
             x: 500,

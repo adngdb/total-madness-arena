@@ -236,12 +236,30 @@ function (
             // Create a state for the current game.
             this.gameStateId = this.manager.createEntity(['Game']);
 
+            var spriteLetters = ['a', 'b'];
+            var positions = [
+                {
+                    x: 800,
+                    y: 600,
+                },
+                {
+                    x: 200,
+                    y: 200,
+                },
+            ];
+
             var players = this.matchManager.getComponentsData('Player');
             for (var p in players) {
                 var player = players[p];
                 // Load the character from the choice of the player.
                 var newPlayer = this.manager.createEntityFromAssemblage(player.character);
                 this.manager.updateComponentDataForEntity('Player', newPlayer, {number: player.number});
+                this.manager.updateComponentDataForEntity('Position', newPlayer, positions[player.number]);
+
+                var characterData = this.manager.getComponentDataForEntity('Character', newPlayer);
+                this.manager.updateComponentDataForEntity('Displayable', newPlayer, {
+                    sprite: characterData.sprite + spriteLetters[player.number],
+                });
 
                 // Add the manipulations that were chosen by the other player.
                 this.manager.addComponentsToEntity(newPlayer, this.newPlayerManipulations[1 - player.number]);

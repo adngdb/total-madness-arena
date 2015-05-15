@@ -41,11 +41,9 @@ define({
             width: 34,
             height: 78,
         },
-        'Displayable': {
-            sprite: 'chara_kaput_a',
-        },
         'Character': {
             name: 'Sg. Kaput',
+            sprite: 'chara_kaput_',
         },
         'Position': {
             x: 200,

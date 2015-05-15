@@ -25,11 +25,9 @@ define({
             width: 30,
             height: 84,
         },
-        'Displayable': {
-            sprite: 'chara_punkette_a',
-        },
         'Character': {
             name: 'Punkette',
+            sprite: 'chara_punkette_',
         },
         'Position': {
             x: 200,
