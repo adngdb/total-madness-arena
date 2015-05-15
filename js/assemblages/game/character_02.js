@@ -41,7 +41,7 @@ define({
             height: 74,
         },
         'Displayable': {
-            sprite: 'chara_thin',
+            sprite: 'chara_gino_a',
         },
         'Character': {
             name: 'Gino',

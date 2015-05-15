@@ -11,7 +11,7 @@ define({
     ],
     initialState: {
         'Displayable': {
-            sprite: 'chara_fat',
+            sprite: 'chara_imperator_a',
             scaleX: 4,
             scaleY: 4,
         },

@@ -42,7 +42,7 @@ define({
             height: 78,
         },
         'Displayable': {
-            sprite: 'chara_kaput',
+            sprite: 'chara_kaput_a',
         },
         'Character': {
             name: 'Sg. Kaput',

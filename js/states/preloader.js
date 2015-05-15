@@ -37,16 +37,16 @@ function (
             // this.game.load.image('upgrade_menu_middleground', 'assets/gfx/upgrade_menu_middleground.png');
 
             /** Game state stuff **/
-            this.game.load.spritesheet('chara_fat', 'assets/gfx/chara_imperator_a.png', 64, 96);
-            this.game.load.spritesheet('nega_chara_fat', 'assets/gfx/chara_imperator_b.png', 64, 96);
-            this.game.load.spritesheet('chara_thin', 'assets/gfx/chara_gino_a.png', 64, 96);
-            this.game.load.spritesheet('nega_chara_thin', 'assets/gfx/chara_gino_b.png', 64, 96);
-            this.game.load.spritesheet('chara_punkette', 'assets/gfx/chara_punkette_a.png', 64, 96);
-            this.game.load.spritesheet('nega_chara_punkette', 'assets/gfx/chara_punkette_b.png', 64, 96);
-            this.game.load.spritesheet('chara_eva', 'assets/gfx/chara_eva_a.png', 64, 96);
-            this.game.load.spritesheet('nega_chara_eva', 'assets/gfx/chara_eva_b.png', 64, 96);
-            this.game.load.spritesheet('chara_kaput', 'assets/gfx/chara_kaput_a.png', 64, 96);
-            this.game.load.spritesheet('nega_chara_kaput', 'assets/gfx/chara_kaput_b.png', 64, 96);
+            this.game.load.spritesheet('chara_imperator_a', 'assets/gfx/chara_imperator_a.png', 64, 96);
+            this.game.load.spritesheet('chara_imperator_b', 'assets/gfx/chara_imperator_b.png', 64, 96);
+            this.game.load.spritesheet('chara_gino_a', 'assets/gfx/chara_gino_a.png', 64, 96);
+            this.game.load.spritesheet('chara_gino_b', 'assets/gfx/chara_gino_b.png', 64, 96);
+            this.game.load.spritesheet('chara_punkette_a', 'assets/gfx/chara_punkette_a.png', 64, 96);
+            this.game.load.spritesheet('chara_punkette_b', 'assets/gfx/chara_punkette_b.png', 64, 96);
+            this.game.load.spritesheet('chara_eva_a', 'assets/gfx/chara_eva_a.png', 64, 96);
+            this.game.load.spritesheet('chara_eva_b', 'assets/gfx/chara_eva_b.png', 64, 96);
+            this.game.load.spritesheet('chara_kaput_a', 'assets/gfx/chara_kaput_a.png', 64, 96);
+            this.game.load.spritesheet('chara_kaput_b', 'assets/gfx/chara_kaput_b.png', 64, 96);
             this.game.load.spritesheet('fx', 'assets/gfx/fx.png', 64, 96);
 
             // GUI

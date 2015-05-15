@@ -15,7 +15,7 @@ define({
             speed: 8,
         },
         'Displayable': {
-            sprite: 'chara_thin',
+            sprite: 'chara_gino_a',
             scaleX: 4,
             scaleY: 4,
         },

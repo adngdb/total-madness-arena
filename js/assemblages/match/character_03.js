@@ -11,7 +11,7 @@ define({
     ],
     initialState: {
         'Displayable': {
-            sprite: 'chara_punkette',
+            sprite: 'chara_punkette_a',
             scaleX: 4,
             scaleY: 4,
         },

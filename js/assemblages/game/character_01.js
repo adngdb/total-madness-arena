@@ -26,7 +26,7 @@ define({
             height: 76,
         },
         'Displayable': {
-            sprite: 'chara_fat',
+            sprite: 'chara_imperator_a',
         },
         'Character': {
             name: 'Imperator',
