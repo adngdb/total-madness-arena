@@ -50,15 +50,14 @@ define(['constants'], function (Const) {
         if (this.manager.entityHasComponent(entity, 'LifeBar')) {
             var lifeBar = this.manager.getComponentDataForEntity('LifeBar', entity);
             sprite.cropEnabled = true;
-            if (lifeBar.player == 1) {
+            sprite.anchor.setTo(0, 0.5);
+            if (lifeBar.player === 1) {
                 // player0 lifebar anchor LEFT
-                sprite.anchor.setTo(0, 0.5);
                 this.player1LifeBar = sprite;
                 this.lifeGaugeMaxSize = -sprite.width;
             }
             else {
                 // player0 lifebar anchor LEFT
-                sprite.anchor.setTo(0, 0.5);
                 this.player0LifeBar = sprite;
             }
         }
