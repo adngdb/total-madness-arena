@@ -133,6 +133,7 @@ define([
 
             // Create all background sprites.
             var backgroundSprites = [
+                'upgrade_menu_foreground',
                 'menuSelectionPerso',
             ];
             for (var i = 0; i < backgroundSprites.length; i++) {
