@@ -42,7 +42,7 @@ define({
         },
         'Character': {
             name: 'Gino',
-            sprite: 'chara_gino_a',
+            sprite: 'chara_gino_',
         },
         'Position': {
             x: 500,

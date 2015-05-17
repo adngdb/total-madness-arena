@@ -94,9 +94,9 @@ define(['constants'], function (Const) {
         var players = this.manager.getComponentsData('Player');
         for (entity in players) {
             var lifeData = this.manager.getComponentDataForEntity('Life', entity);
-            if (players[entity].number == 0) {
+            if (players[entity].number === 0) {
                 this.updateLife(lifeData, this.player0LifeBar);
-            } else if (players[entity].number == 1) {
+            } else {
                 this.updateLife(lifeData, this.player1LifeBar);
             }
         }
@@ -180,7 +180,7 @@ define(['constants'], function (Const) {
             if (!this.texts[entity]) {
                 this.createText(entity, texts[entity]);
             }
-            else {
+            else if (this.texts[entity].text !== texts[entity].content) {
                 this.texts[entity].text = texts[entity].content;
             }
         }
@@ -210,10 +210,11 @@ define(['constants'], function (Const) {
         }
     };
 
-    RenderingProcessor.prototype.updateLife = function(lifeData, lifeBar) {
+    RenderingProcessor.prototype.updateLife = function (lifeData, lifeBar) {
         if (lifeBar === null) {
             return;
         }
+
         var croppedWidth = (lifeData.value / 100.) * this.lifeGaugeMaxSize;
         lifeBar.crop({
             x: 0,
@@ -221,7 +222,6 @@ define(['constants'], function (Const) {
             width: croppedWidth,
             height: lifeBar.height
         });
-
     }
 
     return RenderingProcessor;
