@@ -105,9 +105,9 @@ define(function () {
                 this.speeded[entity] = entity;
                 if (this.manager.entityHasComponent(entity, 'Displayable')) {
                     var displayableData = this.manager.getComponentDataForEntity('Displayable', entity);
-                    console.log(displayableData);
-                    displayableData.sprite = 'nega_' + displayableData.sprite;
-                    console.log(displayableData);
+
+                    var spriteLetter = displayableData.sprite.substr(-2);
+                    displayableData.sprite = displayableData.sprite.slice(0,-2) + (spriteLetter == '_a' ? '_b' : '_a');
                 }
             }
         }
