@@ -95,7 +95,6 @@ define([
             var allManips = this.manager.getComponentDataForEntity('Manipulations', allManipsId).allManips;
 
             var NUMBER_OF_CHOICES = allManips.length;
-            console.log(NUMBER_OF_CHOICES);
             var currentNumberOfChoices = 0;
 
             var allManipNames = [];
