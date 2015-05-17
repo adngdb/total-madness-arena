@@ -7,26 +7,22 @@ define([
     var ActionProcessor = function (manager, game) {
         this.manager = manager;
         this.game = game;
-
-        this.init();
-    };
-
-    ActionProcessor.prototype.init = function () {
     };
 
     ActionProcessor.prototype.update = function (dt) {
         // compute Action 1
         var attacks = this.manager.getComponentsData('Attack1');
         this.computeAction(dt, attacks, Const.inputs.ACTION1, 1);
+
         // compute Action 2
         attacks = this.manager.getComponentsData('Attack2');
         this.computeAction(dt, attacks, Const.inputs.ACTION2, 2);
-
     };
 
     ActionProcessor.prototype.computeAction = function (dt, attacks, input, action) {
         var inputs = GlobalManager.getComponentsData('Input');
         var players = this.manager.getComponentsData('Player');
+
         // attack cooldown
         for (var attack in attacks) {
             attacks[attack].lastAttack += dt/1000.;
@@ -140,11 +136,17 @@ define([
         var playerMovable = this.manager.getComponentDataForEntity('Movable', player);
 
         // set the FX entity position
-        this.manager.getComponentDataForEntity('Position', fxMov).x = playerPos.x;
-        this.manager.getComponentDataForEntity('Position', fxMov).y = playerPos.y;
-        this.manager.getComponentDataForEntity('Displayable', fxMov).deleted = false;
-        this.manager.getComponentDataForEntity('Animated', fxMov).current = 'attackFx';
-        this.manager.getComponentDataForEntity('Animated', fxMov).started = false;
+        this.manager.updateComponentDataForEntity('Position', fxMov, {
+            x: playerPos.x,
+            y: playerPos.y,
+        });
+        this.manager.updateComponentDataForEntity('Displayable', fxMov, {
+            deleted: false
+        });
+        this.manager.updateComponentDataForEntity('Animated', fxMov, {
+            current: 'attackFx',
+            started: false,
+        });
         movables[fxMov].goingRight = playerMovable.goingRight;
     }
     return ActionProcessor;
