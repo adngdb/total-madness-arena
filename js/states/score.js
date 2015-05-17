@@ -91,6 +91,7 @@ define([
         },
 
         end: function () {
+            this.soundProcessor.stopAll();
             this.game.state.start('PlayerChoice', true, false);
         },
 
