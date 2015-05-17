@@ -98,15 +98,6 @@ define([
                 loop: true,
             });
 
-            // Create all background sprites.
-            var backgroundSprites = [
-                'score_menu_background',
-            ];
-            for (var i = 0; i < backgroundSprites.length; i++) {
-                var entity = this.manager.createEntity(['Position', 'Displayable']);
-                this.manager.updateComponentDataForEntity('Displayable', entity, {sprite: backgroundSprites[i]});
-            }
-
             // Create the winner's sprite.
             var winner = null;
             var states = this.matchManager.getComponentsData('Match');
@@ -117,7 +108,6 @@ define([
 
             var players = this.matchManager.getComponentsData('Player');
             for (var p in players) {
-                console.log(players[p]);
                 if (players[p].number === winner) {
                     winner = players[p];
                     break;
@@ -130,8 +120,28 @@ define([
                 y: 300
             });
             var characterData = this.manager.getComponentDataForEntity('Character', winningPlayer);
+            var playerData = this.manager.getComponentDataForEntity('Player', winningPlayer);
             var displayableData = this.manager.getComponentDataForEntity('Displayable', winningPlayer);
             displayableData.sprite = characterData.sprite + 'a';
+
+            var playerNumber = this.manager.createEntity(['Displayable', 'Position']);
+            this.manager.updateComponentDataForEntity('Displayable', playerNumber, {
+                sprite: 'player' + playerData.number,
+            });
+            this.manager.updateComponentDataForEntity('Position', playerNumber, {
+                x: 300,
+                y: 585
+            });
+
+            // Create all background sprites.
+            var backgroundSprites = [
+                'upgrade_menu_foreground',
+                'score_menu_background',
+            ];
+            for (var i = 0; i < backgroundSprites.length; i++) {
+                var entity = this.manager.createEntity(['Position', 'Displayable']);
+                this.manager.updateComponentDataForEntity('Displayable', entity, {sprite: backgroundSprites[i]});
+            }
         },
 
         end: function () {
