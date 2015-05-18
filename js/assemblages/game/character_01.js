@@ -19,6 +19,10 @@ define({
         'Character',
     ],
     initialState: {
+        'AnimationAttack2': {
+            keys: [16, 17, 18, 19, 18, 17, 16],
+            speed: 8,
+        },
         'BoundingBox': {
             x: -22,
             y: -28,
