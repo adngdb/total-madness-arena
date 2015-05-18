@@ -24,7 +24,7 @@ define({
             speed: 10,
         },
         'AnimationAttack2': {
-            keys: [16, 17, 18, 17],
+            keys: [16, 17, 18, 19, 17, 16],
             speed: 10,
         },
         'AnimationIdle': {
