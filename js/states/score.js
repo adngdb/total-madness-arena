@@ -113,22 +113,23 @@ define([
                     break;
                 }
             }
-
             var winningPlayer = this.manager.createEntityFromAssemblage(winner.character);
             this.manager.updateComponentDataForEntity('Position', winningPlayer, {
                 x: 450,
                 y: 300
             });
             var characterData = this.manager.getComponentDataForEntity('Character', winningPlayer);
-            var playerData = this.manager.getComponentDataForEntity('Player', winningPlayer);
             var displayableData = this.manager.getComponentDataForEntity('Displayable', winningPlayer);
+            var playerData = this.manager.getComponentDataForEntity('Player', winningPlayer);
+            playerData.number = winner.number;
+
             var spriteLetters = ['a', 'b'];
             var spriteLetter = spriteLetters[playerData.number];
-            console.log(winner);
-            console.log(this.matchManager);
-            console.log('Nega' in winner.manipulations);
-            if ('Nega' in winner.manipulations) {
-                console.log('pouet');
+            for (var manipulation in winner.manipulations) {
+                if ('Nega' == winner.manipulations[manipulation]) {
+                    spriteLetter = spriteLetter === 'a' ? 'b' : 'a';
+                    break;
+                }
             }
             displayableData.sprite = characterData.sprite + spriteLetter;
 
