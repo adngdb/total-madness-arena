@@ -65,7 +65,6 @@ define([
                 // hit the other player's Life
                 var life = this.manager.getComponentDataForEntity('Life', otherPlayer);
                 life.value -= attack.value;
-                console.log('action 1 : dmg : ', -attack.value);
             }
         }
     }
@@ -82,7 +81,6 @@ define([
                 // hit the other player's Life
                 var life = this.manager.getComponentDataForEntity('Life', otherPlayer);
                 life.value -= attack.value;
-                console.log('action 2 : dmg : ', -attack.value);
             }
         }
     }
