@@ -122,7 +122,15 @@ define([
             var characterData = this.manager.getComponentDataForEntity('Character', winningPlayer);
             var playerData = this.manager.getComponentDataForEntity('Player', winningPlayer);
             var displayableData = this.manager.getComponentDataForEntity('Displayable', winningPlayer);
-            displayableData.sprite = characterData.sprite + 'a';
+            var spriteLetters = ['a', 'b'];
+            var spriteLetter = spriteLetters[playerData.number];
+            console.log(winner);
+            console.log(this.matchManager);
+            console.log('Nega' in winner.manipulations);
+            if ('Nega' in winner.manipulations) {
+                console.log('pouet');
+            }
+            displayableData.sprite = characterData.sprite + spriteLetter;
 
             var playerNumber = this.manager.createEntity(['Displayable', 'Position']);
             this.manager.updateComponentDataForEntity('Displayable', playerNumber, {
