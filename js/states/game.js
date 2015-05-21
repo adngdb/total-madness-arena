@@ -262,7 +262,7 @@ function (
                 });
 
                 // Add the manipulations that were chosen by the other player.
-                this.manager.addComponentsToEntity(newPlayer, this.newPlayerManipulations[1 - player.number]);
+                this.manager.addComponentsToEntity(newPlayer, this.newPlayerManipulations[player.number]);
             }
 
             this.manager.createEntityFromAssemblage('fx');

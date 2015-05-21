@@ -80,6 +80,8 @@ function (
 
             /** Score state stuff **/
             this.game.load.image('score_menu_background', 'assets/gfx/score_menu_background.png');
+            this.game.load.image('player0', 'assets/gfx/player0.png');
+            this.game.load.image('player1', 'assets/gfx/player1.png');
 
             /** Ambiance music **/
             this.game.load.audio('ambiance_lvl_1', 'assets/sfx/ambiance_lvl_1.ogg');

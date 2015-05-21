@@ -6,11 +6,22 @@ define([
     'components/global/displayable',
     'components/global/position',
     'components/global/text',
+    'components/global/player',
     'components/global/sound',
+    'components/game/animated',
+    'components/game/animation-idle',
+    'components/game/character',
+
+    // assemblages
+    'assemblages/match/character_01',
+    'assemblages/match/character_02',
+    'assemblages/match/character_03',
+    'assemblages/match/character_04',
+    'assemblages/match/character_05',
 
     // processors
     'processors/global/sound',
-    'processors/upgrade/rendering',
+    'processors/player-choice/rendering',
 ], function (
     EntityManager,
     GlobalManager,
@@ -19,7 +30,17 @@ define([
     Displayable,
     Position,
     Text,
+    Player,
     Sound,
+    Animated,
+    AnimationIdle,
+    Character,
+
+    Character_01,
+    Character_02,
+    Character_03,
+    Character_04,
+    Character_05,
 
     // processors
     SoundProcessor,
@@ -38,13 +59,28 @@ define([
 
             // add components
             var components = [
+                Animated,
+                AnimationIdle,
                 Displayable,
                 Position,
                 Text,
+                Character,
+                Player,
                 Sound,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
+            }
+
+            var assemblages = [
+                Character_01,
+                Character_02,
+                Character_03,
+                Character_04,
+                Character_05,
+            ];
+            for (var i = assemblages.length - 1; i >= 0; i--) {
+                this.manager.addAssemblage(assemblages[i].name, assemblages[i]);
             }
 
             // add processors
@@ -62,15 +98,6 @@ define([
                 loop: true,
             });
 
-            // Create all background sprites.
-            var backgroundSprites = [
-                'score_menu_background',
-            ];
-            for (var i = 0; i < backgroundSprites.length; i++) {
-                var entity = this.manager.createEntity(['Position', 'Displayable']);
-                this.manager.updateComponentDataForEntity('Displayable', entity, {sprite: backgroundSprites[i]});
-            }
-
             // Create the winner's sprite.
             var winner = null;
             var states = this.matchManager.getComponentsData('Match');
@@ -86,8 +113,44 @@ define([
                     break;
                 }
             }
+            var winningPlayer = this.manager.createEntityFromAssemblage(winner.character);
+            this.manager.updateComponentDataForEntity('Position', winningPlayer, {
+                x: 450,
+                y: 300
+            });
+            var characterData = this.manager.getComponentDataForEntity('Character', winningPlayer);
+            var displayableData = this.manager.getComponentDataForEntity('Displayable', winningPlayer);
+            var playerData = this.manager.getComponentDataForEntity('Player', winningPlayer);
+            playerData.number = winner.number;
 
-            // this.manager.createEntityFromAssemblage(winner.character);
+            var spriteLetters = ['a', 'b'];
+            var spriteLetter = spriteLetters[playerData.number];
+            for (var manipulation in winner.manipulations) {
+                if ('Nega' == winner.manipulations[manipulation]) {
+                    spriteLetter = spriteLetter === 'a' ? 'b' : 'a';
+                    break;
+                }
+            }
+            displayableData.sprite = characterData.sprite + spriteLetter;
+
+            var playerNumber = this.manager.createEntity(['Displayable', 'Position']);
+            this.manager.updateComponentDataForEntity('Displayable', playerNumber, {
+                sprite: 'player' + playerData.number,
+            });
+            this.manager.updateComponentDataForEntity('Position', playerNumber, {
+                x: 300,
+                y: 585
+            });
+
+            // Create all background sprites.
+            var backgroundSprites = [
+                'upgrade_menu_foreground',
+                'score_menu_background',
+            ];
+            for (var i = 0; i < backgroundSprites.length; i++) {
+                var entity = this.manager.createEntity(['Position', 'Displayable']);
+                this.manager.updateComponentDataForEntity('Displayable', entity, {sprite: backgroundSprites[i]});
+            }
         },
 
         end: function () {
