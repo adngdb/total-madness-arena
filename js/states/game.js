@@ -22,6 +22,7 @@ define([
     'components/game/map',
     'components/game/life-bar',
     'components/game/character',
+    'components/game/portrait',
 
     'components/manipulations/speed',
     'components/manipulations/gravity',
@@ -81,6 +82,7 @@ function (
     Map,
     LifeBar,
     Character,
+    Portrait,
 
     Speed,
     Gravity,
@@ -167,6 +169,7 @@ function (
                 Pervert,
                 Nega,
                 Character,
+                Portrait,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
@@ -372,11 +375,19 @@ function (
                 y: 54,
             });
 
-            // player Name text
+            // player Name text and portrait
             var players = this.manager.getComponentsData('Player');
-            for (entity in players) {
+            for (var entity in players) {
                 var nameText = this.manager.createEntity(['Position', 'Text']);
+                var portraitSprite = this.manager.createEntity(['Position', 'Displayable']);
+
                 var charData = this.manager.getComponentDataForEntity('Character', entity);
+                var portraitData = this.manager.getComponentDataForEntity('Portrait', entity);
+
+                this.manager.updateComponentDataForEntity('Displayable', portraitSprite, {
+                    sprite: portraitData.sprite,
+                });
+
                 if (players[entity].number == 0) {
                     this.manager.updateComponentDataForEntity('Text', nameText, {
                         content: charData.name,
@@ -389,6 +400,10 @@ function (
                     this.manager.updateComponentDataForEntity('Position', nameText, {
                         x: 350,
                         y: 27,
+                    });
+                    this.manager.updateComponentDataForEntity('Position', portraitSprite, {
+                        x: 395,
+                        y: 40,
                     });
                 } else if (players[entity].number == 1) {
                     this.manager.updateComponentDataForEntity('Text', nameText, {
@@ -403,10 +418,12 @@ function (
                         x: 611,
                         y: 27,
                     });
+                    this.manager.updateComponentDataForEntity('Position', portraitSprite, {
+                        x: 570,
+                        y: 40,
+                    });
                 }
             }
-
-
         },
 
     };
