@@ -17,6 +17,7 @@ define({
         'Player',
         'Position',
         'Character',
+        'Portrait',
     ],
     initialState: {
         'AnimationAttack1': {
@@ -44,6 +45,9 @@ define({
         'Position': {
             x: 200,
             y: 200,
+        },
+        'Portrait': {
+            sprite: 'portrait_eva',
         },
     }
 });

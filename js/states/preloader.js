@@ -33,8 +33,6 @@ function (
 
             /** Player Choice state stuff **/
             this.game.load.image('menuSelectionPerso', 'assets/gfx/menuSelectionPerso.png');
-            // missing char portrait
-            // this.game.load.image('upgrade_menu_middleground', 'assets/gfx/upgrade_menu_middleground.png');
 
             /** Game state stuff **/
             this.game.load.spritesheet('chara_imperator_a', 'assets/gfx/chara_imperator_a.png', 64, 96);
@@ -48,6 +46,11 @@ function (
             this.game.load.spritesheet('chara_kaput_a', 'assets/gfx/chara_kaput_a.png', 64, 96);
             this.game.load.spritesheet('chara_kaput_b', 'assets/gfx/chara_kaput_b.png', 64, 96);
             this.game.load.spritesheet('fx', 'assets/gfx/fx.png', 64, 96);
+            this.game.load.image('portrait_eva', 'assets/gfx/portrait_eva.png');
+            this.game.load.image('portrait_gino', 'assets/gfx/portrait_gino.png');
+            this.game.load.image('portrait_imperator', 'assets/gfx/portrait_imperator.png');
+            this.game.load.image('portrait_kaput', 'assets/gfx/portrait_kaput.png');
+            this.game.load.image('portrait_punkette', 'assets/gfx/portrait_punkette.png');
 
             // GUI
             this.game.load.image('inGameGUIBarBorder', 'assets/gfx/inGameGUIBarBorder.png');

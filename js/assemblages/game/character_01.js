@@ -17,6 +17,7 @@ define({
         'Player',
         'Position',
         'Character',
+        'Portrait',
     ],
     initialState: {
         'AnimationAttack2': {
@@ -36,6 +37,9 @@ define({
         'Position': {
             x: 200,
             y: 200,
+        },
+        'Portrait': {
+            sprite: 'portrait_imperator',
         },
     }
 });
