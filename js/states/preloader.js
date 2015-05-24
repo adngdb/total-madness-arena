@@ -81,6 +81,9 @@ function (
             /** Title state stuff **/
             this.game.load.image('title_menu_background', 'assets/gfx/title_screen.png');
 
+            /** Controls state stuff **/
+            this.game.load.image('controls_menu', 'assets/gfx/controls_menu.png');
+
             /** Score state stuff **/
             this.game.load.image('score_menu_background', 'assets/gfx/score_menu_background.png');
             this.game.load.image('player0', 'assets/gfx/player0.png');

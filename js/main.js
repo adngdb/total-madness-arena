@@ -17,9 +17,10 @@
     'states/game',
     'states/upgrade',
     'states/player-choice',
-    'states/score'
+    'states/score',
+    'states/controls'
     ],
-    function (Boot, Preloader, Title, Game, Upgrade, PlayerChoice, Score) {
+    function (Boot, Preloader, Title, Game, Upgrade, PlayerChoice, Score, Controls) {
 
         var game = new Phaser.Game(960, 768, Phaser.AUTO, 'stage', {
             init: init,
@@ -34,6 +35,7 @@
             this.game.state.add('Upgrade', Upgrade);
             this.game.state.add('PlayerChoice', PlayerChoice);
             this.game.state.add('Score', Score);
+            this.game.state.add('Controls', Controls);
 
             this.game.state.start('Boot');
         }

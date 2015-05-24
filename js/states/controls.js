@@ -6,10 +6,8 @@ define([
     'components/global/displayable',
     'components/global/position',
     'components/global/text',
-    'components/global/sound',
 
     // processors
-    'processors/global/sound',
     'processors/upgrade/rendering',
 ], function (
     EntityManager,
@@ -19,18 +17,16 @@ define([
     Displayable,
     Position,
     Text,
-    Sound,
 
     // processors
-    SoundProcessor,
     RenderingProcessor
 ) {
-    var Title = function () {
+    var Controls = function () {
     };
 
-    Title.prototype = {
+    Controls.prototype = {
 
-        init: function(matchManager) {
+        init: function() {
             // Create the Manager.
             this.manager = new EntityManager();
 
@@ -39,55 +35,50 @@ define([
                 Displayable,
                 Position,
                 Text,
-                Sound,
             ];
             for (var i = components.length - 1; i >= 0; i--) {
                 this.manager.addComponent(components[i].name, components[i]);
             }
 
-            // add processors
-            this.soundProcessor = new SoundProcessor(this.manager, this.game);
-
-            this.manager.addProcessor(this.soundProcessor);
             this.manager.addProcessor(new RenderingProcessor(this.manager, this.game));
         },
 
         create: function () {
-            // Create ambiance music.
-            var ambiance = this.manager.createEntity(['Sound']);
-            this.manager.updateComponentDataForEntity('Sound', ambiance, {
-                source: 'ambiance_menu_all',
-                loop: true,
-            });
-
             // Create all background sprites.
             var backgroundSprites = [
-                'title_menu_background',
+                'controls_menu',
+                'upgrade_menu_foreground',
             ];
             for (var i = 0; i < backgroundSprites.length; i++) {
                 var entity = this.manager.createEntity(['Position', 'Displayable']);
                 this.manager.updateComponentDataForEntity('Displayable', entity, {sprite: backgroundSprites[i]});
             }
+
+            this.timerDone = false;
+            this.game.time.events.add(2000, function() {
+                this.timerDone = true;
+            }, this);
         },
 
         end: function () {
-            this.soundProcessor.stopAll();
-            this.game.state.start('Controls', true, false);
+            this.game.state.start('PlayerChoice', true, false);
         },
 
         update: function () {
             GlobalManager.update(this.game.time.elapsed);
             this.manager.update(this.game.time.elapsed);
 
-            var inputs = GlobalManager.getComponentsData('Input');
-            for (var i in inputs) {
-                if (inputs[i].active) {
-                    this.end();
+            if (this.timerDone) {
+                var inputs = GlobalManager.getComponentsData('Input');
+                for (var i in inputs) {
+                    if (inputs[i].active) {
+                        this.end();
+                    }
                 }
             }
         },
 
     };
 
-    return Title;
+    return Controls;
 });
