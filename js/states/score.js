@@ -151,6 +151,11 @@ define([
                 var entity = this.manager.createEntity(['Position', 'Displayable']);
                 this.manager.updateComponentDataForEntity('Displayable', entity, {sprite: backgroundSprites[i]});
             }
+
+            this.timerDone = false;
+            this.game.time.events.add(2000, function() {
+                this.timerDone = true;
+            }, this);
         },
 
         end: function () {
@@ -162,10 +167,12 @@ define([
             GlobalManager.update(this.game.time.elapsed);
             this.manager.update(this.game.time.elapsed);
 
-            var inputs = GlobalManager.getComponentsData('Input');
-            for (var i in inputs) {
-                if (inputs[i].active) {
-                    this.end();
+            if (this.timerDone) {
+                var inputs = GlobalManager.getComponentsData('Input');
+                for (var i in inputs) {
+                    if (inputs[i].active) {
+                        this.end();
+                    }
                 }
             }
         },
