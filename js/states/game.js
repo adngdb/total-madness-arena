@@ -242,12 +242,12 @@ function (
             var spriteLetters = ['a', 'b'];
             var positions = [
                 {
-                    x: 800,
-                    y: 600,
-                },
-                {
                     x: 200,
                     y: 200,
+                },
+                {
+                    x: 800,
+                    y: 600,
                 },
             ];
 
@@ -394,23 +394,6 @@ function (
                         fill: '#E8E043',
                         font: 'retroComputerDemo',
                         fontSize: '19.5px',
-                        align: 'left',
-                        anchorX: 0.,
-                    });
-                    this.manager.updateComponentDataForEntity('Position', nameText, {
-                        x: 611,
-                        y: 27,
-                    });
-                    this.manager.updateComponentDataForEntity('Position', portraitSprite, {
-                        x: 570,
-                        y: 40,
-                    });
-                } else if (players[entity].number == 1) {
-                    this.manager.updateComponentDataForEntity('Text', nameText, {
-                        content: charData.name,
-                        fill: '#E8E043',
-                        font: 'retroComputerDemo',
-                        fontSize: '19.5px',
                         align: 'right',
                         anchorX: 1.,
                     });
@@ -420,6 +403,23 @@ function (
                     });
                     this.manager.updateComponentDataForEntity('Position', portraitSprite, {
                         x: 395,
+                        y: 40,
+                    });
+                } else if (players[entity].number == 1) {
+                    this.manager.updateComponentDataForEntity('Text', nameText, {
+                        content: charData.name,
+                        fill: '#E8E043',
+                        font: 'retroComputerDemo',
+                        fontSize: '19.5px',
+                        align: 'left',
+                        anchorX: 0.,
+                    });
+                    this.manager.updateComponentDataForEntity('Position', nameText, {
+                        x: 611,
+                        y: 27,
+                    });
+                    this.manager.updateComponentDataForEntity('Position', portraitSprite, {
+                        x: 570,
                         y: 40,
                     });
                 }
