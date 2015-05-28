@@ -52,7 +52,7 @@ define(['constants'], function (Const) {
             sprite.cropEnabled = true;
             sprite.anchor.setTo(0, 0.5);
             if (lifeBar.player === 1) {
-                // player0 lifebar anchor LEFT
+                // player1 lifebar anchor LEFT
                 this.player1LifeBar = sprite;
                 this.lifeGaugeMaxSize = -sprite.width;
             }

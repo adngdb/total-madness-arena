@@ -3,38 +3,6 @@ define(['constants'], function (Const) {
         0: [
             {
                 action: Const.inputs.JUMP,
-                keys: ['U'],
-                padButtons: [Const.gamepad.STICK_UP, Const.gamepad.BUTTON_A]
-            },
-            {
-                action: Const.inputs.LEFT,
-                keys: ['H'],
-                padButtons: [Const.gamepad.STICK_LEFT]
-            },
-            {
-                action: Const.inputs.DOWN,
-                keys: ['J'],
-                padButtons: [Const.gamepad.STICK_DOWN]
-            },
-            {
-                action: Const.inputs.RIGHT,
-                keys: ['K'],
-                padButtons: [Const.gamepad.STICK_RIGHT]
-            },
-            {
-                action: Const.inputs.ACTION1,
-                keys: ['O'],
-                padButtons: [Const.gamepad.BUTTON_X]
-            },
-            {
-                action: Const.inputs.ACTION2,
-                keys: ['P'],
-                padButtons: [Const.gamepad.BUTTON_Y]
-            },
-        ],
-        1: [
-            {
-                action: Const.inputs.JUMP,
                 keys: ['Z', 'W'],
                 padButtons: [Const.gamepad.STICK_UP, Const.gamepad.BUTTON_A]
             },
@@ -61,6 +29,38 @@ define(['constants'], function (Const) {
             {
                 action: Const.inputs.ACTION2,
                 keys: ['T'],
+                padButtons: [Const.gamepad.BUTTON_Y]
+            },
+        ],
+        1: [
+            {
+                action: Const.inputs.JUMP,
+                keys: ['U'],
+                padButtons: [Const.gamepad.STICK_UP, Const.gamepad.BUTTON_A]
+            },
+            {
+                action: Const.inputs.LEFT,
+                keys: ['H'],
+                padButtons: [Const.gamepad.STICK_LEFT]
+            },
+            {
+                action: Const.inputs.DOWN,
+                keys: ['J'],
+                padButtons: [Const.gamepad.STICK_DOWN]
+            },
+            {
+                action: Const.inputs.RIGHT,
+                keys: ['K'],
+                padButtons: [Const.gamepad.STICK_RIGHT]
+            },
+            {
+                action: Const.inputs.ACTION1,
+                keys: ['O'],
+                padButtons: [Const.gamepad.BUTTON_X]
+            },
+            {
+                action: Const.inputs.ACTION2,
+                keys: ['P'],
                 padButtons: [Const.gamepad.BUTTON_Y]
             },
         ]

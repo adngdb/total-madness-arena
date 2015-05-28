@@ -234,7 +234,7 @@ define([
 
                     for (var p in matchPlayers) {
                         var mpl = matchPlayers[p];
-                        if (mpl.number === player.number) {
+                        if (mpl.number !== player.number) {
                             mpl.manipulations.push(manip.choice);
                         }
                     }

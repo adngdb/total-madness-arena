@@ -242,12 +242,12 @@ function (
             var spriteLetters = ['a', 'b'];
             var positions = [
                 {
-                    x: 800,
-                    y: 600,
-                },
-                {
                     x: 200,
                     y: 200,
+                },
+                {
+                    x: 800,
+                    y: 600,
                 },
             ];
 
