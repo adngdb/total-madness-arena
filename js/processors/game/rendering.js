@@ -1,4 +1,5 @@
 define(['constants'], function (Const) {
+    "use strict";
 
     var ANIMATION_COMPONENTS = [
         'AnimationIdle',
@@ -108,6 +109,7 @@ define(['constants'], function (Const) {
             if (displayables[entity].deleted) {
                 continue;
             }
+
             // First create the actual Phaser.Sprite object if it doesn't exist yet.
             if (!this.sprites[entity]) {
                 this.createSprite(entity, displayables[entity]);
@@ -115,22 +117,20 @@ define(['constants'], function (Const) {
 
             var sprite = this.sprites[entity];
 
-            // Then update the position of each sprite.
-            if (this.manager.entityHasComponent(entity, 'Movable')) {
-                var positionData = this.manager.getComponentDataForEntity('Position', entity);
-                sprite.x = positionData.x;
-                sprite.y = positionData.y;
-            }
-
             if (this.manager.entityHasComponent(entity, 'Movable')) {
                 var moveData = this.manager.getComponentDataForEntity('Movable', entity);
 
-                // Flip the sprite horizontally if needed.
-                if (moveData.goingRight) {
-                    sprite.scale.x = 1;
+                // Update the position of each sprite if it changed.
+                if (moveData.dx != 0 || moveData.dy != 0) {
+                    var positionData = this.manager.getComponentDataForEntity('Position', entity);
+                    sprite.x = positionData.x;
+                    sprite.y = positionData.y;
                 }
-                else {
-                    sprite.scale.x = -1;
+
+                // Flip the sprite horizontally if needed.
+                var newScaleX = moveData.goingRight ? 1 : -1;
+                if (sprite.scale.x != newScaleX) {
+                    sprite.scale.x = newScaleX;
                 }
 
                 // Change the animation depending on the movement / action data.

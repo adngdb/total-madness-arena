@@ -11,6 +11,7 @@
     });
 
     require([
+    'constants',
     'states/boot',
     'states/preloader',
     'states/title',
@@ -20,9 +21,9 @@
     'states/score',
     'states/controls'
     ],
-    function (Boot, Preloader, Title, Game, Upgrade, PlayerChoice, Score, Controls) {
+    function (Const, Boot, Preloader, Title, Game, Upgrade, PlayerChoice, Score, Controls) {
 
-        var game = new Phaser.Game(960, 768, Phaser.AUTO, 'stage', {
+        var game = new Phaser.Game(Const.world.width, Const.world.height, Phaser.AUTO, 'stage', {
             init: init,
             create: create
         });
