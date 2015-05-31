@@ -3,8 +3,9 @@ define([
     'constants',
     'global-manager',
 ], function (SAT, Const, GlobalManager) {
+    "use strict";
 
-    var GRAVITY = 10;
+    var GRAVITY = 50;
     var DECELERATION = 1000; // in pixels per second
 
     var PhysicsProcessor = function (manager, game) {
@@ -18,83 +19,82 @@ define([
     PhysicsProcessor.prototype.update = function (dt) {
         var boxData = null;
         var posData = null;
+        var moveData = null;
 
         var inputs = GlobalManager.getComponentsData('Input');
         var players = this.manager.getComponentsData('Player');
         var movables = this.manager.getComponentsData('Movable');
 
-        // Apply gravity.
         for (var m in movables) {
-            var moveData = movables[m];
-            moveData.dx = 0;
+            movables[m].dx = 0;
         }
 
         // Update movements for players given current inputs.
         for (var inputId in inputs) {
             if (inputs[inputId].active) {
-                var moveData = null;
+                var playerMoveData = null;
                 for (var playerId in players) {
                     if (players[playerId].number === inputs[inputId].player) {
-                        if (this.manager.entityHasComponent(playerId, 'Movable')) {
-                            moveData = this.manager.getComponentDataForEntity('Movable', playerId);
-                        }
+                        playerMoveData = this.manager.getComponentDataForEntity('Movable', playerId);
                         break;
                     }
                 }
 
-                if (moveData !== null) {
+                if (playerMoveData !== null) {
                     switch (inputs[inputId].action) {
                         case Const.inputs.JUMP:
-                            if (moveData.jumpAllowed && (moveData.lastJump > 0.3)) {
-                                moveData.speedY = -600;
-                                moveData.jumpAllowed = false;
-                                moveData.lastJump = 0;
-                                this.activateFx(playerId);
+                            if (playerMoveData.jumpAllowed && (playerMoveData.lastJump > 0.3)) {
+                                playerMoveData.speedY = -600;
+                                playerMoveData.jumpAllowed = false;
+                                playerMoveData.lastJump = 0;
+                                // this.activateFx(playerId);
                             }
                             break;
                         case Const.inputs.LEFT:
-                            moveData.dx = -(dt / 1000.) * moveData.speed;
-                            moveData.goingRight = false;
+                            playerMoveData.dx = -(dt / 1000. * playerMoveData.speed);
+                            playerMoveData.goingRight = false;
                             break;
                         case Const.inputs.RIGHT:
-                            moveData.dx = (dt / 1000.) * moveData.speed;
-                            moveData.goingRight = true;
+                            playerMoveData.dx = (dt / 1000. * playerMoveData.speed);
+                            playerMoveData.goingRight = true;
                             break;
-                        }
+                    }
                 }
             }
         }
 
         // Apply gravity.
         for (var m in movables) {
-            if (!this.manager.entityHasComponent(m, 'Player')) {
-                continue;
-            }
-            var moveData = movables[m];
+            moveData = movables[m];
             // update current speed
-            moveData.speedY += DECELERATION * moveData.gravityScale * (dt/1000.);
+            moveData.speedY += DECELERATION * moveData.gravityScale * dt / 1000.;
             // compute current dy
-            moveData.dy = moveData.speedY * (dt/1000.);
+            moveData.dy = moveData.speedY * dt / 1000.;
             if (moveData.dy > GRAVITY) {
                 moveData.dy = GRAVITY;
             }
-            moveData.lastJump += dt/1000;
+
+            moveData.lastJump += dt / 1000.;
             if (moveData.lastJump < 1) {
                 moveData.jumpAllowed = false;
             }
         }
 
-        // Move all movables.
+        // Check all collisions and move accordingly.
         for (var m in movables) {
-            if (!this.manager.entityHasComponent(m, 'Player')) {
-                continue;
-            }
-            var moveData = movables[m];
-            var posData = this.manager.getComponentDataForEntity('Position', m);
+            this.checkCollision(m);
+
+            moveData = movables[m];
+            posData = this.manager.getComponentDataForEntity('Position', m);
             posData.x += moveData.dx;
-            this.checkCollision(m);
             posData.y += moveData.dy;
-            this.checkCollision(m);
+
+            if (moveData.dy == 0) {
+                moveData.touchingGround = true;
+            }
+            else {
+                moveData.touchingGround = false;
+            }
         }
 
         // Get the map to find platforms and boundaries.
@@ -113,8 +113,6 @@ define([
             }
             var mapWidth = map.size.x;
             var mapHeight = map.size.y;
-
-            console.debug('Found a new map, adding BoundingBoxes');
 
             var platformTiles = [];
             for (var l in map.layers) {
@@ -163,21 +161,24 @@ define([
 
                 // Create a bounding box for that group of tiles.
                 var boxId = this.manager.createEntity(['Position', 'BoundingBox']);
-                boxData = this.manager.getComponentDataForEntity('BoundingBox', boxId);
-                boxData.x = 0
-                boxData.y = 0;
+                var boundingBox = {
+                    x: 0,
+                    y: 0,
+                };
                 if (horizontalBox) {
-                    boxData.width = map.tileWidth * combinedBox.length;
-                    boxData.height = map.tileHeight;
+                    boundingBox.width = map.tileWidth * combinedBox.length;
+                    boundingBox.height = map.tileHeight;
                 }
                 else {
-                    boxData.width = map.tileWidth;
-                    boxData.height = map.tileHeight * combinedBox.length;
+                    boundingBox.width = map.tileWidth;
+                    boundingBox.height = map.tileHeight * combinedBox.length;
                 }
+                this.manager.updateComponentDataForEntity('BoundingBox', boxId, boundingBox);
 
-                posData = this.manager.getComponentDataForEntity('Position', boxId);
-                posData.x = (i % mapWidth) * map.tileWidth;
-                posData.y = Math.floor(i / mapWidth) * map.tileHeight;
+                this.manager.updateComponentDataForEntity('Position', boxId, {
+                    x: (i % mapWidth) * map.tileWidth,
+                    y: Math.floor(i / mapWidth) * map.tileHeight,
+                });
             }
 
             this.mapIsLoaded = true;
@@ -185,10 +186,6 @@ define([
     }
 
     PhysicsProcessor.prototype.checkCollision = function (movableId) {
-        // if not a player (FX entity) do nothing
-        if (!this.manager.entityHasComponent(movableId, 'Player')) {
-            return;
-        }
         // Compute collisions and make appropriate moves to correct positions.
         var boundingBoxes = this.manager.getComponentsData('BoundingBox');
         var areColliding = null;
@@ -196,20 +193,24 @@ define([
 
         var movableBoxData = this.manager.getComponentDataForEntity('BoundingBox', movableId);
         var movablePosData = this.manager.getComponentDataForEntity('Position', movableId);
+        var moveData = this.manager.getComponentDataForEntity('Movable', movableId);
 
         var satElement = new SAT.Box(
-            (new SAT.V(movableBoxData.x, movableBoxData.y)).add(new SAT.V(movablePosData.x, movablePosData.y)),
+            (new SAT.V(movableBoxData.x, movableBoxData.y))
+                .add(new SAT.V(movablePosData.x, movablePosData.y))
+                .add(new SAT.V(moveData.dx, moveData.dy)),
             movableBoxData.width,
             movableBoxData.height
         ).toPolygon();
 
         for (var id in boundingBoxes) {
             if (id === movableId) {
+                // Do not collide with itself.
                 continue;
             }
 
-            boxData = boundingBoxes[id];
-            posData = this.manager.getComponentDataForEntity('Position', id);
+            var boxData = boundingBoxes[id];
+            var posData = this.manager.getComponentDataForEntity('Position', id);
 
             if (!this._boxes[id] || this.manager.entityHasComponent(id, 'Movable')) {
                 this._boxes[id] = new SAT.Box(
@@ -222,26 +223,29 @@ define([
             var areColliding = SAT.testPolygonPolygon(satElement, this._boxes[id], collisionResponse);
 
             if (areColliding) {
-                movablePosData.x -= collisionResponse.overlapV.x;
-                movablePosData.y -= collisionResponse.overlapV.y + 1;
+                moveData.dx -= collisionResponse.overlapV.x;
+                moveData.dy -= collisionResponse.overlapV.y;
 
                 if (collisionResponse.overlapV.y != 0) {
                     // collision with ground OR 'roof' : SpeedY = 0
-                    var moveData = this.manager.getComponentDataForEntity('Movable', movableId);
-                    moveData.speedY = 100;
+                    moveData.speedY = 0;
                     if (collisionResponse.overlapV.y > 0) {
                         // collision with ground : new jump allowed
                         moveData.jumpAllowed = true;
                     }
                 }
+
                 // update the boundingBox for the movable
                 satElement = new SAT.Box(
-                    (new SAT.V(movableBoxData.x, movableBoxData.y)).add(new SAT.V(movablePosData.x, movablePosData.y)),
+                    (new SAT.V(movableBoxData.x, movableBoxData.y))
+                        .add(new SAT.V(movablePosData.x, movablePosData.y))
+                        .add(new SAT.V(moveData.dx, moveData.dy)),
                     movableBoxData.width,
                     movableBoxData.height
                 ).toPolygon();
-                collisionResponse.clear();
             }
+
+            collisionResponse.clear();
         }
     }
 

@@ -6,7 +6,6 @@ define({
         'AnimationAttackFx',
         'AnimationJumpFx',
         'Displayable',
-        'Movable',
         'Position',
     ],
     initialState: {
