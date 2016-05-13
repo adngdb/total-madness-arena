@@ -242,7 +242,7 @@ define([
 
     PhysicsProcessor.prototype.activateFx = function (player) {
         // search for the Fx entity
-        var movables = this.manager.getComponentsData('Movable');
+        var movables = this.manager.getComponentsData('AnimationJumpFx');
         var fxMov = null;
         for (fxMov in movables) {
             if (!this.manager.entityHasComponent(fxMov, 'Player')) {

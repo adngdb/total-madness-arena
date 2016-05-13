@@ -10,73 +10,34 @@ define([
     };
 
     ActionProcessor.prototype.update = function (dt) {
-        // compute Action 1
+        // Cooldown Action 1
         var attacks = this.manager.getComponentsData('Attack1');
-        this.computeAction(dt, attacks, Const.inputs.ACTION1, 1);
+        for (var attack in attacks) {
+            attacks[attack].lastAttack += dt / 1000.;
+        }
 
-        // compute Action 2
+        // Cooldown Action 2
         attacks = this.manager.getComponentsData('Attack2');
-        this.computeAction(dt, attacks, Const.inputs.ACTION2, 2);
+        for (attack in attacks) {
+            attacks[attack].lastAttack += dt / 1000.;
+        }
+
+        var players = this.manager.getComponentsData('Player');
 
         // Update attacks for players given current actions.
         for (var playerId in players) {
             var actions = this.manager.getComponentDataForEntity('Actions', playerId);
-            var playerMoveData = this.manager.getComponentDataForEntity('Movable', playerId);
 
-            if (actions.jump) {
-                if (playerMoveData.jumpAllowed && playerMoveData.lastJump > 0.3) {
-                    playerMoveData.speedY = -600;
-                    playerMoveData.jumpAllowed = false;
-                    playerMoveData.lastJump = 0;
-                }
+            if (actions.attack1) {
+                this.action1(playerId);
             }
 
-            if (actions.goLeft) {
-                playerMoveData.dx = -(dt / 1000. * playerMoveData.speed);
-                playerMoveData.goingRight = false;
-            }
-
-            if (actions.goRight) {
-                playerMoveData.dx = (dt / 1000. * playerMoveData.speed);
-                playerMoveData.goingRight = true;
+            if (actions.attack2) {
+                this.action2(playerId);
             }
         }
 
     };
-
-    ActionProcessor.prototype.computeAction = function (dt, attacks, input, action) {
-        var inputs = GlobalManager.getComponentsData('Input');
-        var players = this.manager.getComponentsData('Player');
-
-        // attack cooldown
-        for (var attack in attacks) {
-            attacks[attack].lastAttack += dt/1000.;
-        }
-
-        // get Actions for players given current inputs.
-        for (var inputId in inputs) {
-            if (inputs[inputId].active) {
-                // get the playerID for the input
-                var currentPlayer = null;
-                for (var playerId in players) {
-                    if (players[playerId].number === inputs[inputId].player) {
-                        currentPlayer = playerId;
-                        break;
-                    }
-                }
-                if (currentPlayer !== null) {
-                    if (inputs[inputId].action == input) {
-                        if (action === 1) {
-                            this.action1(currentPlayer);
-                        }
-                        else {
-                            this.action2(currentPlayer);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     ActionProcessor.prototype.action1 = function (player) {
         // get the Attack of the current player
@@ -84,7 +45,7 @@ define([
         if (attack.lastAttack > attack.cooldown) {
             // attack allowed
             attack.lastAttack = 0;
-            this.activateFx(player);
+            // this.activateFx(player);
             var otherPlayer = this.checkCollisionWithMovableOnly(player);
             if (otherPlayer) {
                 // hit the other player's Life
@@ -100,7 +61,7 @@ define([
         if (attack.lastAttack > attack.cooldown) {
             // attack allowed
             attack.lastAttack = 0;
-            this.activateFx(player);
+            // this.activateFx(player);
             var otherPlayer = this.checkCollisionWithMovableOnly(player);
             if (otherPlayer) {
                 // hit the other player's Life
@@ -148,7 +109,7 @@ define([
 
     ActionProcessor.prototype.activateFx = function (player) {
         // search for the Fx entity
-        var movables = this.manager.getComponentsData('Movable');
+        var movables = this.manager.getComponentsData('AnimationAttackFx');
         var fxMov = null;
         for (fxMov in movables) {
             if (!this.manager.entityHasComponent(fxMov, 'Player')) {
@@ -172,5 +133,6 @@ define([
         });
         movables[fxMov].goingRight = playerMovable.goingRight;
     }
+
     return ActionProcessor;
 });

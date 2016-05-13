@@ -52,10 +52,10 @@ define([
                     case Const.inputs.RIGHT:
                         actionsData.goRight = true;
                         break;
-                    case Const.inputs.ATTACK1:
+                    case Const.inputs.ACTION1:
                         actionsData.attack1 = true;
                         break;
-                    case Const.inputs.ATTACK2:
+                    case Const.inputs.ACTION2:
                         actionsData.attack2 = true;
                         break;
                 }
