@@ -2,6 +2,7 @@ define({
     name: 'Character_04',
     description: 'Playable character 04. Nickname: Eva. ',
     components: [
+        'Actions',
         'Animated',
         'AnimationIdle',
         'AnimationJump',
@@ -11,12 +12,12 @@ define({
         'Attack1',
         'Attack2',
         'BoundingBox',
+        'Character',
         'Displayable',
         'Life',
         'Movable',
         'Player',
         'Position',
-        'Character',
         'Portrait',
     ],
     initialState: {

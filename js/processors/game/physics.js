@@ -1,16 +1,18 @@
 define([
     'lib/sat',
     'constants',
-    'global-manager',
-], function (SAT, Const, GlobalManager) {
+
+], function (
+    SAT,
+    Const
+) {
     "use strict";
 
     var GRAVITY = 50;
     var DECELERATION = 1000; // in pixels per second
 
-    var PhysicsProcessor = function (manager, game) {
+    var PhysicsProcessor = function (manager) {
         this.manager = manager;
-        this.game = game;
 
         this._boxes = {};
         this.mapIsLoaded = false;
@@ -21,7 +23,6 @@ define([
         var posData = null;
         var moveData = null;
 
-        var inputs = GlobalManager.getComponentsData('Input');
         var players = this.manager.getComponentsData('Player');
         var movables = this.manager.getComponentsData('Movable');
 
@@ -29,37 +30,27 @@ define([
             movables[m].dx = 0;
         }
 
-        // Update movements for players given current inputs.
-        for (var inputId in inputs) {
-            if (inputs[inputId].active) {
-                var playerMoveData = null;
-                for (var playerId in players) {
-                    if (players[playerId].number === inputs[inputId].player) {
-                        playerMoveData = this.manager.getComponentDataForEntity('Movable', playerId);
-                        break;
-                    }
-                }
+        // Update movements for players given current actions.
+        for (var playerId in players) {
+            var actions = this.manager.getComponentDataForEntity('Actions', playerId);
+            var playerMoveData = this.manager.getComponentDataForEntity('Movable', playerId);
 
-                if (playerMoveData !== null) {
-                    switch (inputs[inputId].action) {
-                        case Const.inputs.JUMP:
-                            if (playerMoveData.jumpAllowed && (playerMoveData.lastJump > 0.3)) {
-                                playerMoveData.speedY = -600;
-                                playerMoveData.jumpAllowed = false;
-                                playerMoveData.lastJump = 0;
-                                // this.activateFx(playerId);
-                            }
-                            break;
-                        case Const.inputs.LEFT:
-                            playerMoveData.dx = -(dt / 1000. * playerMoveData.speed);
-                            playerMoveData.goingRight = false;
-                            break;
-                        case Const.inputs.RIGHT:
-                            playerMoveData.dx = (dt / 1000. * playerMoveData.speed);
-                            playerMoveData.goingRight = true;
-                            break;
-                    }
+            if (actions.jump) {
+                if (playerMoveData.jumpAllowed && playerMoveData.lastJump > 0.3) {
+                    playerMoveData.speedY = -600;
+                    playerMoveData.jumpAllowed = false;
+                    playerMoveData.lastJump = 0;
                 }
+            }
+
+            if (actions.goLeft) {
+                playerMoveData.dx = -(dt / 1000. * playerMoveData.speed);
+                playerMoveData.goingRight = false;
+            }
+
+            if (actions.goRight) {
+                playerMoveData.dx = (dt / 1000. * playerMoveData.speed);
+                playerMoveData.goingRight = true;
             }
         }
 
@@ -183,7 +174,7 @@ define([
 
             this.mapIsLoaded = true;
         }
-    }
+    };
 
     PhysicsProcessor.prototype.checkCollision = function (movableId) {
         // Compute collisions and make appropriate moves to correct positions.
@@ -247,7 +238,7 @@ define([
 
             collisionResponse.clear();
         }
-    }
+    };
 
     PhysicsProcessor.prototype.activateFx = function (player) {
         // search for the Fx entity
@@ -262,13 +253,15 @@ define([
         var playerMovable = this.manager.getComponentDataForEntity('Movable', player);
 
         // set the FX entity position
-        this.manager.getComponentDataForEntity('Position', fxMov).x = playerPos.x;
-        this.manager.getComponentDataForEntity('Position', fxMov).y = playerPos.y;
+        this.manager.setComponentDataForEntity('Position', fxMov, {
+            x: playerPos.x,
+            y: playerPos.y,
+        });
         this.manager.getComponentDataForEntity('Displayable', fxMov).deleted = false;
         this.manager.getComponentDataForEntity('Animated', fxMov).current = 'jumpFx';
         this.manager.getComponentDataForEntity('Animated', fxMov).started = false;
         movables[fxMov].goingRight = playerMovable.goingRight;
-    }
+    };
 
     return PhysicsProcessor;
 });

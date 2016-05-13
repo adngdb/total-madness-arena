@@ -2,6 +2,7 @@ define({
     name: 'Character_05',
     description: 'Playable character 05. Nickname: Sg. Kaput. ',
     components: [
+        'Actions',
         'Animated',
         'AnimationIdle',
         'AnimationJump',
@@ -11,12 +12,12 @@ define({
         'Attack1',
         'Attack2',
         'BoundingBox',
+        'Character',
         'Displayable',
         'Life',
         'Movable',
         'Player',
         'Position',
-        'Character',
         'Portrait',
     ],
     initialState: {

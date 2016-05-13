@@ -2,6 +2,7 @@ define({
     name: 'Character_02',
     description: 'Playable character 02. Nickname: Mario the Plumber. ',
     components: [
+        'Actions',
         'Animated',
         'AnimationIdle',
         'AnimationJump',
@@ -11,12 +12,12 @@ define({
         'Attack1',
         'Attack2',
         'BoundingBox',
+        'Character',
         'Displayable',
         'Life',
         'Movable',
         'Player',
         'Position',
-        'Character',
         'Portrait',
     ],
     initialState: {

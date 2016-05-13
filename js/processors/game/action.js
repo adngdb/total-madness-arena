@@ -17,6 +17,31 @@ define([
         // compute Action 2
         attacks = this.manager.getComponentsData('Attack2');
         this.computeAction(dt, attacks, Const.inputs.ACTION2, 2);
+
+        // Update attacks for players given current actions.
+        for (var playerId in players) {
+            var actions = this.manager.getComponentDataForEntity('Actions', playerId);
+            var playerMoveData = this.manager.getComponentDataForEntity('Movable', playerId);
+
+            if (actions.jump) {
+                if (playerMoveData.jumpAllowed && playerMoveData.lastJump > 0.3) {
+                    playerMoveData.speedY = -600;
+                    playerMoveData.jumpAllowed = false;
+                    playerMoveData.lastJump = 0;
+                }
+            }
+
+            if (actions.goLeft) {
+                playerMoveData.dx = -(dt / 1000. * playerMoveData.speed);
+                playerMoveData.goingRight = false;
+            }
+
+            if (actions.goRight) {
+                playerMoveData.dx = (dt / 1000. * playerMoveData.speed);
+                playerMoveData.goingRight = true;
+            }
+        }
+
     };
 
     ActionProcessor.prototype.computeAction = function (dt, attacks, input, action) {

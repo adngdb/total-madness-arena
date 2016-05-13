@@ -2,6 +2,7 @@ define({
     name: 'Character_01',
     description: 'Playable character 01. Nickname: The Big Fat Guy. ',
     components: [
+        'Actions',
         'Animated',
         'AnimationIdle',
         'AnimationJump',
@@ -11,12 +12,12 @@ define({
         'Attack1',
         'Attack2',
         'BoundingBox',
+        'Character',
         'Displayable',
         'Life',
         'Movable',
         'Player',
         'Position',
-        'Character',
         'Portrait',
     ],
     initialState: {

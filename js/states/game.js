@@ -12,6 +12,7 @@ define([
     'components/global/player',
     'components/global/sound',
 
+    'components/game/actions',
     'components/game/bounding-box',
     'components/game/collision',
     'components/game/game',
@@ -52,6 +53,7 @@ define([
     // processors
     'processors/global/sound',
 
+    'processors/game/controls',
     'processors/game/rendering',
     'processors/game/physics',
     'processors/game/death',
@@ -72,6 +74,7 @@ function (
     Player,
     Sound,
 
+    Actions,
     BoundingBox,
     Collision,
     GameComp,
@@ -112,6 +115,7 @@ function (
     // processors
     SoundProcessor,
 
+    ControlsProcessor,
     RenderingProcessor,
     PhysicsProcessor,
     DeathProcessor,
@@ -140,6 +144,7 @@ function (
 
             // Add all components to the system.
             var components = [
+                Actions,
                 BoundingBox,
                 Collision,
                 Displayable,
@@ -192,7 +197,8 @@ function (
             // Add processors.
             this.soundProcessor = new SoundProcessor(this.manager, this.game)
 
-            this.manager.addProcessor(new PhysicsProcessor(this.manager, this.game));
+            this.manager.addProcessor(new ControlsProcessor(this.manager));
+            this.manager.addProcessor(new PhysicsProcessor(this.manager));
             this.manager.addProcessor(new ManipulationProcessor(this.manager, this.game));
             this.manager.addProcessor(new ActionProcessor(this.manager, this.game));
             this.manager.addProcessor(new DeathProcessor(this.manager, this.game, this.matchManager));
